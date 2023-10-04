@@ -56,6 +56,44 @@ class Badge(db.Model): # Genre
 
     def __repr__(self):
         return f'<Badge badge_id={self.badge_id} desc={self.badge_description}>'
+    
+
+class Rating(db.Model):
+    """A rating"""
+
+    __tablename__ = "ratings"
+
+    rating_id= db.Column(db.Integer, autoincrement=True, primary_key=True)
+    
+    thumbs_up = db.Column(db.Boolean)
+    rating_icon = db.Column(db.String(100))
+    
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    # restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"))    
+
+    def __repr__(self):
+        return f'<Rating rating_id={self.rating_id} user={self.user_id} thumbUp={self.thumbs_up}>'
+    
+
+class Restaurant(db.Model):
+    """A restaurant"""
+
+    __tablename__ = "restaurants"
+
+    restaurant_id= db.Column(db.Integer, autoincrement=True, primary_key=True)
+    
+    restaurant_name = db.Column(db.String(50))
+    restaurant_icon = db.Column(db.String(100))
+    restaurant_description = db.Column(db.Text)
+    restaurant_address = db.Column(db.String(250))
+    restaurant_state = db.Column(db.String(25))
+    food_type = db.Column(db.String(25))
+    episode_info = db.Column(db.String(50))
+    
+    # need to build relationship to ratings
+
+    def __repr__(self):
+        return f'<Restraurant name={self.restaurant_name} desc={self.restaurant_description}>'
 
 
 def connect_to_db(flask_app, db_uri="postgresql:///dddTripPlanner", echo=True):
@@ -77,31 +115,3 @@ if __name__ == "__main__":
     # query it executes.
 
     connect_to_db(app)
-
-
-
-
-"""
-User
-Henri.  1
-Odds.   2
-
-
-Badges
-Try 10 Diners.    1
-First one.        2
-
-When giving Henri a badge:
-
-UserBadge
-UBid.  uID.  bID
-1.      1.    2
-2.      1.    1
-
-henri = User.query.....
-henri.badges
-[<Badge type=2 name=First One>, <Badge type=1 name=Try 10 diners>]
-
-
-
-"""
