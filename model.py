@@ -18,7 +18,7 @@ class User(db.Model): #Book
     email = db.Column(db.String(50), unique = True, nullable = False)
     user_icon = db.Column(db.String(100))
     
-    badges = db.relationship("Badge", secondary="usersBadge", back_populates = "users")
+    badges = db.relationship("Badge", secondary="usersbadge", back_populates = "users")
     # trips = db.relationship("Trips", back_populates = "user")
     # ratings = db.relationship("Ratings", back_populates = "user")
     # favorites = db.relationship("Favorites", back_populates = "user")
@@ -29,7 +29,7 @@ class User(db.Model): #Book
 class UsersBadge(db.Model): #BookGenre
     """A User's Unlocked Badge's"""
 
-    __tablename__= "usersBadge"
+    __tablename__= "usersbadge"
     
     users_badge_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     
@@ -50,7 +50,7 @@ class Badge(db.Model): # Genre
     badge_icon = db.Column(db.String(100))
     badge_description = db.Column(db.Text)
     
-    users = db.relationship("User", secondary="usersBadge",
+    users = db.relationship("User", secondary="usersbadge",
         back_populates="badges")
     
 
