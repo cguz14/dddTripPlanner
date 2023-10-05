@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 
 # Replace this with your code!
-class User(db.Model): #Book
+class User(db.Model): #User
     """A user."""
 
     __tablename__ = "users"
@@ -18,18 +18,23 @@ class User(db.Model): #Book
     email = db.Column(db.String(50), unique = True, nullable = False)
     user_icon = db.Column(db.String(100))
     
-    badges = db.relationship("Badge", secondary="usersbadge", back_populates = "users")
-    # trips = db.relationship("Trips", back_populates = "user")
-    # ratings = db.relationship("Ratings", back_populates = "user")
-    # favorites = db.relationship("Favorites", back_populates = "user")
+    trips = db.relationship("Trip", back_populates = "user")
+    ratings = db.relationship("Rating", back_populates = "user")
+    
+    badges = db.relationship("Badge",
+                             secondary="usersbadges",
+                             back_populates = "users")
+    restaurants = db.relationship("Restaurant",
+                                  secondary = "favorites",
+                                  back_populates = "users")
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
 
-class UsersBadge(db.Model): #BookGenre
+class UsersBadge(db.Model): 
     """A User's Unlocked Badge's"""
 
-    __tablename__= "usersbadge"
+    __tablename__= "usersbadges"
     
     users_badge_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     
@@ -39,7 +44,7 @@ class UsersBadge(db.Model): #BookGenre
     def __repr__(self):
         return f'<Badges user_id={self.user_id} badges_id={self.users_badge_id}>'
 
-class Badge(db.Model): # Genre
+class Badge(db.Model):
     """A badge"""
 
     __tablename__ = "badges"
@@ -50,10 +55,10 @@ class Badge(db.Model): # Genre
     badge_icon = db.Column(db.String(100))
     badge_description = db.Column(db.Text)
     
-    users = db.relationship("User", secondary="usersbadge",
-        back_populates="badges")
+    users = db.relationship("User",
+                            secondary="usersbadges",
+                            back_populates="badges")
     
-
     def __repr__(self):
         return f'<Badge badge_id={self.badge_id} desc={self.badge_description}>'
     
@@ -69,7 +74,10 @@ class Rating(db.Model):
     rating_icon = db.Column(db.String(100))
     
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-    # restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"))    
+    restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"))
+
+    user = db.relationship("User", back_populates = "ratings")
+    restaurant = db.relationship("Restaurant", back_populates = "ratings")
 
     def __repr__(self):
         return f'<Rating rating_id={self.rating_id} user={self.user_id} thumbUp={self.thumbs_up}>'
@@ -90,11 +98,68 @@ class Restaurant(db.Model):
     food_type = db.Column(db.String(25))
     episode_info = db.Column(db.String(50))
     
-    # need to build relationship to ratings
+    # need to build relationship to ratings and stops
+    ratings = db.relationship("Rating", back_populates = "restaurant")
+    
+    users = db.relationship("User",
+                            secondary = "favorites",
+                            back_populates = "restaurants")
+    trips = db.relationship("Trip",
+                            secondary = "stops",
+                            back_populates = "restaurants")
 
     def __repr__(self):
-        return f'<Restraurant name={self.restaurant_name} desc={self.restaurant_description}>'
+        return f'<Restaurant name={self.restaurant_name} desc={self.restaurant_description}>'
 
+
+class Favorite(db.Model): 
+    """A User's Restaurant Favorites"""
+
+    __tablename__= "favorites"
+    
+    favorite_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"))
+
+    def __repr__(self):
+        return f'<Favorite user_id={self.user_id} restaurant_id={self.restaurant_id}>'
+    
+
+class Trip(db.Model):
+    """A User's planned trip"""
+
+    __tablename__= "trips"
+
+    trip_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+
+    trip_name = db.Column(db.String(50))
+    trip_description = db.Column(db.Text)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+
+    user = db.relationship("User", back_populates = "trips")
+
+    restaurants = db.relationship("Restaurant",
+                                  secondary = "stops",
+                                  back_populates = "trips")
+
+    def __repr__(self):
+        return f'<Trip name={self.trip_name} desc={self.trip_description}>'
+    
+class Stop(db.Model):
+    """A User's Unlocked Badge's"""
+
+    __tablename__= "stops"
+    
+    stop_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    
+    trip_id = db.Column(db.Integer, db.ForeignKey("trips.trip_id"))
+    restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurants.restaurant_id"))
+
+    def __repr__(self):
+        return f'<Stop trip_id={self.trip_id} restaurant_id={self.restaurant_id}>'
+    
 
 def connect_to_db(flask_app, db_uri="postgresql:///dddTripPlanner", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
