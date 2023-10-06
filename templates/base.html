@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/static/css/party.css">
+</head>
+<body>
+  <div class="container-fluid d-flex header">
+    <h1>
+      <!-- Linking back to homepage for now but can link anywhere with href -->
+      <a href="https://www.foodnetwork.com/restaurants/shows/diners-drive-ins-and-dives/a-z">Rolling Out in progress...</a>
+    </h1>
+
+    {% for msg in get_flashed_messages() %}
+      <div class="alert alert-info">{{ msg }}</div>
+    {% endfor %}
+  </div>
+
+  {% block content %}{% endblock %}
+</body>
+</html>
