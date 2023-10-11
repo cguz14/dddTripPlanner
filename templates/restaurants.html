@@ -6,9 +6,12 @@
 <div class="container">
   <div class="row">
     <div class="col-7">
-      <div id="welcome">
-        <h2>Welcome</h2>
-        <p>Teh restaurants will be here soon</p>
+      <div id="restaurantList">
+        {% for restaurant in restaurants %}
+          <p>
+            Restaurant: {{ restaurant.restaurant_name }}
+          </p>
+        {% endfor %}
       </div>
     </div>
 
