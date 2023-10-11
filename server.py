@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, request
 import crud
-
+from model import connect_to_db, Restaurant, User, UsersBadge, Badge, Rating, Favorite, Trip, Stop
 from pprint import pformat, pprint
 import os
 
@@ -27,5 +27,5 @@ def show_restaurants():
 
 
 if __name__ == "__main__":
-
+    connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)
