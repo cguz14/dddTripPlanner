@@ -67,6 +67,12 @@ def create_restaurant(restaurant_name, restaurant_icon, restaurant_description,
         
         return restaurant
 
+def get_restaurants():
+    """Return all restaurants"""
+
+    return Restaurant.query.all()
+
+
 
 if __name__ == '__main__':
     from server import app
