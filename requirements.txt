@@ -1,7 +1,12 @@
 attrs==21.4.0
+beautifulsoup4==4.12.2
+certifi==2023.7.22
+charset-normalizer==3.3.0
 click==8.0.1
 Flask==2.0.1
-Flask-SQLAlchemy==2.5.1
+Flask-SQLAlchemy==2.1
+greenlet==3.0.0
+idna==3.4
 iniconfig==1.1.1
 itsdangerous==2.0.1
 Jinja2==3.0.1
@@ -12,6 +17,9 @@ psycopg2-binary==2.9.3
 py==1.11.0
 pyparsing==3.0.8
 pytest==7.1.2
+requests==2.31.0
+soupsieve==2.5
 SQLAlchemy==1.4.25
 tomli==2.0.1
+urllib3==2.0.6
 Werkzeug==2.0.1

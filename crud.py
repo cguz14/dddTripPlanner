@@ -1,6 +1,8 @@
 from model import User, UsersBadge, Badge, Rating, Trip, Restaurant
 from model import db, connect_to_db
 
+import requests
+from bs4 import BeautifulSoup as bs
 
 def create_user(username, email, password, user_icon):
 
@@ -24,8 +26,6 @@ def create_badge(badge_name, badge_icon, badge_description):
     )
 
     return badge
-
-## comment add
 
 
 def add_badge(user, badge):
@@ -73,8 +73,7 @@ def get_restaurants():
     """Return all restaurants"""
 
     return Restaurant.query.all()
-
-
+ 
 
 if __name__ == '__main__':
     from server import app

@@ -91,7 +91,7 @@ class Restaurant(db.Model):
     restaurant_id= db.Column(db.Integer, autoincrement=True, primary_key=True)
     
     restaurant_name = db.Column(db.String(50))
-    restaurant_icon = db.Column(db.String(100))
+    restaurant_icon = db.Column(db.Text)
     restaurant_description = db.Column(db.Text)
     restaurant_address = db.Column(db.String(250))
     restaurant_state = db.Column(db.String(25))

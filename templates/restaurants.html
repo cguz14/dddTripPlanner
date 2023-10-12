@@ -9,9 +9,13 @@
       <div id="restaurantList">
         {% for restaurant in restaurants %}
           <p>
-            Restaurant: {{ restaurant.restaurant_name }}
+            <div>Restaurant: {{ restaurant.restaurant_name }}</div>
+            <div>Description: {{ restaurant.restaurant_description }}</div>
+            <div>Address: {{ restaurant.restaurant_address }}</div>
+            <div>Img: {{ restaurant.restaurant_icon }}</div>
           </p>
         {% endfor %}
+        <!-- <p>Soup: {{ soup }}</p>  -->
       </div>
     </div>
 
