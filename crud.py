@@ -15,6 +15,12 @@ def create_user(username, email, password, user_icon):
     
     return user
 
+def get_user_by_email(email):
+
+    user = User.query.filter_by(email=email).one()
+    
+    return user
+
 
 def create_badge(badge_name, badge_icon, badge_description):
     """Create and return a new rating"""
@@ -73,7 +79,34 @@ def get_restaurants():
     """Return all restaurants"""
 
     return Restaurant.query.all()
- 
+
+
+def is_user(email, password):
+    """Return True/False if user/password combo in userDB. Confirms username and
+        password are correct for login"""
+
+    users = User.query.all()
+    loggedIn = False
+
+    for user in users:
+        if email == user.email:
+            if user.password == password:
+                loggedIn = True
+
+    return loggedIn
+
+def email_exists(email):
+    """Return True/False if username in userDB. Checking that same username 
+        isn't creating multiple accounts"""
+
+    users = User.query.all()
+    exists = False
+
+    for user in users:
+        if email == user.email:
+            exists = True
+
+    return exists
 
 if __name__ == '__main__':
     from server import app

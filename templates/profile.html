@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}User Page{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-7">
+            <div id="profile">
+                <h1>Welcome to Flavortown!</h1>
+                <h2>{{ session["username"] }}'s Profile Page</h2>
+        
+                <p>
+                    <div>User id: {{ session["user_id"] }}</div>
+                    <div>Username: {{ session["username"] }}</div>
+                    <div>Email: {{ session["email"] }}</div>
+                    <div>Badges: Coming soon</div>
+                    <div>Icon: {{ session["user_icon"] }}</div>
+                </p>
+            </div>
+            <div id="return_home">    
+                <form action="/" method="get">
+                    <button type="submit" class="return_home_button">
+                        Return to home page
+                    </button>
+                </form>    
+            </div>
+        </div>
+
+        <div class="col">
+            <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+        </div>
+    </div>
+</div>
+{% endblock %}

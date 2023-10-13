@@ -29,7 +29,7 @@ class User(db.Model): #User
                                   back_populates = "users")
 
     def __repr__(self):
-        return f'<User user_id={self.user_id} email={self.email}>'
+        return f'<User username={self.username} email={self.email}>'
 
 class UsersBadge(db.Model): 
     """A User's Unlocked Badge's"""
@@ -90,8 +90,8 @@ class Restaurant(db.Model):
 
     restaurant_id= db.Column(db.Integer, autoincrement=True, primary_key=True)
     
-    restaurant_name = db.Column(db.String(50))
-    restaurant_icon = db.Column(db.Text)
+    restaurant_name = db.Column(db.String(100))
+    restaurant_icon = db.Column(db.Text, nullable = True)
     restaurant_description = db.Column(db.Text)
     restaurant_address = db.Column(db.String(250))
     restaurant_state = db.Column(db.String(25))

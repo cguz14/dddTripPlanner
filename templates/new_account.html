@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}User Page{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-7">
+      <div id="profile">
+        <h2>Create an Account</h2>
+            <form action="/new-account" method="POST">
+                <p>
+                    Username <input type="text" name="username">
+                </p>
+                
+                <p>
+                    Email <input type="text" name="email">
+                </p>
+            
+                <p>
+                    Password <input type="password" name="password">
+                </p>
+
+                <p>
+                    <input type="submit">
+                </p>
+            </form>
+      </div>
+      <div id="return_home_new_account">    
+        <form action="/" method="get">
+            <button type="submit" class="return_home__new_account_button">
+                Return to home page
+            </button>
+        </form>    
+    </div>
+    </div>
+
+    <div class="col">
+      <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+    </div>
+  </div>
+</div>
+{% endblock %}

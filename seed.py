@@ -74,46 +74,28 @@ while n < 86:
 
     restaurants = []
 
-    importedNames = []
-    importedAddresses = []
-    importedDescriptions = []
-    importedImgs = []
-
-    names = soup.select("section.o-ListPointOfInterest span.m-MediaBlock__a-HeadlineText")
-    addresses = soup.select("section.o-ListPointOfInterest div.m-Info__a-Address")
-    descriptions = soup.select("section.o-ListPointOfInterest div.m-MediaBlock__a-Description")
-    imgs = soup.select("img.m-MediaBlock__a-Image")
-
-    for name in names:
-        importedNames.append(name.get_text(strip=True))
-
-    for address in addresses:
-        importedAddresses.append(address.get_text(strip=True))
-
-    for description in descriptions:
-        importedDescriptions.append(description.get_text(strip=True))
-
-    # some imgs seem to have an added <p> that is making them skip a line during
-    #   basic output. May cause issues with styling later, be aware
-    for img in imgs:
-        importedImgs.append(img.get('src'))
-
+    restaurants = soup.select("section.o-ListPointOfInterest div.m-MediaBlock")
 
     print(f"Page: {n+1}")
-    i = 0
-    while i < len(importedNames):
+
+    for restaurant in restaurants:
+        name = restaurant.find(class_="m-MediaBlock__a-HeadlineText").get_text()
+        address = restaurant.find(class_="m-Info__a-Address").get_text()
+        description = restaurant.find(class_="m-MediaBlock__a-Description").get_text()
+        if restaurant.find(class_="m-MediaBlock__a-Image"):
+            img = restaurant.find(class_="m-MediaBlock__a-Image").get("src")
+        else:
+            img = None
 
         new_restaurant = crud.create_restaurant(
-            f"{importedNames[i]}",
-            f"{importedImgs[i]}",
-            f"{importedDescriptions[i]}",
-            f"{importedAddresses[i]}",
+            f"{name}",
+            f"{img}",
+            f"{description}",
+            f"{address}",
             f"testrestaurant_state{n}",
             f"testfood_type{n}",
             f"testepisode_info{n}"
         )
-
-        i += 1
 
         restaurants_in_db.append(new_restaurant)
 
