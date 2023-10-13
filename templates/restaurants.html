@@ -14,7 +14,19 @@
             <div>Address: {{ restaurant.restaurant_address }}</div>
             <div>Img: {{ restaurant.restaurant_icon }}</div>
           </p>
+
+          {% if loop.index%15 == 0 %}
+            <div id="return_home_from_all">    
+              <form action="/" method="get">
+                  <button type="submit" class="return_home_from_all_button">
+                    Return to home page
+                  </button>
+              </form>    
+            </div>
+          {% endif %}
+
         {% endfor %}
+
       </div>
     </div>
 

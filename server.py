@@ -99,6 +99,22 @@ def create_account_page():
     
     return render_template('new_account.html')
 
+@app.route('/all-users')
+def all_users():
+
+    users = crud.get_users()
+
+    return render_template('all_users.html', users=users)
+
+@app.route('/favorites')
+def favorites():
+
+    if "email" in session:
+        favorites = crud.get_favorites(session["email"])
+        return render_template('favorites.html', favorites=favorites)
+    else:
+        flash("You need to login first!")
+        return redirect("/")
 
 # @app.route('/restaurants')
 # def show_real_restaurants():

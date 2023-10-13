@@ -108,6 +108,23 @@ def email_exists(email):
 
     return exists
 
+def get_users():
+    """Show all users, only used during development"""
+
+    users = User.query.all()
+
+    return users
+
+def get_favorites(email):
+    """Get all of a specific user's favorite restaurants"""
+
+    user = get_user_by_email(email)
+
+    favorites = user.restaurants
+
+    return favorites
+
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
