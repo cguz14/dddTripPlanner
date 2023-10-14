@@ -1,5 +1,4 @@
-from model import User, UsersBadge, Badge, Rating, Trip, Restaurant
-from model import db, connect_to_db
+from model import connect_to_db, db, Restaurant, User, UsersBadge, Badge, Rating, Favorite, Trip, Stop
 
 import requests
 from bs4 import BeautifulSoup as bs
@@ -80,6 +79,17 @@ def get_restaurants():
 
     return Restaurant.query.all()
 
+def get_restaurants_by_name(restaurant_names):
+    """Return Restaurant object by restaurant_name"""
+
+    restaurants = []
+
+    for restaurant_name in restaurant_names:
+        ## Need to confirm that first is okay to use here versus .one(). Can likely resolve any conflict by removing duplicates from db
+        restaurant = Restaurant.query.filter_by(restaurant_name=restaurant_name).first()
+        restaurants.append(restaurant)
+
+    return restaurants
 
 def is_user(email, password):
     """Return True/False if user/password combo in userDB. Confirms username and
@@ -124,6 +134,26 @@ def get_favorites(email):
 
     return favorites
 
+def add_favorites(email, favorites):
+    """Add checked restaurants to user's favorites"""
+
+    user = get_user_by_email(email)
+
+    for favorite in favorites:
+        if favorite not in user.restaurants:
+            user.restaurants.append(favorite)
+
+def remove_favorites(email, favorites):
+    """Remove checked restaurants from user's favorites"""
+
+    user = get_user_by_email(email)
+
+    for favorite in favorites:
+        # need to figure out how to remove favorite from user.restaurants
+        user.restaurants.remove(favorite)
+        db.session.delete(favorite)
+
+    db.session.commit()
 
 if __name__ == '__main__':
     from server import app

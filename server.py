@@ -115,13 +115,38 @@ def favorites():
     else:
         flash("You need to login first!")
         return redirect("/")
+    
+@app.route('/add-favorites', methods=["POST"])
+def add_favorites():
 
-# @app.route('/restaurants')
-# def show_real_restaurants():
+    if "email" in session:
+        new_favorites = request.form.getlist('restaurant')
+        new_favorite_restaurants = crud.get_restaurants_by_name(new_favorites)
 
-#     soup = crud.get_real_restaurants()
+        crud.add_favorites(session["email"], new_favorite_restaurants)     
+        favorites = crud.get_favorites(session["email"])
+        db.session.add_all(favorites)
+        db.session.commit()
+        
+        return render_template('favorites.html', favorites=favorites)
+    else:
+        flash("You need to login first!")
+        return redirect("/")
+    
+@app.route('/remove-favorites', methods=["POST"])
+def remove_favorites():
 
-#     return render_template('restaurants.html', soup=soup)
+    if "email" in session:
+        remove_favorites = request.form.getlist('remove_favorite')
+        print(remove_favorites)
+
+        crud.remove_favorites(session["email"], remove_favorites)     
+        favorites = crud.get_favorites(session["email"])
+        
+        return render_template('favorites.html', favorites=favorites)
+    else:
+        flash("You need to login first!")
+        return redirect("/")
 
 
 if __name__ == "__main__":

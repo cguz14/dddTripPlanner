@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}User Page{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-7">
+            <div id="all_users">
+                <h1>All Favorites</h1>
+                <form action="/remove-favorites", method="POST">
+                {% for restaurant in favorites %}
+                    <p>
+                        <input type="checkbox" name="remove_favorite" value="{{ restaurant }}">
+                            <label for="remove_favorite{{ loop.index }}">
+                                <div>Username: {{ session["username"] }}</div>
+                                <div>Restaurant: {{ restaurant.restaurant_name }}</div>
+                            </label>
+                    </p>
+                {% endfor %}
+                        <input type="submit" value="Remove from Favorites">
+                </form>
+            </div>
+            <div id="return_profile_from_favorites_">    
+                <form action="/profile" method="get">
+                    <button type="submit" class="return_profile_from_favorites_button">
+                        Return to profile page
+                    </button>
+                </form>    
+            </div>
+        </div>
+
+        <div class="col">
+            <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+        </div>
+    </div>
+</div>
+{% endblock %}
