@@ -163,6 +163,52 @@ def get_trips(email):
 
     return trips
 
+def get_trip_by_id(trip_id):
+    trip = Trip.query.filter_by(trip_id=int(trip_id))
+
+    return trip
+
+
+def add_stops(trip_id, stops):
+    """Add checked restaurants to user's trip"""
+
+    trip = get_trip_by_id(trip_id)
+
+    for stop in stops:
+        if stop not in trip.restaurants:
+            trip.restaurants.append(stop)
+
+def add_trip_to_db(trip):
+    db.session.add(trip)
+    db.session.commit()
+
+def remove_trips(email, remove_trips):
+    """Remove checked restaurants from user's favorites"""
+
+    user = get_user_by_email(email)
+
+    for trip in remove_trips:
+        removeobj = Trip.query.filter_by(user_id=user.user_id, trip_id=int(trip)).one()
+
+        db.session.delete(removeobj)
+
+    db.session.commit()
+
+def get_stops(trips):
+    for trip in trips:
+        stops = Stop.query.filter_by(trip_id=trip.trip_id).all()
+
+    return stops
+
+def get_stop_restaurants(stops):
+
+    restaurants_in_stops = []
+
+    for stop in stops:
+        restaurant = Restaurant.query.filter_by(restaurant_id=stop.restaurant_id).one()
+        restaurants_in_stops.append(restaurant)
+
+    return restaurants_in_stops
 
 if __name__ == '__main__':
     from server import app

@@ -8,35 +8,40 @@
         <div class="col-7">
             <div id="all_trips">
                 <h1>All Trips</h1>
-                <!-- <form action="/remove-favorites", method="POST"> -->
-                <!--{% for restaurant in favorites %}
-                    <p>
-                        <input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
-                            <label for="remove_favorite{{ loop.index }}">
-                                <div>Username: {{ session["username"] }}</div>
-                                <div>Restaurant: {{ restaurant.restaurant_name }}</div>
-                            </label>
-                    </p>
-                {% endfor %}
-                        <input type="submit" value="Remove from Favorites">
+                <form action="/remove-trips", method="POST">
+                        {% for trip in trips %}
+                        <p>
+                            <input type="checkbox" name="remove_trip" value="{{ trip.trip_id }}">
+                                <label for="remove_trip_id_{{ trip.trip_id }}">
+                                    <h2>Trip Name: {{ trip.trip_name }}</h2>
+                                    <div>Username: {{ session["username"] }}</div>
+                                    <h3>Stop Restaurants</h3>
+                                    {% for stop in stops if stop.trip_id == trip.trip_id %}
+                                        {% for restaurant in restaurants if stop.restaurant_id == restaurant.restaurant_id %}
+                                            <div>Stop Restaurant Name: {{ restaurant.restaurant_name }}</div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </label>
+                        </p>
+                        {% endfor %}
+                    <input type="submit" value="Remove from Trips">
                 </form>
-                </div>
-                <div id="return_profile_from_favorites_">    
+            </div>
+            
+            <div id="create_new_trip">    
+                <form action="/create-trip" method="get">
+                    <button type="submit" class="create_new_trip_button">
+                        Create new trip
+                    </button>
+                </form>    
+            </div>
+
+            <div id="return_profile_from_trips">    
                 <form action="/profile" method="get">
-                    <button type="submit" class="return_profile_from_favorites_button">
+                    <button type="submit" class="return_profile_from_trips_button">
                         Return to profile page
                     </button>
-                </form>-->
-            
-                {% for trip in trips %}
-                <p>
-                    <!-- <input type="checkbox" name="remove_trip" value="{{ trip.trip_id }}">
-                        <label for="remove_trip_id_{{ trip.trip_id }}"> -->
-                            <div>Username: {{ session["username"] }}</div>
-                            <div>Trip: {{ trip.trip_id }}</div>
-                        </label>
-                </p>
-                {% endfor %}
+                </form>    
             </div>
         </div>
 

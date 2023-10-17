@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Trip Page{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-7">
+            <div id="trip_info">
+                <h2>New Trip info for {{ session["username"] }}</h2>
+                    <form action="/create-trip" method="POST">
+                        <p>
+                            Trip Name <input type="text" name="trip_name">
+                        </p>
+                    
+                        <p>
+                            Trip Description <input type="text" name="trip_description">
+                        </p>
+        
+                        <div>
+                            <input type="submit">
+                        </div>
+                    </form>
+            </div>
+
+            <div id="return_profile_from_favorites_">    
+                <form action="/profile" method="get">
+                    <button type="submit" class="return_profile_from_favorites_button">
+                        Return to profile page
+                    </button>
+                </form>    
+            </div>
+        </div>
+
+        <div class="col">
+            <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+        </div>
+    </div>
+</div>
+{% endblock %}

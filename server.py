@@ -103,7 +103,6 @@ def favorites():
     if "email" in session:
         favorites = crud.get_favorites(session["email"])
         return render_template('favorites.html', favorites=favorites)
-    
     else:
         flash("You need to login first!")
         return redirect("/")
@@ -121,7 +120,6 @@ def add_favorites():
         db.session.commit()
         
         return redirect('/favorites')
-    
     else:
         flash("You need to login first!")
         return redirect("/")
@@ -134,7 +132,6 @@ def remove_favorites():
         crud.remove_favorites(session["email"], remove_favorites)     
         
         return redirect('/favorites')
-    
     else:
         flash("You need to login first!")
         return redirect("/")
@@ -147,7 +144,6 @@ def logout():
         db.session.commit()
         flash("Successfully Logged out")
         return redirect('/')
-    
     else:
         flash("You need to be logged in to do that!")
         return redirect('/')
@@ -157,8 +153,47 @@ def trips():
 
     if "email" in session:
         trips = crud.get_trips(session["email"])
-        return render_template("trips.html", trips=trips)
+        stops = crud.get_stops(trips)
+        # is there a more efficient way to get the restaurant db to trips so I
+        # can use the id given by stops to pull a restaurant name?
+        restaurants = crud.get_stop_restaurants(stops)
+        return render_template("trips.html", trips=trips, stops=stops, restaurants=restaurants)
+    else:
+        flash("You need to be logged in to do that!")
+        return redirect('/')
     
+@app.route('/create-trip')
+def create_trip_page():
+
+    if "email" in session:
+        # favorites = crud.get_favorites(session["email"])
+        return render_template('create_trip.html')
+    else:
+        flash("You need to be logged in to do that!")
+        return redirect('/')
+    
+@app.route('/create-trip', methods=["POST"])
+def add_new_trip():
+
+    if "email" in session:
+        trip_name = request.form.get("trip_name")
+        trip_description = request.form.get("trip_description")
+        new_trip = crud.create_trip(trip_name, trip_description, session["user_id"])
+        crud.add_trip_to_db(new_trip)        
+
+        return redirect('/trips')
+    else:
+        flash("You need to be logged in to do that!")
+        return redirect('/')
+    
+@app.route('/remove-trips', methods=["POST"])
+def remove_trip():
+
+    if "email" in session:
+        remove_trips = request.form.getlist('remove_trip')
+        crud.remove_trips(session["email"], remove_trips)      
+
+        return redirect('/trips')
     else:
         flash("You need to be logged in to do that!")
         return redirect('/')

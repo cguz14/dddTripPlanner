@@ -98,7 +98,6 @@ class Restaurant(db.Model):
     food_type = db.Column(db.String(25))
     episode_info = db.Column(db.String(50))
     
-    # need to build relationship to ratings and stops
     ratings = db.relationship("Rating", back_populates = "restaurant")
     
     users = db.relationship("User",
