@@ -164,7 +164,7 @@ def get_trips(email):
     return trips
 
 def get_trip_by_id(trip_id):
-    trip = Trip.query.filter_by(trip_id=int(trip_id))
+    trip = Trip.query.filter_by(trip_id=int(trip_id)).one()
 
     return trip
 
@@ -195,6 +195,7 @@ def remove_trips(email, remove_trips):
     db.session.commit()
 
 def get_stops(trips):
+    
     for trip in trips:
         stops = Stop.query.filter_by(trip_id=trip.trip_id).all()
 

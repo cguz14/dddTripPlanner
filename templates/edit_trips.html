@@ -1,21 +1,20 @@
 {% extends 'base.html' %}
 
-{% block title %}Trips Page{% endblock %}
+{% block title %}Edit Trips Page{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-7">
             <div id="all_trips">
-                <h1>All Trips</h1>
-                <form action="/remove-trips", method="POST">
+                <h1>Edit Trips for {{ session["username"] }}</h1>
+                <form action="/edit-trip", method="POST">
                         <!-- I have a triple nested for loop here, any ideas for more efficiency? -->
                         {% for trip in trips %}
                         <p>
-                            <input type="checkbox" name="remove_trip" value="{{ trip.trip_id }}">
-                                <label for="remove_trip_id_{{ trip.trip_id }}">
+                            <input type="radio" name="edit_trip" value="{{ trip.trip_id }}">
+                                <label for="edit_trip_id_{{ trip.trip_id }}">
                                     <h2>Trip Name: {{ trip.trip_name }}</h2>
-                                    <div>Username: {{ session["username"] }}</div>
                                     <h3>Stop Restaurants</h3>
                                     {% for stop in stops if stop.trip_id == trip.trip_id %}
                                         {% for restaurant in restaurants if stop.restaurant_id == restaurant.restaurant_id %}
@@ -25,29 +24,13 @@
                                 </label>
                         </p>
                         {% endfor %}
-                    <input type="submit" value="Delete Selected Trip">
+                    <input type="submit" value="Edit Selected Trip">
                 </form>
             </div>
-            
-            <div id="create_new_trip">    
-                <form action="/create-trip" method="get">
-                    <button type="submit" class="create_new_trip_button">
-                        Create new trip
-                    </button>
-                </form>    
-            </div>
 
-            <div id="edit_trips">    
-                <form action="/edit-trips" method="get">
-                    <button type="submit" class="edit_trips_button">
-                        Edit a trip
-                    </button>
-                </form>    
-            </div>
-
-            <div id="return_profile_from_trips">    
+            <div id="return_profile_from_edit_trips">    
                 <form action="/profile" method="get">
-                    <button type="submit" class="return_profile_from_trips_button">
+                    <button type="submit" class="return_profile_from_edit_trips_button">
                         Return to profile page
                     </button>
                 </form>    

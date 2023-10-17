@@ -197,6 +197,33 @@ def remove_trip():
     else:
         flash("You need to be logged in to do that!")
         return redirect('/')
+    
+@app.route('/edit-trips')
+def edit_trips_page():
+
+    if "email" in session:
+        trips = crud.get_trips(session["email"])
+        stops = crud.get_stops(trips)
+        restaurants = crud.get_stop_restaurants(stops)
+        return render_template('edit_trips.html', trips=trips, stops=stops, restaurants=restaurants)
+    else:
+        flash("You need to be logged in to do that!")
+        return redirect('/')
+    
+@app.route('/edit-trip', methods=["POST"])
+def edit_trip():
+
+    # may be doing too much with attributes being sent to html. revisit in afternoon.
+    if "email" in session:
+        session["trip_id"] = request.form.get("edit_trip")
+        trip = crud.get_trip_by_id(session["trip_id"])
+        stops = crud.get_stops([trip])
+        restaurants = crud.get_stop_restaurants(stops)
+        favorites = crud.get_favorites(session["email"])
+        return render_template('edit_trip.html', trip=trip, stops=stops, restaurants=restaurants, favorites=favorites)
+    else:
+        flash("You need to be logged in to do that!")
+        return redirect('/')
 
 if __name__ == "__main__":
     connect_to_db(app)
