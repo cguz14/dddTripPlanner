@@ -9,7 +9,7 @@
       <div id="restaurantList">
         <form action="/add-favorites", method="POST">
         {% for restaurant in restaurants %}
-          <input type="checkbox" name="restaurant" value="{{ restaurant.restaurant_name }}">
+          <input type="checkbox" name="restaurant" value="{{ restaurant.restaurant_id }}">
             <label for="restaurant{{ loop.index }}">
               <p>
                 <div>Restaurant: {{ restaurant.restaurant_name }}</div>

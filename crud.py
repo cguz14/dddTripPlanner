@@ -79,14 +79,13 @@ def get_restaurants():
 
     return Restaurant.query.all()
 
-def get_restaurants_by_name(restaurant_names):
-    """Return Restaurant object by restaurant_name"""
+def get_restaurants_by_id(restaurant_ids):
+    """Return Restaurant object by restaurant_id"""
 
     restaurants = []
 
-    for restaurant_name in restaurant_names:
-        ## Need to confirm that first is okay to use here versus .one(). Can likely resolve any conflict by removing duplicates from db
-        restaurant = Restaurant.query.filter_by(restaurant_name=restaurant_name).first()
+    for restaurant in restaurant_ids:
+        restaurant = Restaurant.query.filter_by(restaurant_id=int(restaurant)).one()
         restaurants.append(restaurant)
 
     return restaurants
@@ -143,17 +142,27 @@ def add_favorites(email, favorites):
         if favorite not in user.restaurants:
             user.restaurants.append(favorite)
 
-def remove_favorites(email, favorites):
+    # Do I need commits at any points like this because of the append?
+
+def remove_favorites(email, remove_favorites):
     """Remove checked restaurants from user's favorites"""
 
     user = get_user_by_email(email)
 
-    for favorite in favorites:
-        # need to figure out how to remove favorite from user.restaurants
-        user.restaurants.remove(favorite)
-        db.session.delete(favorite)
+    for restaurant in remove_favorites:
+        removeobj = Favorite.query.filter_by(user_id=user.user_id, restaurant_id=int(restaurant)).one()
+
+        db.session.delete(removeobj)
 
     db.session.commit()
+
+def get_trips(email):
+    user = get_user_by_email(email)
+
+    trips = user.trips
+
+    return trips
+
 
 if __name__ == '__main__':
     from server import app

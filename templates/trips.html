@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Favorites Page{% endblock %}
+{% block title %}Trips Page{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-7">
-            <div id="all_favorites">
-                <h1>All Favorites</h1>
-                <form action="/remove-favorites", method="POST">
-                {% for restaurant in favorites %}
+            <div id="all_trips">
+                <h1>All Trips</h1>
+                <!-- <form action="/remove-favorites", method="POST"> -->
+                <!--{% for restaurant in favorites %}
                     <p>
                         <input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
                             <label for="remove_favorite{{ loop.index }}">
@@ -20,13 +20,23 @@
                 {% endfor %}
                         <input type="submit" value="Remove from Favorites">
                 </form>
-            </div>
-            <div id="return_profile_from_favorites_">    
+                </div>
+                <div id="return_profile_from_favorites_">    
                 <form action="/profile" method="get">
                     <button type="submit" class="return_profile_from_favorites_button">
                         Return to profile page
                     </button>
-                </form>    
+                </form>-->
+            
+                {% for trip in trips %}
+                <p>
+                    <!-- <input type="checkbox" name="remove_trip" value="{{ trip.trip_id }}">
+                        <label for="remove_trip_id_{{ trip.trip_id }}"> -->
+                            <div>Username: {{ session["username"] }}</div>
+                            <div>Trip: {{ trip.trip_id }}</div>
+                        </label>
+                </p>
+                {% endfor %}
             </div>
         </div>
 

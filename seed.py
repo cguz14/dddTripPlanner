@@ -97,10 +97,20 @@ while n < 86:
             f"testepisode_info{n}"
         )
 
-        restaurants_in_db.append(new_restaurant)
+        can_add=True
+        old_address = ""
+        if len(restaurants_in_db)>1:
+            for restaurant in restaurants_in_db:
+                old_address = restaurant.restaurant_address
+                if old_address == new_restaurant.restaurant_address:
+                    can_add=False
+
+        if can_add:
+            restaurants_in_db.append(new_restaurant)
 
     n += 1
 
+print(restaurants_in_db)
 model.db.session.add_all(restaurants_in_db)
 model.db.session.commit()
 

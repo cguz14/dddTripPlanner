@@ -18,6 +18,7 @@
                     <div>Icon: {{ session["user_icon"] }}</div>
                 </p>
             </div>
+
             <div id="view_favorites">    
                 <form action="/favorites" method="get">
                     <button type="submit" class="view_favorites_button">
@@ -25,6 +26,15 @@
                     </button>
                 </form>    
             </div>
+
+            <div id="view_trips">    
+                <form action="/trips" method="get">
+                    <button type="submit" class="view_trips_button">
+                        View Trips
+                    </button>
+                </form>    
+            </div>
+
             <div id="return_home">    
                 <form action="/" method="get">
                     <button type="submit" class="return_home_button">

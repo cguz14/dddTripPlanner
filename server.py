@@ -38,12 +38,8 @@ def user_login():
 
     email = request.form.get("email")
     password = request.form.get("password")
-    # need way to query user_id, username, and icon from User db using email
     user = crud.get_user_by_email(email)
 
-    # if "email" in session:
-    #     flash(f"You're already logged in {session['email']}")
-    #     return redirect("/")
     if crud.is_user(email, password):
         session["email"] = email
         session["username"] = user.username
@@ -59,7 +55,6 @@ def user_profile():
     """Users profile info"""
 
     if "email" in session:
-        # user = crud.get_user(session["user_id"])
         return render_template("profile.html")
     else:
         flash("You need to login first!")
@@ -93,10 +88,6 @@ def new_user():
 @app.route('/new-account')
 def create_account_page():
     
-    # if "email" in session:
-    #     flash(f"You're already logged in! {session['email']}")
-    #     return redirect("/")
-    
     return render_template('new_account.html')
 
 @app.route('/all-users')
@@ -112,6 +103,7 @@ def favorites():
     if "email" in session:
         favorites = crud.get_favorites(session["email"])
         return render_template('favorites.html', favorites=favorites)
+    
     else:
         flash("You need to login first!")
         return redirect("/")
@@ -121,14 +113,15 @@ def add_favorites():
 
     if "email" in session:
         new_favorites = request.form.getlist('restaurant')
-        new_favorite_restaurants = crud.get_restaurants_by_name(new_favorites)
+        new_favorite_restaurants = crud.get_restaurants_by_id(new_favorites)
 
         crud.add_favorites(session["email"], new_favorite_restaurants)     
         favorites = crud.get_favorites(session["email"])
         db.session.add_all(favorites)
         db.session.commit()
         
-        return render_template('favorites.html', favorites=favorites)
+        return redirect('/favorites')
+    
     else:
         flash("You need to login first!")
         return redirect("/")
@@ -138,16 +131,37 @@ def remove_favorites():
 
     if "email" in session:
         remove_favorites = request.form.getlist('remove_favorite')
-        print(remove_favorites)
-
         crud.remove_favorites(session["email"], remove_favorites)     
-        favorites = crud.get_favorites(session["email"])
         
-        return render_template('favorites.html', favorites=favorites)
+        return redirect('/favorites')
+    
     else:
         flash("You need to login first!")
         return redirect("/")
+    
+@app.route('/logout')
+def logout():
 
+    if "email" in session:
+        session.clear()
+        db.session.commit()
+        flash("Successfully Logged out")
+        return redirect('/')
+    
+    else:
+        flash("You need to be logged in to do that!")
+        return redirect('/')
+
+@app.route('/trips')
+def trips():
+
+    if "email" in session:
+        trips = crud.get_trips(session["email"])
+        return render_template("trips.html", trips=trips)
+    
+    else:
+        flash("You need to be logged in to do that!")
+        return redirect('/')
 
 if __name__ == "__main__":
     connect_to_db(app)
