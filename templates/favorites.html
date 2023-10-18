@@ -10,13 +10,13 @@
                 <h1>All Favorites</h1>
                 <form action="/remove-favorites", method="POST">
                 {% for restaurant in favorites %}
-                    <p>
+                    <div>
                         <input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
                             <label for="remove_favorite{{ loop.index }}">
-                                <div>Username: {{ session["username"] }}</div>
-                                <div>Restaurant: {{ restaurant.restaurant_name }}</div>
+                                <!-- <div>Username: {{ session["username"] }}</div> -->
+                                <p>Restaurant: {{ restaurant.restaurant_name }}</p>
                             </label>
-                    </p>
+                        </div>
                 {% endfor %}
                         <input type="submit" value="Remove from Favorites">
                 </form>

@@ -11,18 +11,16 @@
                 <form action="/edit-trip", method="POST">
                         <!-- I have a triple nested for loop here, any ideas for more efficiency? -->
                         {% for trip in trips %}
-                        <p>
+                        <div>
                             <input type="radio" name="edit_trip" value="{{ trip.trip_id }}">
                                 <label for="edit_trip_id_{{ trip.trip_id }}">
                                     <h2>Trip Name: {{ trip.trip_name }}</h2>
+                                </label>
                                     <h3>Stop Restaurants</h3>
-                                    {% for stop in stops if stop.trip_id == trip.trip_id %}
-                                        {% for restaurant in restaurants if stop.restaurant_id == restaurant.restaurant_id %}
+                                        {% for restaurant in trip.restaurants %}
                                             <div>Stop Restaurant Name: {{ restaurant.restaurant_name }}</div>
                                         {% endfor %}
-                                    {% endfor %}
-                                </label>
-                        </p>
+                        </div>
                         {% endfor %}
                     <input type="submit" value="Edit Selected Trip">
                 </form>

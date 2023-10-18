@@ -153,11 +153,8 @@ def trips():
 
     if "email" in session:
         trips = crud.get_trips(session["email"])
-        stops = crud.get_stops(trips)
-        # is there a more efficient way to get the restaurant db to trips so I
-        # can use the id given by stops to pull a restaurant name?
-        restaurants = crud.get_stop_restaurants(stops)
-        return render_template("trips.html", trips=trips, stops=stops, restaurants=restaurants)
+
+        return render_template("trips.html", trips=trips)
     else:
         flash("You need to be logged in to do that!")
         return redirect('/')
@@ -205,6 +202,7 @@ def edit_trips_page():
         trips = crud.get_trips(session["email"])
         stops = crud.get_stops(trips)
         restaurants = crud.get_stop_restaurants(stops)
+
         return render_template('edit_trips.html', trips=trips, stops=stops, restaurants=restaurants)
     else:
         flash("You need to be logged in to do that!")
@@ -213,17 +211,92 @@ def edit_trips_page():
 @app.route('/edit-trip', methods=["POST"])
 def edit_trip():
 
-    # may be doing too much with attributes being sent to html. revisit in afternoon.
     if "email" in session:
-        session["trip_id"] = request.form.get("edit_trip")
+        session["trip_id"] = int(request.form.get("edit_trip"))
+        trip = crud.get_trip_by_id(session["trip_id"])
+        restaurants = crud.get_restaurants()
+        user = crud.get_user_by_email(session["email"])
+
+        return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user)
+    else:
+        flash("Trying Real Sneaky Beaky Like, ey? You need to be logged in to do that!")
+        return redirect('/')
+    
+@app.route('/edit-trip-remove-stops', methods=["POST"])
+def remove_stops():
+
+    if "email" in session:
+        remove_stop_restaurant_ids = request.form.getlist("remove_stops")
+        crud.remove_stops(remove_stop_restaurant_ids, session["trip_id"])
+
+        return redirect('/trips')
+    else:
+        flash("How'd you get there? You need to be logged in to do that!")
+        return redirect('/')
+    
+@app.route('/edit-trip-add-stops', methods=["POST"])
+def add_stops():
+
+    if "email" in session:
+        add_stop_restaurant_ids = request.form.getlist("add_stops")
+        add_stop_restaurants = crud.get_restaurants_by_id(add_stop_restaurant_ids)
+        crud.add_stops(add_stop_restaurants, session["trip_id"])
         trip = crud.get_trip_by_id(session["trip_id"])
         stops = crud.get_stops([trip])
-        restaurants = crud.get_stop_restaurants(stops)
-        favorites = crud.get_favorites(session["email"])
-        return render_template('edit_trip.html', trip=trip, stops=stops, restaurants=restaurants, favorites=favorites)
+        db.session.add_all(stops)
+        db.session.commit()
+
+        return redirect('/trips')
     else:
-        flash("You need to be logged in to do that!")
+        flash("Stop trying to h4ck the syst3m. You need to be logged in to access!")
         return redirect('/')
+    
+@app.route('/change-trip-name.json')
+def change_trip_name():
+
+    if "email" in session:
+        new_trip_name = request.args.get("newTripName")
+        trip = crud.get_trip_by_id(session["trip_id"])
+        trip.trip_name = new_trip_name
+        # do I have to commit this at all? How does the data work here?
+        db.session.commit()
+        
+        return new_trip_name
+    else:
+        flash("Like the great Dikembe Mutombo once said... No, no, no! You need to log in.")
+        return redirect('/')
+    
+@app.route('/change-trip-description.json')
+def change_trip_description():
+
+    if "email" in session:
+        new_trip_description = request.args.get("newTripDescription")
+        trip = crud.get_trip_by_id(session["trip_id"])
+        trip.trip_description = new_trip_description
+        # do I have to commit this at all? How does the data work here?
+        db.session.commit()
+        
+        return new_trip_description
+    else:
+        flash("Tim Duncan with the BLOCK! You need to be logged in to access this.")
+        return redirect('/')
+    
+@app.route('/change-username.json')
+def change_username():
+
+    if "email" in session:
+        print("we're in here")
+        new_username = request.args.get("newUsername")
+        user = crud.get_user_by_email(session["email"])
+        user.username = new_username
+        # do I have to commit this at all? How does the data work here?
+        db.session.commit()
+        
+        return new_username
+    else:
+        flash("Elliot for Three! You need to be logged in to access this.")
+        return redirect('/')
+
 
 if __name__ == "__main__":
     connect_to_db(app)
