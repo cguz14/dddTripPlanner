@@ -218,8 +218,26 @@ def edit_trip():
             trip = crud.get_trip_by_id(session["trip_id"])
             restaurants = crud.get_restaurants()
             user = crud.get_user_by_email(session["email"])
-            
-            return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user, MAPS_KEY=MAPS_KEY)
+
+            # Need to get map geolocation data sent for restaurants on map
+            res_list = crud.get_restaurants_by_id([1])
+            res = res_list[0]
+            address = res.restaurant_address
+            address = address.split()
+            param_address = address[0]
+            for word in address[1::]:
+                param_address += "%20"
+                param_address += word
+
+            url = f"https://maps.googleapis.com/maps/api/geocode/json?address={param_address}&key={MAPS_KEY}"
+
+            response = requests.get(url)
+            address_geocoded = response.json().get('results')[0].get('geometry').get('location')
+
+            pprint(address_geocoded)
+
+            # Do i need the user here with the trip? Any other vars I can eliminate?
+            return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user, MAPS_KEY=MAPS_KEY, pformat=pformat, address_geocoded=address_geocoded)
         else:
             flash("Please select a trip!")
             return redirect('/edit-trips')
