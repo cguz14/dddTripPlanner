@@ -143,6 +143,7 @@ def add_favorites(email, favorites):
             user.restaurants.append(favorite)
 
     # Do I need commits at any points like this because of the append?
+    db.session.commit()
 
 def remove_favorites(email, remove_favorites):
     """Remove checked restaurants from user's favorites"""
@@ -177,7 +178,11 @@ def add_stops(restaurants, trip_id):
         if restaurant not in trip.restaurants:
             trip.restaurants.append(restaurant)
 
+    db.session.commit()
+
 def add_trip_to_db(trip):
+    """Add a given trip to the db"""
+    
     db.session.add(trip)
     db.session.commit()
 

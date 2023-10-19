@@ -35,22 +35,3 @@ function newDescription(evt) {
 }
 
 document.querySelector('#change-trip-description-form').addEventListener('submit', newDescription);
-
-// function replaceUsername(results) {
-//     document.querySelector('#username-span').innerHTML = results;
-//     alert("Username Updated");
-// }
-
-// function newUsername(evt) {
-
-//     console.log("in the event listener")
-//     evt.preventDefault();
-//     const newUsername = document.querySelector('#new-username-field').value;
-
-//     fetch(`/change-username.json?newUsername=${newUsername}`)
-//         .then((response) => response.text())
-//         .then(replaceUsername);
-
-// }
-
-// document.querySelector('#change-username-form').addEventListener('submit', newUsername);

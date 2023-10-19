@@ -1,0 +1,5 @@
+/* Set map height explicitly, defines size of div element containing map */
+#edit-trip-page-map {
+    height: 300px;
+    width: 100%;
+}

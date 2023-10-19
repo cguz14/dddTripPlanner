@@ -14,6 +14,7 @@ import requests
 
 app = Flask(__name__)
 app.secret_key = os.environ['SECRETKEY']
+MAPS_KEY = os.environ['MAPS_KEY']
 app.jinja_env.undefined = StrictUndefined
 
 # Replace this with routes and view functions!
@@ -212,12 +213,16 @@ def edit_trips_page():
 def edit_trip():
 
     if "email" in session:
-        session["trip_id"] = int(request.form.get("edit_trip"))
-        trip = crud.get_trip_by_id(session["trip_id"])
-        restaurants = crud.get_restaurants()
-        user = crud.get_user_by_email(session["email"])
-
-        return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user)
+        if request.form.get("edit_trip"):
+            session["trip_id"] = int(request.form.get("edit_trip"))
+            trip = crud.get_trip_by_id(session["trip_id"])
+            restaurants = crud.get_restaurants()
+            user = crud.get_user_by_email(session["email"])
+            
+            return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user, MAPS_KEY=MAPS_KEY)
+        else:
+            flash("Please select a trip!")
+            return redirect('/edit-trips')
     else:
         flash("Trying Real Sneaky Beaky Like, ey? You need to be logged in to do that!")
         return redirect('/')
@@ -258,7 +263,6 @@ def change_trip_name():
         new_trip_name = request.args.get("newTripName")
         trip = crud.get_trip_by_id(session["trip_id"])
         trip.trip_name = new_trip_name
-        # do I have to commit this at all? How does the data work here?
         db.session.commit()
         
         return new_trip_name
@@ -273,7 +277,6 @@ def change_trip_description():
         new_trip_description = request.args.get("newTripDescription")
         trip = crud.get_trip_by_id(session["trip_id"])
         trip.trip_description = new_trip_description
-        # do I have to commit this at all? How does the data work here?
         db.session.commit()
         
         return new_trip_description
@@ -285,11 +288,10 @@ def change_trip_description():
 def change_username():
 
     if "email" in session:
-        print("we're in here")
         new_username = request.args.get("newUsername")
         user = crud.get_user_by_email(session["email"])
+        session["username"] = new_username
         user.username = new_username
-        # do I have to commit this at all? How does the data work here?
         db.session.commit()
         
         return new_username
