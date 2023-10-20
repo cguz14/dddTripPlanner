@@ -267,6 +267,15 @@ def get_longitude(address_geocoded):
 
     return address_geocoded['lng']
 
+#  Need to see if it's possible to create a crud that just updates the restaurants missing an img
+# def add_guy_default():
+#     restaurants = Restaurant.query.filter_by(restaurant_icon = None).all()
+
+#     for restaurant in restaurants:
+#         restaurant.restaurant_icon = "static/img/attachment-guys-diner-background.jpg"
+
+#     # db.session.commit()
+
 
 if __name__ == '__main__':
     from server import app

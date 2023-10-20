@@ -42,8 +42,10 @@ async function initMap() {
             lng: restaurant.restaurant_longitude,
         },
         title: `Restaurant: ${restaurant.restaurant_name}`,
+
+        // How do I handle cases where the img is null? Can I have a default image?
         icon: {
-            url: 'static/img/attachment-guys-diner-background.jpg',
+            url: `https:${restaurant.restaurant_icon}`,
             scaledSize: new google.maps.Size(50, 50),
         },
         map, // same as saying map: map
