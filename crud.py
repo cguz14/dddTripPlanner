@@ -235,7 +235,6 @@ def convert_address_to_geocode(address):
     MAPS_KEY = os.environ['MAPS_KEY']
 
     address = address.split()
-    print(address)
     param_address = address[0]
 
     for word in address[1:]:
@@ -247,15 +246,10 @@ def convert_address_to_geocode(address):
         else:
             param_address += word
 
-    print(param_address)
-
     url = f"https://maps.googleapis.com/maps/api/geocode/json?address={param_address}&key={MAPS_KEY}"
 
     response = requests.get(url)
-    print(response)
-    # Ugly way to retrieve specific value needed from json dict. Any other recommendations?
-    temp = response.json()
-    print(temp)
+    # Ugly way to retrieve specific value needed from json dict. Any other recommendations
     address_geocoded = response.json().get('results')[0].get('geometry').get('location')
 
     return address_geocoded

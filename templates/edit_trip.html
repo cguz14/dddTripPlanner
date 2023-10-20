@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}Edit Trip Page{% endblock %}
+{% block head %}<script type="module" src="static/js/maps_api.js"></script>{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -55,13 +56,7 @@
 
                 <div class="col">
 
-                    <!-- Information for markers, likely need other way to pull info from server -->
-                    {% for restaurant in trip.restaurants %}
-                        <span id="lat">{{ restaurant.restaurant_latitude }}</span>
-                        <span id="lng">{{ restaurant.restaurant_longitude }}</span>
-                    {% endfor %}
-
-                    <h3>Test Map</h3>
+                    <h3>Map of Stops on the "<span id="trip-map-span">{{ trip.trip_name }}</span>" Trip!</h3>
 
                     <!-- The div element for the map -->
                     <div id="edit-trip-page-map"></div>

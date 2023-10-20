@@ -31,7 +31,7 @@ def show_restaurants():
 
     restaurants = crud.get_restaurants()
 
-    return render_template('restaurants.html', restaurants=restaurants)
+    return render_template('restaurants.html', restaurants=restaurants, MAPS_KEY=MAPS_KEY)
 
 @app.route('/login', methods=["POST"])
 def user_login():
@@ -320,6 +320,29 @@ def restaurant_info():
         })
 
     return jsonify(restaurants)
+
+@app.route('/api/stops')
+def stop_info():
+    """Return restaurant info from db in JSON form for Map API and other JS needs"""
+    
+    stops = []
+    trip = crud.get_trip_by_id(session["trip_id"])
+
+    for restaurant in trip.restaurants:
+        stops.append({
+            "restaurant_id" : restaurant.restaurant_id,
+            "restaurant_name" : restaurant.restaurant_name,
+            "restaurant_icon" : restaurant.restaurant_icon,
+            "restaurant_description" : restaurant.restaurant_description,
+            "restaurant_address" : restaurant.restaurant_address,
+            "restaurant_latitude" : restaurant.restaurant_latitude,
+            "restaurant_longitude" : restaurant.restaurant_longitude,
+            "restaurant_state" : restaurant.restaurant_state,
+            "food_type" : restaurant.food_type,
+            "episode_info" : restaurant.episode_info
+        })
+
+    return jsonify(stops)
 
 
 if __name__ == "__main__":

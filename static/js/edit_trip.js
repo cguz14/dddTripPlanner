@@ -2,6 +2,7 @@
 
 function replaceName(results) {
     document.querySelector('#trip-name-span').innerHTML = results;
+    document.querySelector('#trip-map-span').innerHTML = results;
     alert("Trip Name Updated");
 }
 

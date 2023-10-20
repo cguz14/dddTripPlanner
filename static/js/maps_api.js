@@ -1,30 +1,12 @@
 'use strict';
 
-// let map;
-
-// async function initMap() {
-//   const { Map } = await google.maps.importLibrary("maps");
-
-//   map = new Map(document.getElementById("edit-trip-page-map"), {
-//     center: { lat: -34.397, lng: 150.644 },
-//     zoom: 8,
-//   });
-// }
-
-// initMap();
-
 // Initialize and add the map
 let map;
 
 async function initMap() {
-  // causes issue if there is no value to grab. Need to ensure there are protections for empty trips
-  const lati = document.getElementById("lat").innerHTML;
-//   used different selector for sake of testing if they did same thing
-  const lngi = document.querySelector("#lng").innerHTML;
-
   
-  const position = { lat: parseFloat(lati), lng: parseFloat(lngi) };
-
+  // Start map near middle of US
+  const position = { lat: 40, lng: -100 };
 
   // Request needed libraries.
   //@ts-ignore
@@ -33,17 +15,53 @@ async function initMap() {
 
   // The map
   map = new Map(document.getElementById("edit-trip-page-map"), {
-    zoom: 5,
+    zoom: 4,
     center: position,
     mapId: "DEMO_MAP_ID",
   });
 
-  // The marker
-  const marker = new AdvancedMarkerElement({
-    map: map,
-    position: position,
-    title: "Test Restaurant",
-  });
+    const stopInfo = new google.maps.InfoWindow();
+
+    fetch('/api/stops')
+    .then((response) => response.json())
+    .then((stops) => {
+    for (const stop of stops) {
+        // Define the content of the infoWindow
+        const stopInfoContent = `
+        <div>
+        <ul class="stop-info">
+            <li><b>Restaurant Name: </b>${stop.restaurant_name}</li>
+            <li><b>Restaurant Address: </b>${stop.restaurant_address}</li>
+        </ul>
+        </div>
+    `;
+
+        const stopMarker = new google.maps.Marker({
+        position: {
+            lat: stop.restaurant_latitude,
+            lng: stop.restaurant_longitude,
+        },
+        title: `Restaurant: ${stop.restaurant_name}`,
+        icon: {
+            url: 'static/img/attachment-guys-diner-background.jpg',
+            scaledSize: new google.maps.Size(50, 50),
+        },
+        map, // same as saying map: map
+        });
+
+        stopMarker.addListener('click', () => {
+        stopInfo.close();
+        stopInfo.setContent(stopInfoContent);
+        stopInfo.open(map, stopMarker);
+        });
+    }
+    })
+    .catch(() => {
+    alert(`
+    We were unable to retrieve Stop data!!!
+    `);
+    });
+
 }
 
 initMap();
