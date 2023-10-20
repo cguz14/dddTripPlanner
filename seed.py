@@ -63,7 +63,7 @@ model.db.session.commit()
 
 
 n=0
-while n < 86:
+while n < 1:
 
     url = f"https://www.foodnetwork.com/restaurants/shows/diners-drive-ins-and-dives/a-z/p/{n+1}"
 
@@ -82,6 +82,9 @@ while n < 86:
         name = restaurant.find(class_="m-MediaBlock__a-HeadlineText").get_text()
         address = restaurant.find(class_="m-Info__a-Address").get_text()
         description = restaurant.find(class_="m-MediaBlock__a-Description").get_text()
+        address_geocoded = crud.convert_address_to_geocode(address)
+        restaurant_latitude = crud.get_latitude(address_geocoded)
+        restaurant_longitude = crud.get_longitude(address_geocoded)
         if restaurant.find(class_="m-MediaBlock__a-Image"):
             img = restaurant.find(class_="m-MediaBlock__a-Image").get("src")
         else:
@@ -92,6 +95,8 @@ while n < 86:
             f"{img}",
             f"{description}",
             f"{address}",
+            restaurant_latitude,
+            restaurant_longitude,
             f"testrestaurant_state{n}",
             f"testfood_type{n}",
             f"testepisode_info{n}"

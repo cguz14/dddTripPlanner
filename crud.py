@@ -1,6 +1,10 @@
 from model import connect_to_db, db, Restaurant, User, UsersBadge, Badge, Rating, Favorite, Trip, Stop
 
 import requests
+import os
+import pprint
+import time
+
 from bs4 import BeautifulSoup as bs
 
 def create_user(username, email, password, user_icon):
@@ -60,13 +64,15 @@ def create_trip(trip_name, trip_description, user_id):
 
 
 def create_restaurant(restaurant_name, restaurant_icon, restaurant_description,
-        restaurant_address, restaurant_state, food_type, episode_info):
+        restaurant_address, restaurant_latitude, restaurant_longitude, restaurant_state, food_type, episode_info):
         
         restaurant = Restaurant(
             restaurant_name = restaurant_name,
             restaurant_icon = restaurant_icon,
             restaurant_description = restaurant_description,
             restaurant_address = restaurant_address,
+            restaurant_latitude = restaurant_latitude,
+            restaurant_longitude = restaurant_longitude,
             restaurant_state = restaurant_state,
             food_type = food_type,
             episode_info = episode_info
@@ -223,6 +229,44 @@ def remove_stops(restaurant_ids, trip_id):
         db.session.delete(removeobj)
 
     db.session.commit()
+
+def convert_address_to_geocode(address):
+
+    MAPS_KEY = os.environ['MAPS_KEY']
+
+    address = address.split()
+    print(address)
+    param_address = address[0]
+
+    for word in address[1:]:
+        param_address += "%20"
+
+        if "#" in word:
+            encoded_word = f"%25{word[1:]}"            
+            param_address += encoded_word
+        else:
+            param_address += word
+
+    print(param_address)
+
+    url = f"https://maps.googleapis.com/maps/api/geocode/json?address={param_address}&key={MAPS_KEY}"
+
+    response = requests.get(url)
+    print(response)
+    # Ugly way to retrieve specific value needed from json dict. Any other recommendations?
+    temp = response.json()
+    print(temp)
+    address_geocoded = response.json().get('results')[0].get('geometry').get('location')
+
+    return address_geocoded
+
+def get_latitude(address_geocoded):
+
+    return address_geocoded['lat']
+
+def get_longitude(address_geocoded):
+
+    return address_geocoded['lng']
 
 
 if __name__ == '__main__':

@@ -94,6 +94,8 @@ class Restaurant(db.Model):
     restaurant_icon = db.Column(db.Text, nullable = True)
     restaurant_description = db.Column(db.Text)
     restaurant_address = db.Column(db.String(250))
+    restaurant_latitude = db.Column(db.Float)
+    restaurant_longitude = db.Column(db.Float)
     restaurant_state = db.Column(db.String(25))
     food_type = db.Column(db.String(25))
     episode_info = db.Column(db.String(50))

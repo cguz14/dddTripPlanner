@@ -1,6 +1,6 @@
 """Server for movie ratings app."""
 
-from flask import Flask, render_template, request, flash, session, redirect
+from flask import Flask, render_template, request, flash, session, redirect, jsonify
 import crud
 from model import connect_to_db, db, Restaurant, User, UsersBadge, Badge, Rating, Favorite, Trip, Stop
 from pprint import pformat, pprint
@@ -219,25 +219,7 @@ def edit_trip():
             restaurants = crud.get_restaurants()
             user = crud.get_user_by_email(session["email"])
 
-            # Need to get map geolocation data sent for restaurants on map
-            res_list = crud.get_restaurants_by_id([1])
-            res = res_list[0]
-            address = res.restaurant_address
-            address = address.split()
-            param_address = address[0]
-            for word in address[1::]:
-                param_address += "%20"
-                param_address += word
-
-            url = f"https://maps.googleapis.com/maps/api/geocode/json?address={param_address}&key={MAPS_KEY}"
-
-            response = requests.get(url)
-            address_geocoded = response.json().get('results')[0].get('geometry').get('location')
-
-            pprint(address_geocoded)
-
-            # Do i need the user here with the trip? Any other vars I can eliminate?
-            return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user, MAPS_KEY=MAPS_KEY, pformat=pformat, address_geocoded=address_geocoded)
+            return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user, MAPS_KEY=MAPS_KEY, pformat=pformat)
         else:
             flash("Please select a trip!")
             return redirect('/edit-trips')
@@ -316,6 +298,28 @@ def change_username():
     else:
         flash("Elliot for Three! You need to be logged in to access this.")
         return redirect('/')
+    
+@app.route('/api/restaurants')
+def restaurant_info():
+    """Return restaurant info from db in JSON form for Map API and other JS needs"""
+    
+    restaurants = []
+
+    for restaurant in crud.get_restaurants():
+        restaurants.append({
+            "restaurant_id" : restaurant.restaurant_id,
+            "restaurant_name" : restaurant.restaurant_name,
+            "restaurant_icon" : restaurant.restaurant_icon,
+            "restaurant_description" : restaurant.restaurant_description,
+            "restaurant_address" : restaurant.restaurant_address,
+            "restaurant_latitude" : restaurant.restaurant_latitude,
+            "restaurant_longitude" : restaurant.restaurant_longitude,
+            "restaurant_state" : restaurant.restaurant_state,
+            "food_type" : restaurant.food_type,
+            "episode_info" : restaurant.episode_info
+        })
+
+    return jsonify(restaurants)
 
 
 if __name__ == "__main__":
