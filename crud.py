@@ -234,17 +234,22 @@ def convert_address_to_geocode(address):
 
     MAPS_KEY = os.environ['MAPS_KEY']
 
-    address = address.split()
-    param_address = address[0]
+    # address = address.split()
 
-    for word in address[1:]:
-        param_address += "%20"
+    param_address = ""
 
-        if "#" in word:
-            encoded_word = f"%25{word[1:]}"            
-            param_address += encoded_word
+    for char in address:
+        if char == "#":
+            encoded_char = f"%25"            
+            param_address += encoded_char
+        elif char == "/":
+            encoded_char = f"%2F"            
+            param_address += encoded_char
+        elif char == " ":
+            encoded_char = f"%20"
+            param_address += encoded_char
         else:
-            param_address += word
+            param_address += char
 
     url = f"https://maps.googleapis.com/maps/api/geocode/json?address={param_address}&key={MAPS_KEY}"
 

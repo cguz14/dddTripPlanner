@@ -63,7 +63,7 @@ model.db.session.commit()
 
 
 n=0
-while n < 1:
+while n < 86:
 
     url = f"https://www.foodnetwork.com/restaurants/shows/diners-drive-ins-and-dives/a-z/p/{n+1}"
 
@@ -101,6 +101,8 @@ while n < 1:
             f"testfood_type{n}",
             f"testepisode_info{n}"
         )
+
+        print(name)
 
         can_add=True
         old_address = ""
