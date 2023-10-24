@@ -16,8 +16,8 @@
         <div id="restaurants-page-map"></div>
 
         <!-- prettier-ignore -->
-        <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-            ({key: `{{ MAPS_KEY }}`, v: "weekly"});</script>
+        <!-- <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+            ({key: `{{ MAPS_KEY }}`, v: "weekly"});</script> -->
         
       </div>
 
@@ -26,11 +26,16 @@
         {% for restaurant in restaurants %}
           <input type="checkbox" name="restaurant" value="{{ restaurant.restaurant_id }}" class="form-check-input">
             <label for="restaurant{{ loop.index }}" class="form-check-label">
-              <div><b>Restaurant: {{ restaurant.restaurant_name }}</b></div>
+              <div><b>Restaurant: <span id="all-fav-name-{{ loop.index }}">{{ restaurant.restaurant_name }}</span></b></div>
+              <span id="favorites-thumbs">
+                <button class="btn" id="all-green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                <button class="btn" id="all-red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+              </span>
+              <span id="all-fav-id-{{ loop.index }}" class="invisible">{{ restaurant.restaurant_id }}</span>
             </label>
               <div>Description: {{ restaurant.restaurant_description }}</div>
               <div>Address: {{ restaurant.restaurant_address }}</div>
-              <div>Img: {{ restaurant.restaurant_icon }}</div>
+              <!-- <div>Img: {{ restaurant.restaurant_icon }}</div> -->
         {% endfor %}
       </div>
         <input type="submit" value="Add to Favorites">
@@ -49,4 +54,7 @@
     </div>
   </div>
 </div>
+
+<script type="module" src="static/js/restaurants.js"></script>
+
 {% endblock %}

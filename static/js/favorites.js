@@ -21,7 +21,6 @@ for (let i=0; i < btn1s.length; i++) {
         restaurantName = restaurantName.replaceAll('/', '%26');
         restaurantName = restaurantName.replaceAll('!', '%21');
         console.log(restaurantName)
-
         evt.preventDefault();
         if (btn2.classList.contains('red')) {
         btn2.classList.remove('red');
