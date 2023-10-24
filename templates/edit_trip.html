@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block title %}Edit Trip Page{% endblock %}
-{% block head %}<script type="module" src="static/js/maps_api.js"></script>{% endblock %}
+{% block head %}
+<script type="module" src="static/js/maps_api.js"></script>
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -67,17 +69,19 @@
                     
                 </div>
 
-                <form action="/edit-trip-add-stops", method="POST">
-                    {% for restaurant in restaurants %}
-                    <div>
-                        <input type="checkbox" name="add_stops" value="{{ restaurant.restaurant_id }}">
-                        <label for="restaurant{{ loop.index }}">
-                            <div>Restaurant {{ restaurant.restaurant_id }}: {{ restaurant.restaurant_name }}; {{ restaurant.restaurant_address }} </div>
-                        </label>
-                    </div>
-                    {% endfor %}
+                <div class="form-check restaurant-list">
+                    <form action="/edit-trip-add-stops", method="POST">
+                        {% for restaurant in restaurants %}
+                            <input type="checkbox" name="add_stops" value="{{ restaurant.restaurant_id }}" class="form-check-input">
+                                <div>
+                                    <label for="restaurant{{ loop.index }}" class="form-check-label">
+                                        <div><b>{{ restaurant.restaurant_name }}.</b> Address: {{ restaurant.restaurant_address }} </div>
+                                    </label>
+                                </div>
+                        {% endfor %}
+                </div>
                     <input type="submit" value="Add Stop(s) to Trip">
-                </form>
+                    </form>
                 
             </div>
         </div>
@@ -88,7 +92,7 @@
     </div>
 </div>
 
+<script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
 <script src="/static/js/edit_trip.js"></script>
-
 
 {% endblock %}

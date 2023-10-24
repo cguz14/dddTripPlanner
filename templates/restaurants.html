@@ -21,33 +21,28 @@
         
       </div>
 
-      <div id="restaurantList">
+      <div class="form-check restaurant-list">
         <form action="/add-favorites", method="POST">
         {% for restaurant in restaurants %}
-          <input type="checkbox" name="restaurant" value="{{ restaurant.restaurant_id }}">
-            <label for="restaurant{{ loop.index }}">
-              <p>
-                <div>Restaurant: {{ restaurant.restaurant_name }}</div>
-                <div>Description: {{ restaurant.restaurant_description }}</div>
-                <div>Address: {{ restaurant.restaurant_address }}</div>
-                <div>Img: {{ restaurant.restaurant_icon }}</div>
-              </p>
+          <input type="checkbox" name="restaurant" value="{{ restaurant.restaurant_id }}" class="form-check-input">
+            <label for="restaurant{{ loop.index }}" class="form-check-label">
+              <div><b>Restaurant: {{ restaurant.restaurant_name }}</b></div>
             </label>
-          <!-- {% if loop.index%15 == 0 %}
-            <div id="return_home_from_all">    
-              <form action="/" method="get">
-                  <button type="submit" class="return_home_from_all_button">
-                    Return to home page
-                  </button>
-              </form>    
-            </div>
-          {% endif %} -->
-
+              <div>Description: {{ restaurant.restaurant_description }}</div>
+              <div>Address: {{ restaurant.restaurant_address }}</div>
+              <div>Img: {{ restaurant.restaurant_icon }}</div>
         {% endfor %}
-        <input type="submit" value="Add to Favorites">
-        </form>
       </div>
-    </div>
+        <input type="submit" value="Add to Favorites">
+      </form>
+
+      <div id="return-home-from-all">    
+        <form action="/" method="get">
+            <button type="submit" class="custom-button-defaults btn btn-primary">
+              Return to home page
+            </button>
+        </form>    
+      </div>
 
     <div class="col">
       <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">

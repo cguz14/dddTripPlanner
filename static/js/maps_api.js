@@ -1,3 +1,4 @@
+
 'use strict';
 
 // Initialize and add the map
@@ -21,7 +22,8 @@ async function initMap() {
   });
 
     const stopInfo = new google.maps.InfoWindow();
-
+    const markers=[];
+    
     fetch('/api/stops')
     .then((response) => response.json())
     .then((stops) => {
@@ -36,6 +38,12 @@ async function initMap() {
         </div>
     `;
 
+        let img = `https:${stop.restaurant_icon}`;
+
+        if (stop.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
+            img = stop.restaurant_icon;
+        }
+
         const stopMarker = new google.maps.Marker({
         position: {
             lat: stop.restaurant_latitude,
@@ -43,12 +51,13 @@ async function initMap() {
         },
         title: `Restaurant: ${stop.restaurant_name}`,
         icon: {
-            url: 'static/img/attachment-guys-diner-background.jpg',
-            scaledSize: new google.maps.Size(50, 50),
+            url: img,
+            scaledSize: new google.maps.Size(60, 60),
         },
         map, // same as saying map: map
         });
-
+        
+        markers.push(stopMarker)
         stopMarker.addListener('click', () => {
         stopInfo.close();
         stopInfo.setContent(stopInfoContent);
@@ -61,6 +70,10 @@ async function initMap() {
     We were unable to retrieve Stop data!!!
     `);
     });
+
+    // console.log(markers) Maybe the Advanced Marker is needed to cluster?
+    // const markerCluster = new markerClusterer.MarkerClusterer({ markers, map });
+    // console.log(markerCluster)
 
 }
 

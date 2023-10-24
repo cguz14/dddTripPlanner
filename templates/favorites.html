@@ -14,13 +14,30 @@
                         <input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
                             <label for="remove_favorite{{ loop.index }}">
                                 <!-- <div>Username: {{ session["username"] }}</div> -->
-                                <p>Restaurant: {{ restaurant.restaurant_name }}</p>
+                                <p>Restaurant: <span id ="fav-name-{{ loop.index }}">{{ restaurant.restaurant_name }}</span> 
+                                    <span id="favorites-thumbs">
+                                        <!-- Use jinja here to have the class start with the correct color if restaurant already has rating applied -->
+                                        <!-- if restaurant.restaurant_id in ratings_restaurant_ids 
+                                                    then get -->
+                                        <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                                        <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                                    </span>
+                                    <!-- hidden restaurant id to pull for js use. Will find better way when styling -->
+                                    <span id="fav-id-{{ loop.index }}" class="invisible">{{ restaurant.restaurant_id }}</span>
+                                </p>
                             </label>
                         </div>
                 {% endfor %}
                         <input type="submit" value="Remove from Favorites">
                 </form>
             </div>
+
+            <!-- Place test thumb here -->
+            <!-- <span id="favorites-thumbs">
+                <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+            </span> -->
+
             <div id="return_profile_from_favorites_">    
                 <form action="/profile" method="get">
                     <button type="submit" class="return_profile_from_favorites_button">
@@ -35,4 +52,7 @@
         </div>
     </div>
 </div>
+
+<script type="module" src="static/js/favorites.js"></script>
+
 {% endblock %}

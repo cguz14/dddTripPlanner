@@ -23,6 +23,9 @@ app.jinja_env.undefined = StrictUndefined
 def homepage():
     """Show homepage"""
 
+    # The way you did this was dirty, ask if there are more kosher ways to perform this update without seed
+    # crud.add_guy_default()
+
     return render_template('homepage.html')
 
 @app.route('/restaurants')
@@ -39,6 +42,7 @@ def user_login():
 
     email = request.form.get("email")
     password = request.form.get("password")
+
     user = crud.get_user_by_email(email)
 
     if crud.is_user(email, password):
@@ -74,6 +78,9 @@ def new_user():
     if crud.email_exists(email):
         flash("Email already exists, please use another email")
         return redirect("/new-account")
+    elif username == "" or password == "" or email == "":
+        flash("Please enter account information")
+        return redirect("/new-account")
     else:
         user = crud.create_user(username, email, password, user_icon)
         db.session.add(user)
@@ -103,7 +110,10 @@ def favorites():
 
     if "email" in session:
         favorites = crud.get_favorites(session["email"])
-        return render_template('favorites.html', favorites=favorites)
+        user = crud.get_user_by_email(session['email'])
+        ratings = crud.get_ratings(user)
+        rating_restaurant_ids = crud.get_rating_restaurant_ids(ratings)
+        return render_template('favorites.html', favorites=favorites, rating_restaurant_ids=rating_restaurant_ids)
     else:
         flash("You need to login first!")
         return redirect("/")
@@ -201,10 +211,12 @@ def edit_trips_page():
 
     if "email" in session:
         trips = crud.get_trips(session["email"])
-        stops = crud.get_stops(trips)
-        restaurants = crud.get_stop_restaurants(stops)
 
-        return render_template('edit_trips.html', trips=trips, stops=stops, restaurants=restaurants)
+        if trips:
+            return render_template('edit_trips.html', trips=trips)
+        else:
+            flash('You have no trips to edit! Use "Create new trip" button to start your journey!')
+            return redirect('/trips')
     else:
         flash("You need to be logged in to do that!")
         return redirect('/')
@@ -289,6 +301,10 @@ def change_username():
 
     if "email" in session:
         new_username = request.args.get("newUsername")
+        if new_username == "":
+            flash("Please enter a username")
+            return redirect('/profile')
+        
         user = crud.get_user_by_email(session["email"])
         session["username"] = new_username
         user.username = new_username
@@ -343,6 +359,74 @@ def stop_info():
         })
 
     return jsonify(stops)
+
+@app.route('/api/favorites')
+def favorite_info():
+    """Return restaurant info from db in JSON form for Map API and other JS needs"""
+    
+    favorites = []
+
+    for restaurant in crud.get_favorites(session['email']):
+        favorites.append({
+            "restaurant_id" : restaurant.restaurant_id,
+            "restaurant_name" : restaurant.restaurant_name,
+            "restaurant_icon" : restaurant.restaurant_icon,
+            "restaurant_description" : restaurant.restaurant_description,
+            "restaurant_address" : restaurant.restaurant_address,
+            "restaurant_latitude" : restaurant.restaurant_latitude,
+            "restaurant_longitude" : restaurant.restaurant_longitude,
+            "restaurant_state" : restaurant.restaurant_state,
+            "food_type" : restaurant.food_type,
+            "episode_info" : restaurant.episode_info
+        })
+
+    return jsonify(favorites)
+
+@app.route("/change-likes.json")
+def change_likes():
+    
+    if "email" in session:        
+        marked_restaurant = request.args.get("restaurantName")
+        liked = request.args.get("liked")
+        if liked == "true":
+            liked = True
+        else:
+            liked = False
+
+        print(marked_restaurant)
+        restaurant = crud.get_restaurant_by_name(marked_restaurant)
+        user = crud.get_user_by_email(session["email"])
+        crud.change_like(liked, user, restaurant)
+
+        return "app route completed"
+        # getting restaurant name, need id and userid for new favorite.
+        # restaurant_id = crud.get 
+        # need to create favorite if user likes/dislikes and apply t/f depending
+        # what if anything needs to be returned to the js/html side?
+    else:
+        flash("You must construct additional pylons! You need to be logged in to access this.")
+        return redirect('/')
+    
+@app.route('/api/ratings.json')
+def rating_info():
+    """Return rating info from db in JSON form for like/dislike javascript"""
+    
+    sent_ratings = []
+    print('made it here')
+    user = crud.get_user_by_email(session["email"])
+    # favorites = crud.get_favorites(session["email"])
+    ratings = crud.get_ratings(user)
+
+    for rating in ratings:
+        sent_ratings.append({
+            "rating_id" : rating.rating_id,
+            "thumbs_up" : rating.thumbs_up,
+            "rating_icon" : rating.rating_icon,
+            "user_id" : rating.user_id,
+            "restaurant_id" : rating.restaurant_id,
+        })
+
+    return jsonify(sent_ratings)
 
 
 if __name__ == "__main__":

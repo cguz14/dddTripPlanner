@@ -8,3 +8,21 @@
     height: 500px;
     width: 100%;
 }
+
+.restaurant-list {
+    height: 700px;
+    width: 100%;
+    overflow: scroll;
+}
+
+.custom-button-defaults {
+    width: 100%
+}
+
+.green{
+    color: green;
+}
+  
+.red{
+    color: red;
+}

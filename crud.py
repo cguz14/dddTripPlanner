@@ -20,7 +20,7 @@ def create_user(username, email, password, user_icon):
 
 def get_user_by_email(email):
 
-    user = User.query.filter_by(email=email).one()
+    user = User.query.filter_by(email=email).first()
     
     return user
 
@@ -268,14 +268,79 @@ def get_longitude(address_geocoded):
     return address_geocoded['lng']
 
 #  Need to see if it's possible to create a crud that just updates the restaurants missing an img
+# Figured it out by adding crud function to homepage so a refresh ran the function
+#       There's surely a better way that I just didn't consider. Ask about it.
 # def add_guy_default():
-#     restaurants = Restaurant.query.filter_by(restaurant_icon = None).all()
+#     restaurants = Restaurant.query.filter_by(restaurant_icon = "static/img/attachment-guys-diner-background.jpg").all()
 
 #     for restaurant in restaurants:
-#         restaurant.restaurant_icon = "static/img/attachment-guys-diner-background.jpg"
+#         # restaurant.restaurant_icon = "static/img/attachment-guys-diner-background.jpg"
+#         print(restaurant)
+#         print(restaurant.restaurant_icon)
+        
+#         # restaurant.restaurant_icon = "static/img/attachment-guys-diner-background.jpg"
 
 #     # db.session.commit()
 
+# def remove_user():
+#     users = get_users()
+
+#     if session["email"]
+
+def change_like(liked, user, restaurant):
+    
+    if rating_exists(user, restaurant):
+        rating = Rating.query.filter_by(user_id = user.user_id, restaurant_id = restaurant.restaurant_id).one()
+        old_rate = rating.thumbs_up
+        remove_rating(user, restaurant)
+        # This runs if there is a change in the rating from up to down or vice-versa
+        if old_rate != liked:
+            add_rating(liked, user, restaurant)
+    else:
+        add_rating(liked, user, restaurant)
+
+    # return new_rating
+
+def add_rating(liked, user, restaurant):
+    new_rating = create_rating(liked, "imgNotBeingUsed", user.user_id, restaurant.restaurant_id)
+
+    db.session.add(new_rating)
+    db.session.commit()
+
+def remove_rating(user, restaurant):
+
+    rating = Rating.query.filter_by(user_id = user.user_id, restaurant_id = restaurant.restaurant_id).one()
+
+    db.session.delete(rating)
+    db.session.commit()
+
+def rating_exists(user, restaurant):
+
+    rating = Rating.query.filter_by(user_id = user.user_id, restaurant_id = restaurant.restaurant_id).first()
+
+    if rating:
+        return True
+    
+    return False
+
+def get_ratings(user):
+
+    return user.ratings
+
+def get_rating_restaurant_ids(ratings):
+
+    restaurant_ids = []
+
+    for rating in ratings:
+        restaurant_ids.append(rating.restaurant_id)
+
+    return restaurant_ids
+
+def get_restaurant_by_name(restaurant_name):
+
+    restaurant = Restaurant.query.filter_by(restaurant_name = restaurant_name).one()
+
+    return restaurant
 
 if __name__ == '__main__':
     from server import app

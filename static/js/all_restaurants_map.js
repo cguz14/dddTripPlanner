@@ -36,6 +36,13 @@ async function initMap() {
         </div>
     `;
 
+        let img = `https:${restaurant.restaurant_icon}`;
+
+        if (restaurant.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
+            img = restaurant.restaurant_icon;
+        }
+
+
         const restaurantMarker = new google.maps.Marker({
         position: {
             lat: restaurant.restaurant_latitude,
@@ -45,8 +52,8 @@ async function initMap() {
 
         // How do I handle cases where the img is null? Can I have a default image?
         icon: {
-            url: `https:${restaurant.restaurant_icon}`,
-            scaledSize: new google.maps.Size(50, 50),
+            url: img,
+            scaledSize: new google.maps.Size(80, 80),
         },
         map, // same as saying map: map
         });

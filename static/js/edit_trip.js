@@ -9,7 +9,7 @@ function replaceName(results) {
 function newName(evt) {
 
     evt.preventDefault();
-    const newTripName = document.querySelector('#new-trip-name-field').value;
+    const newTripName = document.getElementById('#new-trip-name-field').value;
 
     fetch(`/change-trip-name.json?newTripName=${newTripName}`)
         .then((response) => response.text())

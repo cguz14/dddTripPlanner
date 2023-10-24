@@ -80,7 +80,7 @@ class Rating(db.Model):
     restaurant = db.relationship("Restaurant", back_populates = "ratings")
 
     def __repr__(self):
-        return f'<Rating rating_id={self.rating_id} user={self.user_id} thumbUp={self.thumbs_up}>'
+        return f'<Rating_id={self.rating_id} user={self.user_id} restaurant={self.restaurant_id} thumbUp={self.thumbs_up}>'
     
 
 class Restaurant(db.Model):
@@ -94,6 +94,7 @@ class Restaurant(db.Model):
     restaurant_icon = db.Column(db.Text, nullable = True)
     restaurant_description = db.Column(db.Text)
     restaurant_address = db.Column(db.String(250))
+    # Consider saving full geocoded address so you're able to access other details if necessary in future without more seeds.
     restaurant_latitude = db.Column(db.Float)
     restaurant_longitude = db.Column(db.Float)
     restaurant_state = db.Column(db.String(25))
