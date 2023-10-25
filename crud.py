@@ -86,7 +86,7 @@ def get_restaurants():
     return Restaurant.query.all()
 
 def get_restaurants_by_id(restaurant_ids):
-    """Return Restaurant object by restaurant_id"""
+    """Return Restaurants list by restaurant_ids"""
 
     restaurants = []
 
@@ -95,6 +95,11 @@ def get_restaurants_by_id(restaurant_ids):
         restaurants.append(restaurant)
 
     return restaurants
+
+def get_one_restaurant_by_id(restaurant_id):
+    """Return Restaurant object by restaurant_id"""
+
+    return Restaurant.query.filter_by(restaurant_id=restaurant_id).one()
 
 def is_user(email, password):
     """Return True/False if user/password combo in userDB. Confirms username and
@@ -267,56 +272,34 @@ def get_longitude(address_geocoded):
 
     return address_geocoded['lng']
 
-#  Need to see if it's possible to create a crud that just updates the restaurants missing an img
-# Figured it out by adding crud function to homepage so a refresh ran the function
-#       There's surely a better way that I just didn't consider. Ask about it.
-# def add_guy_default():
-#     restaurants = Restaurant.query.filter_by(restaurant_icon = "static/img/attachment-guys-diner-background.jpg").all()
-
-#     for restaurant in restaurants:
-#         # restaurant.restaurant_icon = "static/img/attachment-guys-diner-background.jpg"
-#         print(restaurant)
-#         print(restaurant.restaurant_icon)
-        
-#         # restaurant.restaurant_icon = "static/img/attachment-guys-diner-background.jpg"
-
-#     # db.session.commit()
-
-# def remove_user():
-#     users = get_users()
-
-#     if session["email"]
-
-def change_like(liked, user, restaurant):
+def change_like(liked, user, restaurant_id):
     
-    if rating_exists(user, restaurant):
-        rating = Rating.query.filter_by(user_id = user.user_id, restaurant_id = restaurant.restaurant_id).one()
+    if rating_exists(user, restaurant_id):
+        rating = Rating.query.filter_by(user_id = user.user_id, restaurant_id = restaurant_id).one()
         old_rate = rating.thumbs_up
-        remove_rating(user, restaurant)
+        remove_rating(user, restaurant_id)
         # This runs if there is a change in the rating from up to down or vice-versa
         if old_rate != liked:
-            add_rating(liked, user, restaurant)
+            add_rating(liked, user, restaurant_id)
     else:
-        add_rating(liked, user, restaurant)
+        add_rating(liked, user, restaurant_id)
 
-    # return new_rating
-
-def add_rating(liked, user, restaurant):
-    new_rating = create_rating(liked, "imgNotBeingUsed", user.user_id, restaurant.restaurant_id)
+def add_rating(liked, user, restaurant_id):
+    new_rating = create_rating(liked, "imgNotBeingUsed", user.user_id, restaurant_id)
 
     db.session.add(new_rating)
     db.session.commit()
 
-def remove_rating(user, restaurant):
+def remove_rating(user, restaurant_id):
 
-    rating = Rating.query.filter_by(user_id = user.user_id, restaurant_id = restaurant.restaurant_id).one()
+    rating = Rating.query.filter_by(user_id = user.user_id, restaurant_id = restaurant_id).one()
 
     db.session.delete(rating)
     db.session.commit()
 
-def rating_exists(user, restaurant):
+def rating_exists(user, restaurant_id):
 
-    rating = Rating.query.filter_by(user_id = user.user_id, restaurant_id = restaurant.restaurant_id).first()
+    rating = Rating.query.filter_by(user_id = user.user_id, restaurant_id = restaurant_id).first()
 
     if rating:
         return True
@@ -336,11 +319,74 @@ def get_rating_restaurant_ids(ratings):
 
     return restaurant_ids
 
-def get_restaurant_by_name(restaurant_name):
+def read_badges():
+    """Reads in badge information from badges.txt file so badges can be updated over time"""
+    """Badge info is stored as a dictionary with the name as the key and a tuple of the
+        badge icon and description as its value."""
 
-    restaurant = Restaurant.query.filter_by(restaurant_name = restaurant_name).one()
+    badges_txt = open('./static/txt/badges.txt')
 
-    return restaurant
+    badges = {}
+
+    for line in badges_txt:
+        line = line.rstrip()
+        badge_name, badge_icon, badge_description = line.split(':')
+        badge_info = (badge_icon, badge_description)
+        badges[badge_name] = badge_info
+
+    return badges
+
+def create_badges(badges):
+    """Take dictionary of badges from txt and store in db"""
+
+    badges_to_add = []
+
+    for badge_name, badge_info in badges.items():
+        (badge_icon, badge_description) = badge_info
+        badge = create_badge(badge_name, badge_icon, badge_description)
+        
+        badges_to_add.append(badge)
+
+    db.session.add_all(badges_to_add)
+    db.session.commit()
+
+def award_badge(email, badge_code):
+    """Add badge to user account"""
+
+    user = get_user_by_email(email)
+
+    if badge_code == 'accountCreate':
+        award_badge = Badge.query.filter_by(badge_id = 12).one()
+        user.badges.append(award_badge)
+
+    elif badge_code == 'frstTrp':
+        award_badge = Badge.query.filter_by(badge_id = 11).one()
+        user.badges.append(award_badge)
+
+    db.session.commit()
+    return award_badge
+
+def get_all_badges():
+
+    badges = {}
+
+    for user in User.query.all():
+        badges[user]=user.badges
+
+    return badges
+
+def check_for_badge(email, badge_id):
+
+    user_badges = get_user_by_email(email).badges
+
+    if user_badges:
+        for badge in user_badges:
+            if badge.badge_id == badge_id:
+                return True
+        
+    return False
+
+# Use crud to delete badges that are no longer wanted, run interactively
 
 if __name__ == '__main__':
     from server import app

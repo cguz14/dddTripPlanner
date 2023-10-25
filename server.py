@@ -60,7 +60,8 @@ def user_profile():
     """Users profile info"""
 
     if "email" in session:
-        return render_template("profile.html")
+        user = crud.get_user_by_email(session['email'])
+        return render_template("profile.html", user=user)
     else:
         flash("You need to login first!")
         return redirect("/")
@@ -89,7 +90,8 @@ def new_user():
         session["email"] = email
         session["user_id"] = user.user_id
         session["user_icon"] = user_icon
-        flash("You're on your way to FlavorTown!")
+        award_badge = crud.award_badge(session['email'], 'accountCreate')
+        flash(f'Congratulations, you earned the "{award_badge.badge_name}" Badge!')
 
         return redirect('/profile')
    
@@ -187,8 +189,12 @@ def add_new_trip():
         trip_name = request.form.get("trip_name")
         trip_description = request.form.get("trip_description")
         new_trip = crud.create_trip(trip_name, trip_description, session["user_id"])
-        crud.add_trip_to_db(new_trip)        
+        crud.add_trip_to_db(new_trip)
 
+        # Award First Trip badge if badge not already awarded
+        if not crud.check_for_badge(session['email'], 11):
+            crud.award_badge(session['email'], 'frstTrp')
+        
         return redirect('/trips')
     else:
         flash("You need to be logged in to do that!")
@@ -386,17 +392,15 @@ def favorite_info():
 def change_likes():
     
     if "email" in session:        
-        marked_restaurant = request.args.get("restaurantName")
+        restaurant_id = request.args.get("restaurantId")
         liked = request.args.get("liked")
         if liked == "true":
             liked = True
         else:
             liked = False
 
-        print(marked_restaurant)
-        restaurant = crud.get_restaurant_by_name(marked_restaurant)
         user = crud.get_user_by_email(session["email"])
-        crud.change_like(liked, user, restaurant)
+        crud.change_like(liked, user, restaurant_id)
 
         return "app route completed"
         # getting restaurant name, need id and userid for new favorite.
@@ -427,6 +431,13 @@ def rating_info():
         })
 
     return jsonify(sent_ratings)
+
+@app.route('/all-badges')
+def show_all_badges():
+    """For dev purposes only. Show all badges that have been awarded"""
+
+    badges = crud.get_all_badges()
+    return render_template('all_badges.html', badges=badges)
 
 
 if __name__ == "__main__":

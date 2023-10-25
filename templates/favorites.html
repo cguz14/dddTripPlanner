@@ -13,7 +13,7 @@
                     <div>
                         <input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
                             <label for="remove_favorite{{ loop.index }}">
-                                <p>Restaurant: <span id ="fav-name-{{ loop.index }}">{{ restaurant.restaurant_name }}</span> 
+                                <p>Restaurant: {{ restaurant.restaurant_name }} 
                                     <span id="favorites-thumbs">
                                         <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
                                         <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>

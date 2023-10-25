@@ -14,8 +14,8 @@
                     <div>User id: {{ session["user_id"] }}</div>
                     <div>Username: <span id="username-span">{{ session["username"] }}</span></div>
                     <div>Email: {{ session["email"] }}</div>
-                    <div>Badges: Coming soon</div>
-                    <div>Icon: {{ session["user_icon"] }}</div>
+                    <div><b>Badges Earned</b>{% for badge in user.badges %}<li>{{ badge.badge_name }}{% endfor %}</li></div>
+                    <div><img src="{{ session['user_icon'] }}" class="profile-user-icon"></div>
                 </p>
             </div>
 
@@ -53,10 +53,6 @@
                     </button>
                 </form>    
             </div>
-        </div>
-
-        <div class="col">
-            <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
         </div>
     </div>
 </div>

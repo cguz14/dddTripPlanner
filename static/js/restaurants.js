@@ -1,7 +1,7 @@
 'use strict';
 
-const btn1s = document.querySelectorAll('#green');
-const btn2s = document.querySelectorAll('#red');
+const btn1s = document.querySelectorAll('#all-green');
+const btn2s = document.querySelectorAll('#all-red');
 let ratings
 start();
 
@@ -15,13 +15,15 @@ for (let i=0; i < btn1s.length; i++) {
 
     btn1.addEventListener('click', function(evt) {
 
-        let restaurantId = document.getElementById(`fav-id-${i+1}`).innerHTML;
+        let restaurantId = document.getElementById(`all-fav-id-${i+1}`).innerHTML;
         // restaurantName = restaurantName.replace(/&/g, "%26");
         // restaurantName = restaurantName.replace(/#/g, "%23");
         // restaurantName = restaurantName.replaceAll('/', '%26');
         // restaurantName = restaurantName.replaceAll('!', '%21');
         // console.log(restaurantName)
+        
         evt.preventDefault();
+
         if (btn2.classList.contains('red')) {
         btn2.classList.remove('red');
         } 
@@ -45,12 +47,12 @@ for (let i=0; i < btn2s.length; i++) {
 
     btn2.addEventListener('click', function(evt) {
     
-        let restaurantId = document.getElementById(`fav-id-${i+1}`).innerHTML;
+        let restaurantId = document.getElementById(`all-fav-id-${i+1}`).innerHTML;
         // restaurantName = restaurantName.replace(/&/g, "%26")
         // restaurantName = restaurantName.replace(/#/g, "%23");
         // restaurantName = restaurantName.replaceAll('/', '%26');
         // restaurantName = restaurantName.replaceAll('!', '%21');
-        console.log(restaurantId)
+        // console.log(restaurantName)
 
         evt.preventDefault();
         if (btn1.classList.contains('green')) {
@@ -86,7 +88,7 @@ function startingThumbs(results) {
             let btn1 = btn1s[i]
             let btn2 = btn2s[i]
 
-            const restaurantId = document.getElementById(`fav-id-${i+1}`).innerHTML;
+            const restaurantId = document.getElementById(`all-fav-id-${i+1}`).innerHTML;
 
             if (rating['restaurant_id'] == restaurantId) {
                 if(rating['thumbs_up']) {

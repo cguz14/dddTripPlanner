@@ -26,12 +26,13 @@
         {% for restaurant in restaurants %}
           <input type="checkbox" name="restaurant" value="{{ restaurant.restaurant_id }}" class="form-check-input">
             <label for="restaurant{{ loop.index }}" class="form-check-label">
-              <div><b>Restaurant: <span id="all-fav-name-{{ loop.index }}">{{ restaurant.restaurant_name }}</span></b></div>
+              <div><b>Restaurant: {{ restaurant.restaurant_name }}</b>
               <span id="favorites-thumbs">
                 <button class="btn" id="all-green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
                 <button class="btn" id="all-red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
               </span>
               <span id="all-fav-id-{{ loop.index }}" class="invisible">{{ restaurant.restaurant_id }}</span>
+              </div>
             </label>
               <div>Description: {{ restaurant.restaurant_description }}</div>
               <div>Address: {{ restaurant.restaurant_address }}</div>

@@ -42,7 +42,6 @@ async function initMap() {
             img = restaurant.restaurant_icon;
         }
 
-
         const restaurantMarker = new google.maps.Marker({
         position: {
             lat: restaurant.restaurant_latitude,
@@ -50,7 +49,6 @@ async function initMap() {
         },
         title: `Restaurant: ${restaurant.restaurant_name}`,
 
-        // How do I handle cases where the img is null? Can I have a default image?
         icon: {
             url: img,
             scaledSize: new google.maps.Size(80, 80),
