@@ -386,7 +386,27 @@ def check_for_badge(email, badge_id):
         
     return False
 
-# Use crud to delete badges that are no longer wanted, run interactively
+# Used crud to delete badges that were no longer wanted, run file interactively
+# def update_badges_DEV_ONLY():
+#     # users = User.query.all()
+#     badges = Badge.query.all()
+
+    # for user in users:
+    #     if user.user_id <= 5:
+    #         if user.badges:
+    #             for user_badge in user.badges:
+    #                 print(f'HERE ARE THE USER_BADGES {user_badge}')
+    #                 db.session.delete(user_badge)
+
+    # db.session.commit()
+            
+    # for badge in badges:
+    #     if badge.badge_id <= 10:
+    #         print(badge)
+    #         db.session.delete(badge)
+
+    # db.session.commit()
+    # print('badges updated')
 
 if __name__ == '__main__':
     from server import app
