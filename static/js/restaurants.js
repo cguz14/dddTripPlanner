@@ -70,6 +70,9 @@ for (let i=0; i < btn2s.length; i++) {
 
 function changeThumb(results) {
     console.log('thumb changed');
+    if (results == 'user not logged in') {
+        alert('You must be logged in to save your ratings!')
+    }
     console.log(results);
 
 }

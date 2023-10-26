@@ -374,16 +374,6 @@ ALTER TABLE ONLY public.usersbadges ALTER COLUMN users_badge_id SET DEFAULT next
 --
 
 COPY public.badges (badge_id, badge_name, badge_icon, badge_description) FROM stdin;
-1	testBadge0	dddTripPlanner/imgs/10PlusIcon.png	testdescription0
-2	testBadge1	dddTripPlanner/imgs/10PlusIcon.png	testdescription1
-3	testBadge2	dddTripPlanner/imgs/10PlusIcon.png	testdescription2
-4	testBadge3	dddTripPlanner/imgs/10PlusIcon.png	testdescription3
-5	testBadge4	dddTripPlanner/imgs/10PlusIcon.png	testdescription4
-6	testBadge5	dddTripPlanner/imgs/10PlusIcon.png	testdescription5
-7	testBadge6	dddTripPlanner/imgs/10PlusIcon.png	testdescription6
-8	testBadge7	dddTripPlanner/imgs/10PlusIcon.png	testdescription7
-9	testBadge8	dddTripPlanner/imgs/10PlusIcon.png	testdescription8
-10	testBadge9	dddTripPlanner/imgs/10PlusIcon.png	testdescription9
 11	You Gotta Check 'Em Out!	iconPLaceholder	Congratulations. You've started your first trip plan!
 12	Welcome to Flavortown!	iconPlaceholder	Now that you've created an account, let's get rolling!
 13	Ain't No Jokin'!	iconPlaceholder	Awesome, you just rated your first DDD spot!
@@ -1821,11 +1811,6 @@ COPY public.users (user_id, username, password, email, user_icon) FROM stdin;
 --
 
 COPY public.usersbadges (users_badge_id, user_id, unlocked_badge_id) FROM stdin;
-1	1	4
-2	2	5
-3	3	6
-4	4	7
-5	5	8
 6	13	12
 7	13	11
 \.

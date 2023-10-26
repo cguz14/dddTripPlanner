@@ -350,20 +350,15 @@ def create_badges(badges):
     db.session.add_all(badges_to_add)
     db.session.commit()
 
-def award_badge(email, badge_code):
+def award_badge(email, badge_id):
     """Add badge to user account"""
 
     user = get_user_by_email(email)
+    award_badge = Badge.query.filter_by(badge_id = badge_id).one()
 
-    if badge_code == 'accountCreate':
-        award_badge = Badge.query.filter_by(badge_id = 12).one()
-        user.badges.append(award_badge)
-
-    elif badge_code == 'frstTrp':
-        award_badge = Badge.query.filter_by(badge_id = 11).one()
-        user.badges.append(award_badge)
-
+    user.badges.append(award_badge)
     db.session.commit()
+
     return award_badge
 
 def get_all_badges():

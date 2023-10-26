@@ -91,7 +91,7 @@ def new_user():
         session["user_id"] = user.user_id
         session["user_icon"] = user_icon
         award_badge = crud.award_badge(session['email'], 'accountCreate')
-        flash(f'Congratulations, you earned the "{award_badge.badge_name}" Badge!')
+        flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
 
         return redirect('/profile')
    
@@ -131,6 +131,10 @@ def add_favorites():
         favorites = crud.get_favorites(session["email"])
         db.session.add_all(favorites)
         db.session.commit()
+
+        if not crud.check_for_badge(session['email'], 14):
+            award_badge = crud.award_badge(session['email'], 14)
+            flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
         
         return redirect('/favorites')
     else:
@@ -193,7 +197,8 @@ def add_new_trip():
 
         # Award First Trip badge if badge not already awarded
         if not crud.check_for_badge(session['email'], 11):
-            crud.award_badge(session['email'], 'frstTrp')
+            award_badge = crud.award_badge(session['email'], 11)
+            flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
         
         return redirect('/trips')
     else:
@@ -269,6 +274,10 @@ def add_stops():
         db.session.add_all(stops)
         db.session.commit()
 
+        if not crud.check_for_badge(session['email'], 15):
+            award_badge = crud.award_badge(session['email'], 15)
+            flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+
         return redirect('/trips')
     else:
         flash("Stop trying to h4ck the syst3m. You need to be logged in to access!")
@@ -282,6 +291,10 @@ def change_trip_name():
         trip = crud.get_trip_by_id(session["trip_id"])
         trip.trip_name = new_trip_name
         db.session.commit()
+
+        if not crud.check_for_badge(session['email'], 15):
+            award_badge = crud.award_badge(session['email'], 15)
+            flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
         
         return new_trip_name
     else:
@@ -297,6 +310,10 @@ def change_trip_description():
         trip.trip_description = new_trip_description
         db.session.commit()
         
+        if not crud.check_for_badge(session['email'], 15):
+            award_badge = crud.award_badge(session['email'], 15)
+            flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+
         return new_trip_description
     else:
         flash("Tim Duncan with the BLOCK! You need to be logged in to access this.")
@@ -402,14 +419,28 @@ def change_likes():
         user = crud.get_user_by_email(session["email"])
         crud.change_like(liked, user, restaurant_id)
 
+        if not crud.check_for_badge(session['email'], 13):
+            award_badge = crud.award_badge(session['email'], 13)
+            flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+
+        if len(user.ratings) > 9:
+            if not crud.check_for_badge(session['email'], 16):
+                award_badge = crud.award_badge(session['email'], 16)
+                flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+
+        if len(user.ratings) > 49:
+            if not crud.check_for_badge(session['email'], 17):
+                award_badge = crud.award_badge(session['email'], 17)
+                flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+
         return "app route completed"
         # getting restaurant name, need id and userid for new favorite.
         # restaurant_id = crud.get 
         # need to create favorite if user likes/dislikes and apply t/f depending
         # what if anything needs to be returned to the js/html side?
     else:
-        flash("You must construct additional pylons! You need to be logged in to access this.")
-        return redirect('/')
+        flash("Please log in or crete an account to save ratings.")
+        return "user not logged in"
     
 @app.route('/api/ratings.json')
 def rating_info():
@@ -417,18 +448,20 @@ def rating_info():
     
     sent_ratings = []
     print('made it here')
-    user = crud.get_user_by_email(session["email"])
-    # favorites = crud.get_favorites(session["email"])
-    ratings = crud.get_ratings(user)
 
-    for rating in ratings:
-        sent_ratings.append({
-            "rating_id" : rating.rating_id,
-            "thumbs_up" : rating.thumbs_up,
-            "rating_icon" : rating.rating_icon,
-            "user_id" : rating.user_id,
-            "restaurant_id" : rating.restaurant_id,
-        })
+    if 'email' in session:
+        user = crud.get_user_by_email(session["email"])
+        # favorites = crud.get_favorites(session["email"])
+        ratings = crud.get_ratings(user)
+
+        for rating in ratings:
+            sent_ratings.append({
+                "rating_id" : rating.rating_id,
+                "thumbs_up" : rating.thumbs_up,
+                "rating_icon" : rating.rating_icon,
+                "user_id" : rating.user_id,
+                "restaurant_id" : rating.restaurant_id,
+            })
 
     return jsonify(sent_ratings)
 

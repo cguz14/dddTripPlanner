@@ -14,7 +14,7 @@
                     <div>User id: {{ session["user_id"] }}</div>
                     <div>Username: <span id="username-span">{{ session["username"] }}</span></div>
                     <div>Email: {{ session["email"] }}</div>
-                    <div><b>Badges Earned</b>{% for badge in user.badges %}<li>{{ badge.badge_name }}{% endfor %}</li></div>
+                    <div><b>Badges Earned</b>{% for badge in user.badges %}<li>{{ badge.badge_name }}<ul>{{ badge.badge_description }}</ul>{% endfor %}</li></div>
                     <div><img src="{{ session['user_icon'] }}" class="profile-user-icon"></div>
                 </p>
             </div>
