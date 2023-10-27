@@ -11,6 +11,7 @@ from jinja2 import StrictUndefined
 import os
 import json
 import requests
+import random
 
 app = Flask(__name__)
 app.secret_key = os.environ['SECRETKEY']
@@ -525,67 +526,165 @@ def end_point_select():
 def direction_stop_info():
     """Return stops info with proper start and end from db in JSON form for Directions API"""
     
-    stops = []
-    trip = crud.get_trip_by_id(session["trip_id"])
+    if 'email' in session:
+        if 'start_restaurant_id' in session and 'end_restaurant_id' in session:
+            stops = []
+            trip = crud.get_trip_by_id(session["trip_id"])
 
-    start = crud.get_one_restaurant_by_id(session['start_restaurant_id'])
-    end = crud.get_one_restaurant_by_id(session['end_restaurant_id'])
+            start = crud.get_one_restaurant_by_id(session['start_restaurant_id'])
+            end = crud.get_one_restaurant_by_id(session['end_restaurant_id'])
 
-    stops.append({
-                "restaurant_id" : start.restaurant_id,
-                "restaurant_name" : start.restaurant_name,
-                "restaurant_icon" : start.restaurant_icon,
-                "restaurant_description" : start.restaurant_description,
-                "restaurant_address" : start.restaurant_address,
-                "restaurant_latitude" : start.restaurant_latitude,
-                "restaurant_longitude" : start.restaurant_longitude,
-                "restaurant_state" : start.restaurant_state,
-                "food_type" : start.food_type,
-                "episode_info" : start.episode_info
-            })
-
-    for restaurant in trip.restaurants:
-        if restaurant != start and restaurant != end:
             stops.append({
-                "restaurant_id" : restaurant.restaurant_id,
-                "restaurant_name" : restaurant.restaurant_name,
-                "restaurant_icon" : restaurant.restaurant_icon,
-                "restaurant_description" : restaurant.restaurant_description,
-                "restaurant_address" : restaurant.restaurant_address,
-                "restaurant_latitude" : restaurant.restaurant_latitude,
-                "restaurant_longitude" : restaurant.restaurant_longitude,
-                "restaurant_state" : restaurant.restaurant_state,
-                "food_type" : restaurant.food_type,
-                "episode_info" : restaurant.episode_info
-            })
+                        "restaurant_id" : start.restaurant_id,
+                        "restaurant_name" : start.restaurant_name,
+                        "restaurant_icon" : start.restaurant_icon,
+                        "restaurant_description" : start.restaurant_description,
+                        "restaurant_address" : start.restaurant_address,
+                        "restaurant_latitude" : start.restaurant_latitude,
+                        "restaurant_longitude" : start.restaurant_longitude,
+                        "restaurant_state" : start.restaurant_state,
+                        "food_type" : start.food_type,
+                        "episode_info" : start.episode_info
+                    })
 
-    stops.append({
-                "restaurant_id" : end.restaurant_id,
-                "restaurant_name" : end.restaurant_name,
-                "restaurant_icon" : end.restaurant_icon,
-                "restaurant_description" : end.restaurant_description,
-                "restaurant_address" : end.restaurant_address,
-                "restaurant_latitude" : end.restaurant_latitude,
-                "restaurant_longitude" : end.restaurant_longitude,
-                "restaurant_state" : end.restaurant_state,
-                "food_type" : end.food_type,
-                "episode_info" : end.episode_info
-            })
+            for restaurant in trip.restaurants:
+                if restaurant != start and restaurant != end:
+                    stops.append({
+                        "restaurant_id" : restaurant.restaurant_id,
+                        "restaurant_name" : restaurant.restaurant_name,
+                        "restaurant_icon" : restaurant.restaurant_icon,
+                        "restaurant_description" : restaurant.restaurant_description,
+                        "restaurant_address" : restaurant.restaurant_address,
+                        "restaurant_latitude" : restaurant.restaurant_latitude,
+                        "restaurant_longitude" : restaurant.restaurant_longitude,
+                        "restaurant_state" : restaurant.restaurant_state,
+                        "food_type" : restaurant.food_type,
+                        "episode_info" : restaurant.episode_info
+                    })
 
-    print(stops[0])
-    print(start)
-    print(stops[len(stops)-1])
-    print(end)
+            stops.append({
+                        "restaurant_id" : end.restaurant_id,
+                        "restaurant_name" : end.restaurant_name,
+                        "restaurant_icon" : end.restaurant_icon,
+                        "restaurant_description" : end.restaurant_description,
+                        "restaurant_address" : end.restaurant_address,
+                        "restaurant_latitude" : end.restaurant_latitude,
+                        "restaurant_longitude" : end.restaurant_longitude,
+                        "restaurant_state" : end.restaurant_state,
+                        "food_type" : end.food_type,
+                        "episode_info" : end.episode_info
+                    })
 
+            # Throw an error in dev console if the order doesn't get done correctly after selecting new start/end
+            if stops[0]['restaurant_id'] != start.restaurant_id:
+                return "error when ordering direction start point"
+            elif stops[len(stops)-1]['restaurant_id'] != end.restaurant_id:
+                return "error when ordering direction end point"
 
-    if stops[0]['restaurant_id'] != start.restaurant_id:
-        return "error when ordering direction start point"
-    elif stops[len(stops)-1]['restaurant_id'] != end.restaurant_id:
-        return "error when ordering direction end point"
+            return jsonify(stops)
+        
+        else:
+            stops = []
+
+            return jsonify(stops)
     
-    print(stops)
+    else:
+        flash("You shouldn't be here!")
+        # Would this redirect even work?
+        return redirect('/')
+    
+@app.route('/route-to-maps')
+def route_to_maps():
 
-    return jsonify(stops)
+    if 'email' in session:
+        if 'start_restaurant_id' in session and 'end_restaurant_id' in session:
+            
+            stops = []
+            trip = crud.get_trip_by_id(session["trip_id"])
+
+            start = crud.get_one_restaurant_by_id(session['start_restaurant_id'])
+            end = crud.get_one_restaurant_by_id(session['end_restaurant_id'])
+
+            stops.append({
+                        "restaurant_id" : start.restaurant_id,
+                        "restaurant_name" : start.restaurant_name,
+                        "restaurant_icon" : start.restaurant_icon,
+                        "restaurant_description" : start.restaurant_description,
+                        "restaurant_address" : start.restaurant_address,
+                        "restaurant_latitude" : start.restaurant_latitude,
+                        "restaurant_longitude" : start.restaurant_longitude,
+                        "restaurant_state" : start.restaurant_state,
+                        "food_type" : start.food_type,
+                        "episode_info" : start.episode_info
+                    })
+
+            for restaurant in trip.restaurants:
+                if restaurant != start and restaurant != end:
+                    stops.append({
+                        "restaurant_id" : restaurant.restaurant_id,
+                        "restaurant_name" : restaurant.restaurant_name,
+                        "restaurant_icon" : restaurant.restaurant_icon,
+                        "restaurant_description" : restaurant.restaurant_description,
+                        "restaurant_address" : restaurant.restaurant_address,
+                        "restaurant_latitude" : restaurant.restaurant_latitude,
+                        "restaurant_longitude" : restaurant.restaurant_longitude,
+                        "restaurant_state" : restaurant.restaurant_state,
+                        "food_type" : restaurant.food_type,
+                        "episode_info" : restaurant.episode_info
+                    })
+
+            stops.append({
+                        "restaurant_id" : end.restaurant_id,
+                        "restaurant_name" : end.restaurant_name,
+                        "restaurant_icon" : end.restaurant_icon,
+                        "restaurant_description" : end.restaurant_description,
+                        "restaurant_address" : end.restaurant_address,
+                        "restaurant_latitude" : end.restaurant_latitude,
+                        "restaurant_longitude" : end.restaurant_longitude,
+                        "restaurant_state" : end.restaurant_state,
+                        "food_type" : end.food_type,
+                        "episode_info" : end.episode_info
+                    })
+            
+            param_address = "origin="
+
+            for idx, stop in enumerate(stops):
+                address = stop['restaurant_address'].lstrip()
+
+                if idx == 1:
+                    param_address += "&waypoints="
+
+                if idx == len(stops)-1:
+                    param_address += "&destination="
+
+                for char in address:
+                    if char == "#":
+                        encoded_char = f"%23"            
+                        param_address += encoded_char
+                    elif char == "/":
+                        encoded_char = f"%2F"            
+                        param_address += encoded_char
+                    elif char == " ":
+                        encoded_char = f"%20"
+                        param_address += encoded_char
+                    elif char == ",":
+                        encoded_char = f"%2C"
+                        param_address += encoded_char
+                    elif char == ".":
+                        encoded_char = f"%2E"
+                        param_address += encoded_char
+                    elif char == '"':
+                        encoded_char = f"%22"
+                        param_address += encoded_char
+                    else:
+                        param_address += char
+
+                if idx > 0 and idx < len(stops)-2:
+                    param_address += f"%7C"
+                    
+            print(param_address)
+
+            return redirect(f'https://www.google.com/maps/dir/?api=1&{param_address}')
 
 if __name__ == "__main__":
     connect_to_db(app)

@@ -61,7 +61,7 @@
                 
             <!-- div to hold the directions information -->
             <div id="directions-panel" class="directions-column directions-list">
-                MAP DIRECTIONS WILL GO HERE
+                Select a start and end point below to generate directions for your trip!
             </div>
                 
             <div class="directions-column">
@@ -91,14 +91,17 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div id="startpoint-choice"></div>
-                <div id="endpoint-choice"></div>
-                <div>
-                    Please select the stops you want to be the start and end points.
+                <div class="dropdown">
+                    <button id="get-directions" class="dropbtn">Get Directions</button>
                 </div>
                 
-                <button id="get-directions" class="button">Get Directions</button>
+                <form action="/route-to-maps" class="dropdown">
+                    <button id="maps-url" class="dropbtn">Get Full Directions from Google Maps</button>
+                </form>
 
+                <div id="startpoint-choice"></div>
+                <div id="endpoint-choice"></div>
+                
             </div>
 
             

@@ -70,8 +70,10 @@ async function initMap() {
     });
 
     document.querySelector('#get-directions').addEventListener("click", () => {
-        calculateAndDisplayTrip(directionsService, directionsRenderer)
+        calculateAndDisplayTrip(directionsService, directionsRenderer);
+        alert('Calculating Directions...');
     });
+
     // console.log(markers) Maybe the Advanced Marker is needed to cluster?
     // const markerCluster = new markerClusterer.MarkerClusterer({ markers, map });
     // May not work with custom markers?
@@ -111,6 +113,11 @@ async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
     //      being available but async and await allowed variables to come available
     let response = await fetch('/api/direction-stops');
     let stops = await response.json();
+
+    if (stops.length == 0) {
+        alert('Please select a startpoint and endpoint.');
+        return
+    };
 
     for (const stop of stops) {
         if (i == 0) {
@@ -163,9 +170,8 @@ async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
 
             }
         })
-        .catch(() => alert("Directions request failed"));
+        .catch(() => alert("Directions request failed, you trying to drive overseas or something wild?!"));
 
-    alert('Calculating Directions...')
 }
 
 initMap();

@@ -245,7 +245,7 @@ def convert_address_to_geocode(address):
 
     for char in address:
         if char == "#":
-            encoded_char = f"%25"            
+            encoded_char = f"%23"            
             param_address += encoded_char
         elif char == "/":
             encoded_char = f"%2F"            
