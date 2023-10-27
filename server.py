@@ -664,7 +664,7 @@ def route_to_maps():
                     elif char == "/":
                         encoded_char = f"%2F"            
                         param_address += encoded_char
-                    elif char == " ":
+                    elif char.strip() == '':
                         encoded_char = f"%20"
                         param_address += encoded_char
                     elif char == ",":

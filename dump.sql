@@ -414,6 +414,15 @@ COPY public.favorites (favorite_id, user_id, restaurant_id) FROM stdin;
 25	12	47
 26	12	66
 27	12	67
+28	13	226
+29	13	96
+30	13	97
+31	13	98
+32	13	99
+33	13	337
+34	13	338
+35	13	339
+36	13	381
 \.
 
 
@@ -448,9 +457,17 @@ COPY public.ratings (rating_id, thumbs_up, rating_icon, user_id, restaurant_id) 
 75	t	imgNotBeingUsed	12	131
 78	t	imgNotBeingUsed	12	3
 81	t	imgNotBeingUsed	12	4
-82	f	imgNotBeingUsed	12	2
 83	f	imgNotBeingUsed	12	5
 84	t	imgNotBeingUsed	12	6
+85	t	imgNotBeingUsed	12	2
+86	t	imgNotBeingUsed	13	2
+87	t	imgNotBeingUsed	13	96
+88	t	imgNotBeingUsed	13	226
+89	t	imgNotBeingUsed	13	338
+91	t	imgNotBeingUsed	13	339
+92	t	imgNotBeingUsed	13	381
+93	t	imgNotBeingUsed	13	337
+94	f	imgNotBeingUsed	13	340
 \.
 
 
@@ -1758,7 +1775,6 @@ COPY public.stops (stop_id, trip_id, restaurant_id) FROM stdin;
 22	1	22
 23	1	23
 24	7	31
-25	7	32
 26	7	33
 27	7	35
 28	7	36
@@ -1767,6 +1783,30 @@ COPY public.stops (stop_id, trip_id, restaurant_id) FROM stdin;
 31	7	40
 32	7	43
 33	7	45
+34	9	3
+35	9	5
+36	9	8
+37	9	9
+38	9	10
+39	9	11
+40	9	12
+48	10	116
+49	10	117
+50	10	120
+54	10	7
+55	10	13
+56	10	17
+57	10	19
+58	10	22
+59	10	26
+62	11	84
+64	11	88
+71	11	21
+72	11	22
+73	11	23
+74	11	26
+76	11	4
+77	11	43
 \.
 
 
@@ -1781,8 +1821,9 @@ COPY public.trips (trip_id, trip_name, trip_description, user_id) FROM stdin;
 4	testTrip3	testDescription3	4
 5	testTrip4	testDescription4	2
 7	This is a trip	This is its description	12
-9	This Trip!	We doing it!	13
-10	Another	to test	13
+11	BadgeTestTrip	Lets hope I get a badge!	12
+9	This New Trip!	This is the new description!	13
+10	First Name	Then description to describe the descriptor!	13
 \.
 
 
@@ -1813,6 +1854,39 @@ COPY public.users (user_id, username, password, email, user_icon) FROM stdin;
 COPY public.usersbadges (users_badge_id, user_id, unlocked_badge_id) FROM stdin;
 6	13	12
 7	13	11
+8	12	11
+9	12	13
+10	12	16
+11	13	13
+12	13	14
+13	13	15
+14	1	12
+15	2	12
+16	3	12
+17	4	12
+18	5	12
+19	6	12
+20	7	12
+21	8	12
+22	9	12
+23	10	12
+24	12	12
+25	2	11
+26	4	11
+27	6	11
+28	8	11
+29	10	11
+30	1	13
+31	2	13
+32	3	13
+33	4	13
+34	5	13
+35	6	13
+36	7	13
+37	8	13
+38	9	13
+39	10	13
+40	12	15
 \.
 
 
@@ -1827,14 +1901,14 @@ SELECT pg_catalog.setval('public.badges_badge_id_seq', 17, true);
 -- Name: favorites_favorite_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cguz07
 --
 
-SELECT pg_catalog.setval('public.favorites_favorite_id_seq', 27, true);
+SELECT pg_catalog.setval('public.favorites_favorite_id_seq', 36, true);
 
 
 --
 -- Name: ratings_rating_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cguz07
 --
 
-SELECT pg_catalog.setval('public.ratings_rating_id_seq', 84, true);
+SELECT pg_catalog.setval('public.ratings_rating_id_seq', 94, true);
 
 
 --
@@ -1848,14 +1922,14 @@ SELECT pg_catalog.setval('public.restaurants_restaurant_id_seq', 1268, true);
 -- Name: stops_stop_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cguz07
 --
 
-SELECT pg_catalog.setval('public.stops_stop_id_seq', 33, true);
+SELECT pg_catalog.setval('public.stops_stop_id_seq', 77, true);
 
 
 --
 -- Name: trips_trip_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cguz07
 --
 
-SELECT pg_catalog.setval('public.trips_trip_id_seq', 10, true);
+SELECT pg_catalog.setval('public.trips_trip_id_seq', 11, true);
 
 
 --
@@ -1869,7 +1943,7 @@ SELECT pg_catalog.setval('public.users_user_id_seq', 13, true);
 -- Name: usersbadges_users_badge_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cguz07
 --
 
-SELECT pg_catalog.setval('public.usersbadges_users_badge_id_seq', 7, true);
+SELECT pg_catalog.setval('public.usersbadges_users_badge_id_seq', 40, true);
 
 
 --
