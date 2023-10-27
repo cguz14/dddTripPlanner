@@ -490,43 +490,102 @@ def show_all_badges():
 
 @app.route("/start-point-select.json")
 def start_point_select():
-    
-
 
     if "email" in session:        
-        start_restaurant = request.args.get("restaurantAddress")
-    #     liked = request.args.get("liked")
-    #     if liked == "true":
-    #         liked = True
-    #     else:
-    #         liked = False
+        start_restaurant_id = request.args.get("restaurantId")
+        session['start_restaurant_id'] = start_restaurant_id
+        print(start_restaurant_id)
 
-    #     user = crud.get_user_by_email(session["email"])
-    #     crud.change_like(liked, user, restaurant_id)
+        start_restaurant = crud.get_one_restaurant_by_id(start_restaurant_id)
+        start_restaurant_address = start_restaurant.restaurant_address
 
-    #     if not crud.check_for_badge(session['email'], 13):
-    #         award_badge = crud.award_badge(session['email'], 13)
-    #         flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+        return start_restaurant_address
+    else:
+        flash("Please log in or crete an account for directions!")
+        return "user not logged in"
+    
+@app.route("/end-point-select.json")
+def end_point_select():
 
-    #     if len(user.ratings) > 9:
-    #         if not crud.check_for_badge(session['email'], 16):
-    #             award_badge = crud.award_badge(session['email'], 16)
-    #             flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+    if "email" in session:        
+        end_restaurant_id = request.args.get("restaurantId")
+        session['end_restaurant_id'] = end_restaurant_id
+        print(end_restaurant_id)
 
-    #     if len(user.ratings) > 49:
-    #         if not crud.check_for_badge(session['email'], 17):
-    #             award_badge = crud.award_badge(session['email'], 17)
-    #             flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+        end_restaurant = crud.get_one_restaurant_by_id(end_restaurant_id)
+        end_restaurant_address = end_restaurant.restaurant_address
 
-    #     return "app route completed"
-    #     # getting restaurant name, need id and userid for new favorite.
-    #     # restaurant_id = crud.get 
-    #     # need to create favorite if user likes/dislikes and apply t/f depending
-    #     # what if anything needs to be returned to the js/html side?
-    # else:
-    #     flash("Please log in or crete an account to save ratings.")
-    #     return "user not logged in"
-    return 'made it to app route'
+        return end_restaurant_address
+    else:
+        flash("Please log in or crete an account for directions!")
+        return "user not logged in"
+    
+
+@app.route('/api/direction-stops')
+def direction_stop_info():
+    """Return stops info with proper start and end from db in JSON form for Directions API"""
+    
+    stops = []
+    trip = crud.get_trip_by_id(session["trip_id"])
+
+    start = crud.get_one_restaurant_by_id(session['start_restaurant_id'])
+    end = crud.get_one_restaurant_by_id(session['end_restaurant_id'])
+
+    stops.append({
+                "restaurant_id" : start.restaurant_id,
+                "restaurant_name" : start.restaurant_name,
+                "restaurant_icon" : start.restaurant_icon,
+                "restaurant_description" : start.restaurant_description,
+                "restaurant_address" : start.restaurant_address,
+                "restaurant_latitude" : start.restaurant_latitude,
+                "restaurant_longitude" : start.restaurant_longitude,
+                "restaurant_state" : start.restaurant_state,
+                "food_type" : start.food_type,
+                "episode_info" : start.episode_info
+            })
+
+    for restaurant in trip.restaurants:
+        if restaurant != start and restaurant != end:
+            stops.append({
+                "restaurant_id" : restaurant.restaurant_id,
+                "restaurant_name" : restaurant.restaurant_name,
+                "restaurant_icon" : restaurant.restaurant_icon,
+                "restaurant_description" : restaurant.restaurant_description,
+                "restaurant_address" : restaurant.restaurant_address,
+                "restaurant_latitude" : restaurant.restaurant_latitude,
+                "restaurant_longitude" : restaurant.restaurant_longitude,
+                "restaurant_state" : restaurant.restaurant_state,
+                "food_type" : restaurant.food_type,
+                "episode_info" : restaurant.episode_info
+            })
+
+    stops.append({
+                "restaurant_id" : end.restaurant_id,
+                "restaurant_name" : end.restaurant_name,
+                "restaurant_icon" : end.restaurant_icon,
+                "restaurant_description" : end.restaurant_description,
+                "restaurant_address" : end.restaurant_address,
+                "restaurant_latitude" : end.restaurant_latitude,
+                "restaurant_longitude" : end.restaurant_longitude,
+                "restaurant_state" : end.restaurant_state,
+                "food_type" : end.food_type,
+                "episode_info" : end.episode_info
+            })
+
+    print(stops[0])
+    print(start)
+    print(stops[len(stops)-1])
+    print(end)
+
+
+    if stops[0]['restaurant_id'] != start.restaurant_id:
+        return "error when ordering direction start point"
+    elif stops[len(stops)-1]['restaurant_id'] != end.restaurant_id:
+        return "error when ordering direction end point"
+    
+    print(stops)
+
+    return jsonify(stops)
 
 if __name__ == "__main__":
     connect_to_db(app)

@@ -75,23 +75,30 @@
                     <button onclick="getStartPoint(-1)" class="dropbtn">Select Start Point</button>
                     <div id="startPointDropdown" class="dropdown-content">
                         {% for restaurant in trip.restaurants %}
-                            <button onclick="getStartPoint({{ loop.index }})" id="clicked-restaurant-{{ loop.index }}" value="{{ restaurant.restaurant_address }}">
+                            <button onclick="getStartPoint({{ loop.index }})" id="clicked-restaurant-{{ loop.index }}" value="{{ restaurant.restaurant_id }}">
                                 {{ restaurant.restaurant_name }}
                             </button>
                         {% endfor %}
                     </div>
                 </div>
                 <div id="endPointForm" class="dropdown">
-                    <button onclick="getEndPoint()" class="dropbtn">Select End Point</button>
+                    <button onclick="getEndPoint(-1)" class="dropbtn">Select End Point</button>
                     <div id="endPointDropdown" class="dropdown-content">
                         {% for restaurant in trip.restaurants %}
-                            <a id="end-restaurant" href="/end-point-select.json" value="{{ restaurant.restaurant_address }}">{{ restaurant.restaurant_name }}</a>
+                        <button onclick="getEndPoint({{ loop.index }})" id="clicked-restaurant-{{ loop.index }}" value="{{ restaurant.restaurant_id }}">
+                            {{ restaurant.restaurant_name }}
+                        </button>
                         {% endfor %}
                     </div>
                 </div>
+                <div id="startpoint-choice"></div>
+                <div id="endpoint-choice"></div>
                 <div>
                     Please select the stops you want to be the start and end points.
                 </div>
+                
+                <button id="get-directions" class="button">Get Directions</button>
+
             </div>
 
             

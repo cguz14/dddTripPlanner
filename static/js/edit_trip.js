@@ -41,18 +41,39 @@ function getStartPoint(index) {
 
     document.getElementById("startPointDropdown").classList.toggle("show");
     if (index >= 0) {
-        const restaurantAddress = document.querySelector(`#clicked-restaurant-${index}`).value;
-        console.log(`made it into start function: ${restaurantAddress}`)
+        const restaurantId = document.querySelector(`#clicked-restaurant-${index}`).value;
+        console.log(`made it into start function: ${restaurantId}`)
 
-        fetch(`/start-point-select.json?restaurantAddress=${restaurantAddress}`)
+        fetch(`/start-point-select.json?restaurantId=${restaurantId}`)
         .then((response) => response.text())
-        .then(response);
+        .then(setStartPoint);
     }
 }
 
-function getEndPoint() {
+function setStartPoint(startAddress) {
+
+    console.log(startAddress);
+    document.querySelector('#startpoint-choice').innerHTML = startAddress;
+
+}
+
+function getEndPoint(index) {
 
     document.getElementById("endPointDropdown").classList.toggle("show");
-    console.log('made it into end function')
+    if (index >= 0) {
+        const restaurantId = document.querySelector(`#clicked-restaurant-${index}`).value;
+        // const restaurantId = restaurantAddressLong.trimStart();
+        console.log(`made it into end function: ${restaurantId}`)
 
+        fetch(`/end-point-select.json?restaurantId=${restaurantId}`)
+        .then((response) => response.text())
+        .then(setEndPoint);
+    }
+
+function setEndPoint(endAddress) {
+
+    console.log(endAddress);
+    document.querySelector('#endpoint-choice').innerHTML = endAddress;
+
+}
 }

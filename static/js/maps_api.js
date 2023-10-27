@@ -69,8 +69,9 @@ async function initMap() {
     `);
     });
 
-
-    calculateAndDisplayTrip(directionsService, directionsRenderer)
+    document.querySelector('#get-directions').addEventListener("click", () => {
+        calculateAndDisplayTrip(directionsService, directionsRenderer)
+    });
     // console.log(markers) Maybe the Advanced Marker is needed to cluster?
     // const markerCluster = new markerClusterer.MarkerClusterer({ markers, map });
     // May not work with custom markers?
@@ -105,27 +106,34 @@ async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
     let destinationWaypoint;
     let i = 0;
 
-    let response = await fetch('/api/stops');
-    let stops = await response.json();
 
-    for (const stop of stops) {
-        if (i == 0) {
-            originWaypoint = `${stop.restaurant_address}`;
-            console.log('in this if')
-            console.log(originWaypoint)
-        }
-        else if (i == stops.length-1) {
-            destinationWaypoint = `${stop.restaurant_address}`;
-        }
-        else {
-            directionsWaypoints.push({
-                location: `${stop.restaurant_address}`,
-                stopover: true,
-            });
+    fetch('/api/direction-stops')
+    .then((response) => response.json())
+    .then((stops) => {
+
+        for (const stop of stops) {
+            if (i == 0) {
+                originWaypoint = `${stop.restaurant_address}`;
+                console.log('in this if')
+                console.log(originWaypoint)
+            }
+            else if (i == stops.length-1) {
+                destinationWaypoint = `${stop.restaurant_address}`;
+            }
+            else {
+                directionsWaypoints.push({
+                    location: `${stop.restaurant_address}`,
+                    stopover: true,
+                });
+            };
+            
+            i ++;
         };
-        
-        i ++;
-    };
+    });
+
+    console.log(originWaypoint);
+    console.log(directionsWaypoints);
+    console.log(destinationWaypoint);
 
     directionsService
         .route({
@@ -156,6 +164,6 @@ async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
             }
         })
         .catch(() => alert("Directions request failed"));
-}  
+}
 
 initMap();
