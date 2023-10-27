@@ -106,30 +106,30 @@ async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
     let destinationWaypoint;
     let i = 0;
 
+    // Get some time to ask about this and async functions to understand better why this
+    //      didn't work at first as a regular fetch. Standard fetch had delay in data
+    //      being available but async and await allowed variables to come available
+    let response = await fetch('/api/direction-stops');
+    let stops = await response.json();
 
-    fetch('/api/direction-stops')
-    .then((response) => response.json())
-    .then((stops) => {
-
-        for (const stop of stops) {
-            if (i == 0) {
-                originWaypoint = `${stop.restaurant_address}`;
-                console.log('in this if')
-                console.log(originWaypoint)
-            }
-            else if (i == stops.length-1) {
-                destinationWaypoint = `${stop.restaurant_address}`;
-            }
-            else {
-                directionsWaypoints.push({
-                    location: `${stop.restaurant_address}`,
-                    stopover: true,
-                });
-            };
-            
-            i ++;
+    for (const stop of stops) {
+        if (i == 0) {
+            originWaypoint = `${stop.restaurant_address}`;
+            console.log('in this if')
+            console.log(originWaypoint)
+        }
+        else if (i == stops.length-1) {
+            destinationWaypoint = `${stop.restaurant_address}`;
+        }
+        else {
+            directionsWaypoints.push({
+                location: `${stop.restaurant_address}`,
+                stopover: true,
+            });
         };
-    });
+        
+        i ++;
+    };
 
     console.log(originWaypoint);
     console.log(directionsWaypoints);
@@ -164,6 +164,8 @@ async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
             }
         })
         .catch(() => alert("Directions request failed"));
+
+    alert('Calculating Directions...')
 }
 
 initMap();

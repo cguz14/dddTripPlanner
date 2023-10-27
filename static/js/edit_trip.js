@@ -53,7 +53,7 @@ function getStartPoint(index) {
 function setStartPoint(startAddress) {
 
     console.log(startAddress);
-    document.querySelector('#startpoint-choice').innerHTML = startAddress;
+    document.querySelector('#startpoint-choice').innerHTML = "<b>Startpoint:</b>" + startAddress;
 
 }
 
@@ -73,7 +73,7 @@ function getEndPoint(index) {
 function setEndPoint(endAddress) {
 
     console.log(endAddress);
-    document.querySelector('#endpoint-choice').innerHTML = endAddress;
+    document.querySelector('#endpoint-choice').innerHTML = "<b>Endpoint:</b>" + endAddress;
 
 }
 }
