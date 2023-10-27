@@ -10,7 +10,7 @@ async function initMap() {
 
   // Request needed libraries.
   //@ts-ignore
-  const { Map } = await google.maps.importLibrary("maps");
+  const { Map, InfoWindow } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
   // The map
@@ -20,7 +20,7 @@ async function initMap() {
     mapId: "DEMO_MAP_ID",
   });
 
-    const restaurantInfo = new google.maps.InfoWindow();
+    const restaurantInfo = new InfoWindow();
 
     fetch('/api/restaurants')
     .then((response) => response.json())
@@ -34,26 +34,16 @@ async function initMap() {
             <li><b>Restaurant Address: </b>${restaurant.restaurant_address}</li>
         </ul>
         </div>
-    `;
+        `;
 
-        let img = `https:${restaurant.restaurant_icon}`;
-
-        if (restaurant.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
-            img = restaurant.restaurant_icon;
-        }
-
-        const restaurantMarker = new google.maps.Marker({
+        const restaurantMarker = new AdvancedMarkerElement({
+        map,
         position: {
             lat: restaurant.restaurant_latitude,
             lng: restaurant.restaurant_longitude,
         },
+        content: buildMarker(restaurant),
         title: `Restaurant: ${restaurant.restaurant_name}`,
-
-        icon: {
-            url: img,
-            scaledSize: new google.maps.Size(80, 80),
-        },
-        map, // same as saying map: map
         });
 
         restaurantMarker.addListener('click', () => {
@@ -68,6 +58,27 @@ async function initMap() {
     We were unable to retrieve Restaurant data!!!
     `);
     });
+
+}
+
+function buildMarker(restaurant) {
+    
+    let restaurantImg = document.createElement("img")
+    restaurantImg.src = `https:${restaurant.restaurant_icon}`;
+
+    if (restaurant.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
+        restaurantImg.src = restaurant.restaurant_icon;
+    }
+
+    const content = document.createElement("div");
+
+    content.innerHTML = `
+    <div>
+        <img src=${restaurantImg.src} alt="Image for ${restaurant.restaurant_name}" class="all-restaurant-markers">
+    </div>
+    `;
+  
+    return content;
 
 }
 

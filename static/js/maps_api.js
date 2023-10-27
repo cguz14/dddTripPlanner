@@ -6,23 +6,30 @@ let map;
 
 async function initMap() {
   
-  // Start map near middle of US
-  const position = { lat: 40, lng: -100 };
+    // Start map near middle of US
+    const position = { lat: 40, lng: -100 };
 
-  // Request needed libraries.
-  //@ts-ignore
-  const { Map } = await google.maps.importLibrary("maps");
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    // Request needed libraries.
+    //@ts-ignore
 
-  // The map
-  map = new Map(document.getElementById("edit-trip-page-map"), {
-    zoom: 4,
-    center: position,
-    mapId: "DEMO_MAP_ID",
-  });
+    const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    const { DirectionsService, DirectionsRenderer } = await google.maps.importLibrary("routes")
 
-    const stopInfo = new google.maps.InfoWindow();
-    const markers=[];
+    const directionsService = new DirectionsService();
+    const directionsRenderer = new DirectionsRenderer();
+
+    // The map
+    map = new Map(document.getElementById("edit-trip-page-map"), {
+        zoom: 4,
+        center: position,
+        mapId: "DEMO_MAP_ID",
+    });
+
+    directionsRenderer.setMap(map);
+
+    const stopInfo = new InfoWindow();
+    const markers = [];
     
     fetch('/api/stops')
     .then((response) => response.json())
@@ -36,27 +43,18 @@ async function initMap() {
             <li><b>Restaurant Address: </b>${stop.restaurant_address}</li>
         </ul>
         </div>
-    `;
+        `;
 
-        let img = `https:${stop.restaurant_icon}`;
-
-        if (stop.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
-            img = stop.restaurant_icon;
-        }
-
-        const stopMarker = new google.maps.Marker({
+        const stopMarker = new AdvancedMarkerElement({
+        map,
         position: {
             lat: stop.restaurant_latitude,
             lng: stop.restaurant_longitude,
         },
+        content: buildMarker(stop),
         title: `Restaurant: ${stop.restaurant_name}`,
-        icon: {
-            url: img,
-            scaledSize: new google.maps.Size(60, 60),
-        },
-        map, // same as saying map: map
         });
-        
+
         markers.push(stopMarker)
         stopMarker.addListener('click', () => {
         stopInfo.close();
@@ -67,14 +65,97 @@ async function initMap() {
     })
     .catch(() => {
     alert(`
-    We were unable to retrieve Stop data!!!
+    Error while retrieving/displaying Stop map data.
     `);
     });
 
+
+    calculateAndDisplayTrip(directionsService, directionsRenderer)
     // console.log(markers) Maybe the Advanced Marker is needed to cluster?
     // const markerCluster = new markerClusterer.MarkerClusterer({ markers, map });
-    // console.log(markerCluster)
+    // May not work with custom markers?
 
 }
+
+function buildMarker(stop) {
+    
+    let restaurantImg = document.createElement("img")
+    restaurantImg.src = `https:${stop.restaurant_icon}`;
+
+    if (stop.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
+        restaurantImg.src = stop.restaurant_icon;
+    }
+
+    const content = document.createElement("div");
+
+    content.innerHTML = `
+    <div>
+        <img src=${restaurantImg.src} alt="Image for ${stop.restaurant_name}" class="restaurant-markers">
+    </div>
+    `;
+  
+    return content;
+
+}
+
+async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
+
+    const directionsWaypoints = [];
+    let originWaypoint;
+    let destinationWaypoint;
+    let i = 0;
+
+    let response = await fetch('/api/stops');
+    let stops = await response.json();
+
+    for (const stop of stops) {
+        if (i == 0) {
+            originWaypoint = `${stop.restaurant_address}`;
+            console.log('in this if')
+            console.log(originWaypoint)
+        }
+        else if (i == stops.length-1) {
+            destinationWaypoint = `${stop.restaurant_address}`;
+        }
+        else {
+            directionsWaypoints.push({
+                location: `${stop.restaurant_address}`,
+                stopover: true,
+            });
+        };
+        
+        i ++;
+    };
+
+    directionsService
+        .route({
+            origin: `${originWaypoint}`,
+            destination: `${destinationWaypoint}`,
+            waypoints: directionsWaypoints,
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.DRIVING,
+        })
+        .then ((response) => {
+            directionsRenderer.setDirections(response);
+
+            const route = response.routes[0];
+            const directionsPanel = document.querySelector('#directions-panel');
+
+            directionsPanel.innerHTML = "";
+
+            // Display directions for each route
+            for (let i = 0; i < route.legs.length; i ++) {
+
+                const routeSegment = i + 1;
+
+                directionsPanel.innerHTML += "<b>Route Segment: " + routeSegment + "</b><br>";
+                directionsPanel.innerHTML += route.legs[i].start_address + " to ";
+                directionsPanel.innerHTML += route.legs[i].end_address + "<br>";
+                directionsPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
+
+            }
+        })
+        .catch(() => alert("Directions request failed"));
+}  
 
 initMap();

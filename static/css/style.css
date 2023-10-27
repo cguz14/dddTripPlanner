@@ -15,6 +15,17 @@
     overflow: scroll;
 }
 
+.directions-list {
+    height: 500px;
+    overflow: scroll;
+}
+
+.directions-column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+}
+
 .custom-button-defaults {
     width: 100%
 }
@@ -32,3 +43,49 @@
     width: 200px;
     border-radius: 50%;
 }
+
+.restaurant-markers{
+    height: 100px;
+    width: 100px;
+    border-radius: 35%;
+}
+
+.all-restaurant-markers{
+    height: 70px;
+    width: 70px;
+    border-radius: 35%;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+.show {display: block;}

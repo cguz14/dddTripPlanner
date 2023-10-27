@@ -36,3 +36,23 @@ function newDescription(evt) {
 }
 
 document.querySelector('#change-trip-description-form').addEventListener('submit', newDescription);
+
+function getStartPoint(index) {
+
+    document.getElementById("startPointDropdown").classList.toggle("show");
+    if (index >= 0) {
+        const restaurantAddress = document.querySelector(`#clicked-restaurant-${index}`).value;
+        console.log(`made it into start function: ${restaurantAddress}`)
+
+        fetch(`/start-point-select.json?restaurantAddress=${restaurantAddress}`)
+        .then((response) => response.text())
+        .then(response);
+    }
+}
+
+function getEndPoint() {
+
+    document.getElementById("endPointDropdown").classList.toggle("show");
+    console.log('made it into end function')
+
+}

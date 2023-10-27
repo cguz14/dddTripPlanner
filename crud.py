@@ -352,14 +352,19 @@ def create_badges(badges):
 
 def award_badge(email, badge_id):
     """Add badge to user account"""
+    
+    if not check_for_badge(email, badge_id):
+        user = get_user_by_email(email)
+        award_badge = Badge.query.filter_by(badge_id = badge_id).one()
 
-    user = get_user_by_email(email)
-    award_badge = Badge.query.filter_by(badge_id = badge_id).one()
+        user.badges.append(award_badge)
+        db.session.commit()
 
-    user.badges.append(award_badge)
-    db.session.commit()
-
-    return award_badge
+        return award_badge
+    
+    else:
+        print('Error in award_badge() call, user already has badge for id being awarded')
+        return None
 
 def get_all_badges():
 
@@ -381,27 +386,18 @@ def check_for_badge(email, badge_id):
         
     return False
 
-# Used crud to delete badges that were no longer wanted, run file interactively
+# Used crud to update badges after badges were created, run file interactively
 # def update_badges_DEV_ONLY():
-#     # users = User.query.all()
-#     badges = Badge.query.all()
+#     users = User.query.all()
+#     # badge = Badge.query.filter_by(badge_id = 13).one()
 
-    # for user in users:
-    #     if user.user_id <= 5:
-    #         if user.badges:
-    #             for user_badge in user.badges:
-    #                 print(f'HERE ARE THE USER_BADGES {user_badge}')
-    #                 db.session.delete(user_badge)
+#     for user in users:
 
-    # db.session.commit()
+#         if not check_for_badge(user.email, 13):
+#             awarded_badge = award_badge(user.email, 13)
+#             print(f'{awarded_badge.badge_name} awarded to {user}')
             
-    # for badge in badges:
-    #     if badge.badge_id <= 10:
-    #         print(badge)
-    #         db.session.delete(badge)
-
-    # db.session.commit()
-    # print('badges updated')
+#     print('badges updated')
 
 if __name__ == '__main__':
     from server import app

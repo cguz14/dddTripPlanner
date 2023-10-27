@@ -238,14 +238,30 @@ def edit_trip():
     if "email" in session:
         if request.form.get("edit_trip"):
             session["trip_id"] = int(request.form.get("edit_trip"))
-            trip = crud.get_trip_by_id(session["trip_id"])
-            restaurants = crud.get_restaurants()
-            user = crud.get_user_by_email(session["email"])
+            # trip = crud.get_trip_by_id(session["trip_id"])
+            # restaurants = crud.get_restaurants()
+            # user = crud.get_user_by_email(session["email"])
 
-            return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user, MAPS_KEY=MAPS_KEY, pformat=pformat)
+            return redirect('/edit-trip')
         else:
             flash("Please select a trip!")
             return redirect('/edit-trips')
+    else:
+        flash("Trying Real Sneaky Beaky Like, ey? You need to be logged in to do that!")
+        return redirect('/')
+    
+@app.route('/edit-trip')
+def edit_trip_page():
+
+    if "email" in session:
+        # if request.form.get("edit_trip"):
+            # session["trip_id"] = int(request.form.get("edit_trip"))
+        trip = crud.get_trip_by_id(session["trip_id"])
+        restaurants = crud.get_restaurants()
+        user = crud.get_user_by_email(session["email"])
+
+        return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user, MAPS_KEY=MAPS_KEY, pformat=pformat)
+
     else:
         flash("Trying Real Sneaky Beaky Like, ey? You need to be logged in to do that!")
         return redirect('/')
@@ -257,7 +273,7 @@ def remove_stops():
         remove_stop_restaurant_ids = request.form.getlist("remove_stops")
         crud.remove_stops(remove_stop_restaurant_ids, session["trip_id"])
 
-        return redirect('/trips')
+        return redirect('/edit-trip')
     else:
         flash("How'd you get there? You need to be logged in to do that!")
         return redirect('/')
@@ -278,7 +294,7 @@ def add_stops():
             award_badge = crud.award_badge(session['email'], 15)
             flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
 
-        return redirect('/trips')
+        return redirect('/edit-trip')
     else:
         flash("Stop trying to h4ck the syst3m. You need to be logged in to access!")
         return redirect('/')
@@ -472,6 +488,45 @@ def show_all_badges():
     badges = crud.get_all_badges()
     return render_template('all_badges.html', badges=badges)
 
+@app.route("/start-point-select.json")
+def start_point_select():
+    
+
+
+    if "email" in session:        
+        start_restaurant = request.args.get("restaurantAddress")
+    #     liked = request.args.get("liked")
+    #     if liked == "true":
+    #         liked = True
+    #     else:
+    #         liked = False
+
+    #     user = crud.get_user_by_email(session["email"])
+    #     crud.change_like(liked, user, restaurant_id)
+
+    #     if not crud.check_for_badge(session['email'], 13):
+    #         award_badge = crud.award_badge(session['email'], 13)
+    #         flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+
+    #     if len(user.ratings) > 9:
+    #         if not crud.check_for_badge(session['email'], 16):
+    #             award_badge = crud.award_badge(session['email'], 16)
+    #             flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+
+    #     if len(user.ratings) > 49:
+    #         if not crud.check_for_badge(session['email'], 17):
+    #             award_badge = crud.award_badge(session['email'], 17)
+    #             flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
+
+    #     return "app route completed"
+    #     # getting restaurant name, need id and userid for new favorite.
+    #     # restaurant_id = crud.get 
+    #     # need to create favorite if user likes/dislikes and apply t/f depending
+    #     # what if anything needs to be returned to the js/html side?
+    # else:
+    #     flash("Please log in or crete an account to save ratings.")
+    #     return "user not logged in"
+    return 'made it to app route'
 
 if __name__ == "__main__":
     connect_to_db(app)
