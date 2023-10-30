@@ -97,7 +97,7 @@ class Restaurant(db.Model):
     # Consider saving full geocoded address so you're able to access other details if necessary in future without more seeds.
     restaurant_latitude = db.Column(db.Float)
     restaurant_longitude = db.Column(db.Float)
-    restaurant_state = db.Column(db.String(25))
+    restaurant_state = db.Column(db.String(100))
     food_type = db.Column(db.Text)
     episode_info = db.Column(db.String(50))
     

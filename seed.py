@@ -63,7 +63,7 @@ model.db.session.commit()
 
 
 n=0
-while n < 1:
+while n < 0: # set to 0 while not seeding to avoid reusing key. needs to be 86 when seeding
 
     url = f"https://www.foodnetwork.com/restaurants/shows/diners-drive-ins-and-dives/a-z/p/{n+1}"
 
@@ -86,7 +86,9 @@ while n < 1:
         restaurant_latitude = crud.get_latitude(address_geocoded)
         restaurant_longitude = crud.get_longitude(address_geocoded)
         formatted_address = crud.get_formatted_address(address_geocoded)
-        restaurant_state = crud.get_state(address_geocoded)
+        if not formatted_address: # Checks if address is in USA, if not, then keeps address as scraped. Issue caught with Cuban addresses.
+            formatted_address = address.strip()
+        restaurant_state = crud.get_city_and_state(address_geocoded)
         place_id =  crud.get_place_id(address_geocoded)
         # episode_info = info pull from wiki web scrape?
 
@@ -96,14 +98,14 @@ while n < 1:
             img = "static/img/attachment-guys-diner-background.jpg"
 
         new_restaurant = crud.create_restaurant(
-            name,
-            img,
-            description,
-            formatted_address,
+            name.strip(),
+            img.strip(),
+            description.strip(),
+            formatted_address.strip(),
             restaurant_latitude,
             restaurant_longitude,
-            restaurant_state,
-            place_id, # need to ensure change is reflected in rest of program. No longer food_type. Place Id can be used to pull more information from Places API
+            restaurant_state.strip(),
+            place_id.strip(), # need to ensure change is reflected in rest of program. No longer food_type. Place Id can be used to pull more information from Places API
             f"test_episode_info{n}"
         )
 
@@ -124,9 +126,14 @@ while n < 1:
         if can_add:
             restaurants_in_db.append(new_restaurant)
 
+    model.db.session.add_all(restaurants_in_db)
+    model.db.session.commit()
+
     n += 1
 
-print(restaurants_in_db)
+    
+
+# print(restaurants_in_db)
 model.db.session.add_all(restaurants_in_db)
 model.db.session.commit()
 

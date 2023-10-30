@@ -281,17 +281,48 @@ def get_longitude(address_geocoded):
 
 def get_formatted_address(address_geocoded):
 
+    address_info = address_geocoded['address_components']
+    location_type = address_geocoded['geometry']['location_type']
+
+    for info in address_info:
+        if "country" in info['types']:
+            country = info['long_name']
+
+    if country != 'United States':
+        return None
+    elif location_type == "APPROXIMATE":
+        return "(Approximate Location) " + address_geocoded['formatted_address']
+
     return address_geocoded['formatted_address']
 
-def get_state(address_geocoded):
+def get_city_and_state(address_geocoded):
     
-    state_info = address_geocoded['address_components']
+    address_info = address_geocoded['address_components']
 
-    for info in state_info:
-        if "administrative_area_level_1" in info['types'].values:
-            state = info['long_name']
+    print(address_geocoded)
 
-    return state
+    state = ''
+    city = ''
+
+    for info in address_info:
+        if "administrative_area_level_1" in info['types']:
+            state = info['short_name']
+        elif "locality" in info['types']:
+            city = info['long_name']
+        elif "country" in info['types']:
+            country = info['long_name']
+        elif "postal_town" in info['types']:
+            city = info['long_name']
+
+    if city == '':
+        return country
+
+    if country != "United States":
+        city_and_state = city + ", " + country
+    else:
+        city_and_state = city + ", " + state
+
+    return city_and_state
 
 def get_place_id(address_geocoded):
 
@@ -361,6 +392,7 @@ def read_badges():
 
     return badges
 
+# Can be executed with read_badges() as a parameter to add .txt badges to db
 def create_badges(badges):
     """Take dictionary of badges from txt and store in db"""
 
@@ -423,6 +455,162 @@ def check_for_badge(email, badge_id):
 #             print(f'{awarded_badge.badge_name} awarded to {user}')
             
 #     print('badges updated')
+
+def make_maps_param(start_address, end, trip):
+
+    stops = []
+
+    # both a start and end entered
+    if start_address and end:
+
+        # list starts with user_address
+        stops.append({
+                        "restaurant_id" : "User Address Start Point",
+                        "restaurant_name" : "User Address Start Point",
+                        "restaurant_icon" : "User Address Start Point",
+                        "restaurant_description" : "User Address Start Point",
+                        "restaurant_address" : start_address,
+                        "restaurant_latitude" :"User Address Start Point",
+                        "restaurant_longitude" : "User Address Start Point",
+                        "restaurant_state" : "User Address Start Point",
+                        "food_type" : "User Address Start Point",
+                        "episode_info" : "User Address Start Point"
+                    })
+
+        # list then adds all in-between waypoints. Their order won't matter as long as they are not start or end.
+        for restaurant in trip.restaurants:
+            if restaurant != end:
+                stops.append({
+                    "restaurant_id" : restaurant.restaurant_id,
+                    "restaurant_name" : restaurant.restaurant_name,
+                    "restaurant_icon" : restaurant.restaurant_icon,
+                    "restaurant_description" : restaurant.restaurant_description,
+                    "restaurant_address" : restaurant.restaurant_address,
+                    "restaurant_latitude" : restaurant.restaurant_latitude,
+                    "restaurant_longitude" : restaurant.restaurant_longitude,
+                    "restaurant_state" : restaurant.restaurant_state,
+                    "food_type" : restaurant.food_type,
+                    "episode_info" : restaurant.episode_info
+                })
+
+        # place selected end point as last address in list
+        stops.append({
+            "restaurant_id" : end.restaurant_id,
+            "restaurant_name" : end.restaurant_name,
+            "restaurant_icon" : end.restaurant_icon,
+            "restaurant_description" : end.restaurant_description,
+            "restaurant_address" : end.restaurant_address,
+            "restaurant_latitude" : end.restaurant_latitude,
+            "restaurant_longitude" : end.restaurant_longitude,
+            "restaurant_state" : end.restaurant_state,
+            "food_type" : end.food_type,
+            "episode_info" : end.episode_info
+        })
+
+        # since start address was entered, origin param needed        
+        param_address = "origin="
+
+        for idx, stop in enumerate(stops):
+            address = stop['restaurant_address'].lstrip()
+
+            if idx == 1:
+                param_address += "&waypoints="
+
+            if idx == len(stops)-1:
+                param_address += "&destination="
+
+            for char in address:
+                if char == "#":
+                    encoded_char = f"%23"            
+                    param_address += encoded_char
+                elif char == "/":
+                    encoded_char = f"%2F"            
+                    param_address += encoded_char
+                elif char.strip() == '':
+                    encoded_char = f"%20"
+                    param_address += encoded_char
+                elif char == ",":
+                    encoded_char = f"%2C"
+                    param_address += encoded_char
+                elif char == ".":
+                    encoded_char = f"%2E"
+                    param_address += encoded_char
+                elif char == '"':
+                    encoded_char = f"%22"
+                    param_address += encoded_char
+                else:
+                    param_address += char
+
+            if idx > 0 and idx < len(stops)-2:
+                param_address += f"%7C"         
+    # only an end address submitted
+    elif end:
+        
+        for restaurant in trip.restaurants:
+            if restaurant != end:
+                stops.append({
+                    "restaurant_id" : restaurant.restaurant_id,
+                    "restaurant_name" : restaurant.restaurant_name,
+                    "restaurant_icon" : restaurant.restaurant_icon,
+                    "restaurant_description" : restaurant.restaurant_description,
+                    "restaurant_address" : restaurant.restaurant_address,
+                    "restaurant_latitude" : restaurant.restaurant_latitude,
+                    "restaurant_longitude" : restaurant.restaurant_longitude,
+                    "restaurant_state" : restaurant.restaurant_state,
+                    "food_type" : restaurant.food_type,
+                    "episode_info" : restaurant.episode_info
+                })
+
+        stops.append({
+            "restaurant_id" : end.restaurant_id,
+            "restaurant_name" : end.restaurant_name,
+            "restaurant_icon" : end.restaurant_icon,
+            "restaurant_description" : end.restaurant_description,
+            "restaurant_address" : end.restaurant_address,
+            "restaurant_latitude" : end.restaurant_latitude,
+            "restaurant_longitude" : end.restaurant_longitude,
+            "restaurant_state" : end.restaurant_state,
+            "food_type" : end.food_type,
+            "episode_info" : end.episode_info
+        })
+
+        for idx, stop in enumerate(stops):
+            address = stop['restaurant_address'].lstrip()
+
+            if idx == 1:
+                param_address += "&waypoints="
+
+            if idx == len(stops)-1:
+                param_address += "&destination="
+
+            for char in address:
+                if char == "#":
+                    encoded_char = f"%23"            
+                    param_address += encoded_char
+                elif char == "/":
+                    encoded_char = f"%2F"            
+                    param_address += encoded_char
+                elif char.strip() == '':
+                    encoded_char = f"%20"
+                    param_address += encoded_char
+                elif char == ",":
+                    encoded_char = f"%2C"
+                    param_address += encoded_char
+                elif char == ".":
+                    encoded_char = f"%2E"
+                    param_address += encoded_char
+                elif char == '"':
+                    encoded_char = f"%22"
+                    param_address += encoded_char
+                else:
+                    param_address += char
+
+            if idx > 0 and idx < len(stops)-2:
+                param_address += f"%7C"
+
+
+
+    return param_address
 
 if __name__ == '__main__':
     from server import app
