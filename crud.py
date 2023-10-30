@@ -463,7 +463,7 @@ def make_maps_param(start_address, end, ordered_stops):
     print('ordered stops *******************************')
     print(ordered_stops)
 
-    ordered_list = ordered_stops.split('00000')
+    ordered_list = ordered_stops.split('QQQQQ')
 
     print(ordered_list)
 
@@ -483,7 +483,7 @@ def make_maps_param(start_address, end, ordered_stops):
             "episode_info" : "User Address Start Point"
         })
 
-        for ordered_stop in ordered_list[:-1]:
+        for ordered_stop in ordered_list:
 
             print(f'orderedStop {ordered_stop}')
             restaurant = Restaurant.query.filter_by(restaurant_address = ordered_stop).one()

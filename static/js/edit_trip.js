@@ -118,14 +118,13 @@ function getOrderedDirections(evt) {
     evt.preventDefault();
     const orderedStops = document.querySelectorAll('.url-maps-directions');
 
-    console.log(orderedStops)
     let i = 1;
     let params = "";
-    while (i < orderedStops.length) {
-        console.log(orderedStops[i].innerText);
-        params += orderedStops[i].innerText + "00000"
+    while (i < orderedStops.length-1) {
+        params += orderedStops[i].innerText + "QQQQQ";
         i ++;
     }
+    params += orderedStops[i].innerText
 
     fetch(`/route-to-maps.json?orderedStops=${params}`)
         .then((response) => response.text())
