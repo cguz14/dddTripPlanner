@@ -164,7 +164,7 @@ async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
                 const routeSegment = i + 1;
 
                 directionsPanel.innerHTML += "<b>Route Segment: " + routeSegment + "</b><br>";
-                directionsPanel.innerHTML += route.legs[i].start_address + " to ";
+                directionsPanel.innerHTML += `<span id="stop${i}" class="url-maps-directions">` + route.legs[i].start_address + "</span> to ";
                 directionsPanel.innerHTML += route.legs[i].end_address + "<br>";
                 directionsPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
 

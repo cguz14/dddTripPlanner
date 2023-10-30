@@ -98,3 +98,40 @@ function newUserAddress(evt) {
 }
 
 document.querySelector('#enter-address-form').addEventListener('submit', newUserAddress);
+
+// pulls stops in correct order from directions information
+function directionsConfirmation(param_address) {
+    if (param_address == 'Please first submit "Get Directions"') {
+        alert('Please first submit "Get Directions"');
+    }
+    else if (param_address == 'Please login') {
+        alert('Please login');
+    }
+    else {
+        window.open(`https://www.google.com/maps/dir/?api=1&${param_address}`)
+        alert("Enjoy the trip to Flavortown!");
+    }
+}
+
+function getOrderedDirections(evt) {
+
+    evt.preventDefault();
+    const orderedStops = document.querySelectorAll('.url-maps-directions');
+
+    console.log(orderedStops)
+    let i = 1;
+    let params = "";
+    while (i < orderedStops.length) {
+        console.log(orderedStops[i].innerText);
+        params += orderedStops[i].innerText + "00000"
+        i ++;
+    }
+
+    fetch(`/route-to-maps.json?orderedStops=${params}`)
+        .then((response) => response.text())
+        .then(directionsConfirmation)
+        .catch(() => { alert("Ordered Directions grab error.")});
+
+}
+
+document.querySelector('#maps-url').addEventListener('click', getOrderedDirections);
