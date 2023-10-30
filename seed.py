@@ -87,7 +87,7 @@ while n < 1:
         restaurant_longitude = crud.get_longitude(address_geocoded)
         formatted_address = crud.get_formatted_address(address_geocoded)
         restaurant_state = crud.get_state(address_geocoded)
-        # food_type =  # pull info from separate api?
+        place_id =  crud.get_place_id(address_geocoded)
         # episode_info = info pull from wiki web scrape?
 
         if restaurant.find(class_="m-MediaBlock__a-Image"):
@@ -96,18 +96,22 @@ while n < 1:
             img = "static/img/attachment-guys-diner-background.jpg"
 
         new_restaurant = crud.create_restaurant(
-            f"{name}",
-            f"{img}",
-            f"{description}",
-            f"{formatted_address}",
+            name,
+            img,
+            description,
+            formatted_address,
             restaurant_latitude,
             restaurant_longitude,
-            f"{restaurant_state}",
-            f"test_food_type{n}",
+            restaurant_state,
+            place_id, # need to ensure change is reflected in rest of program. No longer food_type. Place Id can be used to pull more information from Places API
             f"test_episode_info{n}"
         )
 
         print(name)
+        print(formatted_address)
+        print(restaurant_state)
+        print(place_id)
+        print("*********************")
 
         can_add=True
         old_address = ""

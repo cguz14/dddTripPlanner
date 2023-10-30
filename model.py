@@ -98,7 +98,7 @@ class Restaurant(db.Model):
     restaurant_latitude = db.Column(db.Float)
     restaurant_longitude = db.Column(db.Float)
     restaurant_state = db.Column(db.String(25))
-    food_type = db.Column(db.String(100))
+    food_type = db.Column(db.Text)
     episode_info = db.Column(db.String(50))
     
     ratings = db.relationship("Rating", back_populates = "restaurant")
