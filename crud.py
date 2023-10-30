@@ -283,9 +283,15 @@ def get_formatted_address(address_geocoded):
 
     return address_geocoded['formatted_address']
 
-# def get_state(address_geocoded): Need to pull info from geocoded address, show as administrative_area_level_1 type
+def get_state(address_geocoded):
     
-#     return address_geocoded['address_components']['']
+    state_info = address_geocoded['address_components']
+
+    for info in state_info:
+        if "administrative_area_level_1" in info['types'].values:
+            state = info['long_name']
+
+    return state
 
 def get_place_id(address_geocoded):
 
