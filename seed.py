@@ -63,7 +63,7 @@ model.db.session.commit()
 
 
 n=0
-while n < 86:
+while n < 1:
 
     url = f"https://www.foodnetwork.com/restaurants/shows/diners-drive-ins-and-dives/a-z/p/{n+1}"
 
@@ -82,24 +82,29 @@ while n < 86:
         name = restaurant.find(class_="m-MediaBlock__a-HeadlineText").get_text()
         address = restaurant.find(class_="m-Info__a-Address").get_text()
         description = restaurant.find(class_="m-MediaBlock__a-Description").get_text()
-        address_geocoded = crud.convert_address_to_geocode(address)
+        address_geocoded = crud.convert_address_to_geocode(address) # this is also able to pull api information
         restaurant_latitude = crud.get_latitude(address_geocoded)
         restaurant_longitude = crud.get_longitude(address_geocoded)
+        formatted_address = crud.get_formatted_address(address_geocoded)
+        restaurant_state = crud.get_state(address_geocoded)
+        # food_type =  # pull info from separate api?
+        # episode_info = info pull from wiki web scrape?
+
         if restaurant.find(class_="m-MediaBlock__a-Image"):
             img = restaurant.find(class_="m-MediaBlock__a-Image").get("src")
         else:
-            img = None
+            img = "static/img/attachment-guys-diner-background.jpg"
 
         new_restaurant = crud.create_restaurant(
             f"{name}",
             f"{img}",
             f"{description}",
-            f"{address}",
+            f"{formatted_address}",
             restaurant_latitude,
             restaurant_longitude,
-            f"testrestaurant_state{n}",
-            f"testfood_type{n}",
-            f"testepisode_info{n}"
+            f"{restaurant_state}",
+            f"test_food_type{n}",
+            f"test_episode_info{n}"
         )
 
         print(name)

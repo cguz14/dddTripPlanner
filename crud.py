@@ -237,7 +237,7 @@ def remove_stops(restaurant_ids, trip_id):
 
 def convert_address_to_geocode(address):
 
-    MAPS_KEY = os.environ['MAPS_KEY']
+    GEO_PLACES_KEY = os.environ['GEO_PLACES_KEY']
 
     # address = address.split()
 
@@ -256,21 +256,40 @@ def convert_address_to_geocode(address):
         else:
             param_address += char
 
-    url = f"https://maps.googleapis.com/maps/api/geocode/json?address={param_address}&key={MAPS_KEY}"
+    url = f"https://maps.googleapis.com/maps/api/geocode/json?address={param_address}&key={GEO_PLACES_KEY}"
 
     response = requests.get(url)
     # Ugly way to retrieve specific value needed from json dict. Any other recommendations
-    address_geocoded = response.json().get('results')[0].get('geometry').get('location')
+    print(response.json()['status'])
+
+    if response.json()['status'] == 'INVALID_REQUEST':
+        return response.json()['status']
+    elif response.json()['status'] == 'ZERO_RESULTS':
+        return response.json()['status']
+
+    address_geocoded = response.json().get('results')[0]
 
     return address_geocoded
 
 def get_latitude(address_geocoded):
 
-    return address_geocoded['lat']
+    return address_geocoded['geometry']['location']['lat']
 
 def get_longitude(address_geocoded):
 
-    return address_geocoded['lng']
+    return address_geocoded['geometry']['location']['lng']
+
+def get_formatted_address(address_geocoded):
+
+    return address_geocoded['formatted_address']
+
+# def get_state(address_geocoded): Need to pull info from geocoded address, show as administrative_area_level_1 type
+    
+#     return address_geocoded['address_components']['']
+
+def get_place_id(address_geocoded):
+
+    return address_geocoded['place_id']
 
 def change_like(liked, user, restaurant_id):
     

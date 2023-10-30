@@ -16,6 +16,7 @@ import random
 app = Flask(__name__)
 app.secret_key = os.environ['SECRETKEY']
 MAPS_KEY = os.environ['MAPS_KEY']
+GEO_PLACES_KEY = os.environ['GEO_PLACES_KEY']
 app.jinja_env.undefined = StrictUndefined
 
 # Replace this with routes and view functions!
@@ -489,7 +490,9 @@ def show_all_badges():
     badges = crud.get_all_badges()
     return render_template('all_badges.html', badges=badges)
 
-@app.route("/start-point-select.json")
+# This route likely to be removed. Makes more sense for user to be able to enter
+#   their own starting address as a starting point
+@app.route("/start-point-select.json") 
 def start_point_select():
 
     if "email" in session:        
@@ -527,28 +530,28 @@ def direction_stop_info():
     """Return stops info with proper start and end from db in JSON form for Directions API"""
     
     if 'email' in session:
-        if 'start_restaurant_id' in session and 'end_restaurant_id' in session:
+        if 'user_address' in session and 'end_restaurant_id' in session:
             stops = []
             trip = crud.get_trip_by_id(session["trip_id"])
 
-            start = crud.get_one_restaurant_by_id(session['start_restaurant_id'])
+            start_address = session['user_address']
             end = crud.get_one_restaurant_by_id(session['end_restaurant_id'])
 
             stops.append({
-                        "restaurant_id" : start.restaurant_id,
-                        "restaurant_name" : start.restaurant_name,
-                        "restaurant_icon" : start.restaurant_icon,
-                        "restaurant_description" : start.restaurant_description,
-                        "restaurant_address" : start.restaurant_address,
-                        "restaurant_latitude" : start.restaurant_latitude,
-                        "restaurant_longitude" : start.restaurant_longitude,
-                        "restaurant_state" : start.restaurant_state,
-                        "food_type" : start.food_type,
-                        "episode_info" : start.episode_info
+                        "restaurant_id" : "User Address Start Point",
+                        "restaurant_name" : "User Address Start Point",
+                        "restaurant_icon" : "User Address Start Point",
+                        "restaurant_description" : "User Address Start Point",
+                        "restaurant_address" : start_address,
+                        "restaurant_latitude" :"User Address Start Point",
+                        "restaurant_longitude" : "User Address Start Point",
+                        "restaurant_state" : "User Address Start Point",
+                        "food_type" : "User Address Start Point",
+                        "episode_info" : "User Address Start Point"
                     })
 
             for restaurant in trip.restaurants:
-                if restaurant != start and restaurant != end:
+                if restaurant != end:
                     stops.append({
                         "restaurant_id" : restaurant.restaurant_id,
                         "restaurant_name" : restaurant.restaurant_name,
@@ -576,7 +579,7 @@ def direction_stop_info():
                     })
 
             # Throw an error in dev console if the order doesn't get done correctly after selecting new start/end
-            if stops[0]['restaurant_id'] != start.restaurant_id:
+            if stops[0]['restaurant_address'] != start_address:
                 return "error when ordering direction start point"
             elif stops[len(stops)-1]['restaurant_id'] != end.restaurant_id:
                 return "error when ordering direction end point"
@@ -597,29 +600,29 @@ def direction_stop_info():
 def route_to_maps():
 
     if 'email' in session:
-        if 'start_restaurant_id' in session and 'end_restaurant_id' in session:
+        if 'user_address' in session and 'end_restaurant_id' in session:
             
             stops = []
             trip = crud.get_trip_by_id(session["trip_id"])
 
-            start = crud.get_one_restaurant_by_id(session['start_restaurant_id'])
+            start_address = session['user_address']
             end = crud.get_one_restaurant_by_id(session['end_restaurant_id'])
 
             stops.append({
-                        "restaurant_id" : start.restaurant_id,
-                        "restaurant_name" : start.restaurant_name,
-                        "restaurant_icon" : start.restaurant_icon,
-                        "restaurant_description" : start.restaurant_description,
-                        "restaurant_address" : start.restaurant_address,
-                        "restaurant_latitude" : start.restaurant_latitude,
-                        "restaurant_longitude" : start.restaurant_longitude,
-                        "restaurant_state" : start.restaurant_state,
-                        "food_type" : start.food_type,
-                        "episode_info" : start.episode_info
+                        "restaurant_id" : "User Address Start Point",
+                        "restaurant_name" : "User Address Start Point",
+                        "restaurant_icon" : "User Address Start Point",
+                        "restaurant_description" : "User Address Start Point",
+                        "restaurant_address" : start_address,
+                        "restaurant_latitude" :"User Address Start Point",
+                        "restaurant_longitude" : "User Address Start Point",
+                        "restaurant_state" : "User Address Start Point",
+                        "food_type" : "User Address Start Point",
+                        "episode_info" : "User Address Start Point"
                     })
 
             for restaurant in trip.restaurants:
-                if restaurant != start and restaurant != end:
+                if restaurant != end:
                     stops.append({
                         "restaurant_id" : restaurant.restaurant_id,
                         "restaurant_name" : restaurant.restaurant_name,
@@ -685,6 +688,34 @@ def route_to_maps():
             print(param_address)
 
             return redirect(f'https://www.google.com/maps/dir/?api=1&{param_address}')
+        
+@app.route('/new-user-address.json')
+def new_user_address():
+
+    if 'email' in session:
+
+        print("made it to app route")
+
+        new_user_address = request.args.get('newUserAddress')
+
+        geocoded_user_address = crud.convert_address_to_geocode(new_user_address)
+
+        if geocoded_user_address == 'INVALID_REQUEST':
+            print('in this if loop')
+            return "Entered address not valid, please try again."
+        elif geocoded_user_address == 'ZERO_RESULTS':
+            print('in this if loop')
+            return "Entered address not valid, please try again."
+
+        formatted_address = crud.get_formatted_address(geocoded_user_address)
+
+        session['user_address'] = formatted_address
+
+        return formatted_address
+    
+    else:
+        flash("Please log in or create an account for directions!")
+        return "user not logged in"
 
 if __name__ == "__main__":
     connect_to_db(app)

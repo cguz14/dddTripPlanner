@@ -70,10 +70,31 @@ function getEndPoint(index) {
         .then(setEndPoint);
     }
 
+}
+
 function setEndPoint(endAddress) {
 
     console.log(endAddress);
     document.querySelector('#endpoint-choice').innerHTML = "<b>Endpoint:</b>" + endAddress;
 
 }
+
+function insertUserAddress(newUserAddress) {
+    document.querySelector('#startpoint-choice').innerHTML = "<b>Startpoint:</b>" + newUserAddress;
+    if (newUserAddress === "INVALID_REQUEST") {alert("Address not valid, please try again.")}
+    else {alert("User Address accepted")};
 }
+
+function newUserAddress(evt) {
+
+    evt.preventDefault();
+    const newUserAddress = document.querySelector('#enter-address-field').value;
+
+    fetch(`/new-user-address.json?newUserAddress=${newUserAddress}`)
+        .then((response) => response.text())
+        .then(insertUserAddress)
+        .catch(() => { alert("Entered address was not found, please try again.")});
+
+}
+
+document.querySelector('#enter-address-form').addEventListener('submit', newUserAddress);

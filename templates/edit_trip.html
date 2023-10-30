@@ -71,7 +71,19 @@
 
             <div class="directions-column">
 
-                <div id="startPointForm" class="dropdown">
+                <form id="enter-address-form">
+                    <div class="form-group">
+                        Your starting address: 
+                        <input class="form-control" type="text" name="enter-address"
+                            id="enter-address-field" placeholder="Address">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary mt-2" type="submit">Confirm Address</button>
+                    </div>
+                </form>
+
+                <!-- LIKELY TO ELIMINATE FORM DUE TO HAVING USER INPUT START ADDRESS
+                    <div id="startPointForm" class="dropdown">
                     <button onclick="getStartPoint(-1)" class="dropbtn">Select Start Point</button>
                     <div id="startPointDropdown" class="dropdown-content">
                         {% for restaurant in trip.restaurants %}
@@ -80,7 +92,7 @@
                             </button>
                         {% endfor %}
                     </div>
-                </div>
+                </div> -->
                 <div id="endPointForm" class="dropdown">
                     <button onclick="getEndPoint(-1)" class="dropbtn">Select End Point</button>
                     <div id="endPointDropdown" class="dropdown-content">
