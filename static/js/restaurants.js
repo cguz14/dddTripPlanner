@@ -82,7 +82,6 @@ function startingThumbs(results) {
             let btn2 = btn2s[i]
 
             const restaurantId = document.getElementById(`all-fav-id-${i+1}`).innerHTML;
-            console.log(restaurantId)
 
             if (rating['restaurant_id'] == restaurantId) {
                 if(rating['thumbs_up']) {

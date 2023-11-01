@@ -7,8 +7,6 @@
 {% endblock %}
 
 {% block content %}
-
-
     <div class="row">
         <div id="return_profile_from_trips">    
             <form action="/profile" method="get">
@@ -132,6 +130,33 @@
                 
             </div>
 
+            <div class="accordion" id="trip-restaurant-accordion">
+                <div class="accordion-item">
+                {% set count = [] %}
+                {% for state in sorted(restaurant_state_dict) %}
+                  <h2 class="accordion-header" id="trip-heading-{{ state }}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#trip-collapse-{{ state }}" aria-expanded="true" aria-controls="trip-collapse-{{ state }}">
+                      {{ list(restaurant_state_dict[state].keys())[0] }}
+                    </button>
+                  </h2>
+                  {% for restaurant in restaurant_state_dict[state][list(restaurant_state_dict[state].keys())[0]] %}
+                      <div id="trip-collapse-{{ state }}" class="accordion-collapse collapse" aria-labelledby="trip-heading-{{ state }}">
+                        <div class="accordion-body">
+                            <input type="checkbox" name="add_stops" value="{{ restaurant.restaurant_id }}" class="form-check-input">
+                            <div>
+                                <label for="restaurant{{ loop.index }}" class="form-check-label">
+                                    <div><b>{{ restaurant.restaurant_name }}.</b> Address: {{ restaurant.restaurant_address }} </div>
+                                </label>
+                            </div>
+                            <input type="submit" value="Add Stop(s) to Trip">
+                            {% set add = count.append(1) %}
+                        </div>
+                      </div>
+                  {% endfor %}
+                {% endfor %}
+                </div>
+            </div> <!--accordion-->
+
             <div class="form-check restaurant-list">
                 <form action="/edit-trip-add-stops", method="POST">
                     {% for restaurant in restaurants %}
@@ -142,9 +167,10 @@
                                 </label>
                             </div>
                     {% endfor %}
-            </div>
+            
                 <input type="submit" value="Add Stop(s) to Trip">
                 </form>
+            </div>
             
         </div>
 

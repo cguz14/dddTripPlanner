@@ -34,45 +34,19 @@ def homepage():
 def show_restaurants():
     """Shows all restaurants"""
 
-    restaurants = crud.get_restaurants()
+    restaurant_state_dict = crud.get_restaurant_state_dict()
 
-    state_list = [
-        'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
-        'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
-        'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
-        'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
-        'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
-    ]
-    full_state_list = [
-        'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
-        'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
-        'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
-        'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-        'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
-        'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
-        'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 
-        'Wisconsin', 'Wyoming'
-    ]
-    restaurant_state_dict = {}
-
-    for idx, state in enumerate(state_list):
-        # restaurant_state currently returns full 'City, ST'
-        restaurant_state_dict[state] = {}
-        filtered_restaurants = crud.get_states_restaurants(state)
-        restaurant_state_dict[state][full_state_list[idx]] = filtered_restaurants
-
-
-    # Need to duplicate this block on the html jinja side to store in accordions
-    # sorted_restaurants = sorted(restaurant_state_dict)
-    # print(sorted_restaurants)
-    for state in sorted(restaurant_state_dict):
-        print(f'State: {state}')
-        long_state = list(restaurant_state_dict[state].keys())[0]
-        print(f'Long State: {long_state}')
-        print(f'Restaurants: {restaurant_state_dict[state][long_state]}')
+    # # Need to essentially duplicate this on the html jinja side to store in accordions
+    # # sorted_restaurants = sorted(restaurant_state_dict)
+    # # print(sorted_restaurants)
+    # for state in sorted(restaurant_state_dict):
+    #     print(f'State: {state}')
+    #     long_state = list(restaurant_state_dict[state].keys())[0]
+    #     print(f'Long State: {long_state}')
+    #     print(f'Restaurants: {restaurant_state_dict[state][long_state]}')
     # pprint(restaurant_state_dict)
 
-    return render_template('restaurants.html', restaurants=restaurants, MAPS_KEY=MAPS_KEY, sorted=sorted, list=list, restaurant_state_dict=restaurant_state_dict)
+    return render_template('restaurants.html', MAPS_KEY=MAPS_KEY, sorted=sorted, list=list, restaurant_state_dict=restaurant_state_dict)
 
 @app.route('/login', methods=["POST"])
 def user_login():
@@ -295,10 +269,10 @@ def edit_trip_page():
         # if request.form.get("edit_trip"):
             # session["trip_id"] = int(request.form.get("edit_trip"))
         trip = crud.get_trip_by_id(session["trip_id"])
-        restaurants = crud.get_restaurants()
+        restaurant_state_dict = crud.get_restaurant_state_dict()
         user = crud.get_user_by_email(session["email"])
 
-        return render_template('edit_trip.html', trip=trip, restaurants=restaurants, user=user, MAPS_KEY=MAPS_KEY, pformat=pformat)
+        return render_template('edit_trip.html', trip=trip, restaurant_state_dict=restaurant_state_dict, user=user, MAPS_KEY=MAPS_KEY, sorted=sorted, list=list)
 
     else:
         flash("Trying Real Sneaky Beaky Like, ey? You need to be logged in to do that!")
