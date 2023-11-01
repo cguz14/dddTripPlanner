@@ -37,25 +37,26 @@ function newDescription(evt) {
 
 document.querySelector('#change-trip-description-form').addEventListener('submit', newDescription);
 
-function getStartPoint(index) {
+// These functions likely to be eliminated after removal of start points selection
+// function getStartPoint(index) {
 
-    document.getElementById("startPointDropdown").classList.toggle("show");
-    if (index >= 0) {
-        const restaurantId = document.querySelector(`#clicked-restaurant-${index}`).value;
-        console.log(`made it into start function: ${restaurantId}`)
+//     document.getElementById("startPointDropdown").classList.toggle("show");
+//     if (index >= 0) {
+//         const restaurantId = document.querySelector(`#clicked-restaurant-${index}`).value;
+//         console.log(`made it into start function: ${restaurantId}`)
 
-        fetch(`/start-point-select.json?restaurantId=${restaurantId}`)
-        .then((response) => response.text())
-        .then(setStartPoint);
-    }
-}
+//         fetch(`/start-point-select.json?restaurantId=${restaurantId}`)
+//         .then((response) => response.text())
+//         .then(setStartPoint);
+//     }
+// }
 
-function setStartPoint(startAddress) {
+// function setStartPoint(startAddress) {
 
-    console.log(startAddress);
-    document.querySelector('#startpoint-choice').innerHTML = "<b>Startpoint:</b>" + startAddress;
+//     console.log(startAddress);
+//     document.querySelector('#startpoint-choice').innerHTML = "<b>Startpoint:</b>" + startAddress;
 
-}
+// }
 
 function getEndPoint(index) {
 

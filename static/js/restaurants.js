@@ -16,11 +16,6 @@ for (let i=0; i < btn1s.length; i++) {
     btn1.addEventListener('click', function(evt) {
 
         let restaurantId = document.getElementById(`all-fav-id-${i+1}`).innerHTML;
-        // restaurantName = restaurantName.replace(/&/g, "%26");
-        // restaurantName = restaurantName.replace(/#/g, "%23");
-        // restaurantName = restaurantName.replaceAll('/', '%26');
-        // restaurantName = restaurantName.replaceAll('!', '%21');
-        // console.log(restaurantName)
         
         evt.preventDefault();
 
@@ -48,11 +43,6 @@ for (let i=0; i < btn2s.length; i++) {
     btn2.addEventListener('click', function(evt) {
     
         let restaurantId = document.getElementById(`all-fav-id-${i+1}`).innerHTML;
-        // restaurantName = restaurantName.replace(/&/g, "%26")
-        // restaurantName = restaurantName.replace(/#/g, "%23");
-        // restaurantName = restaurantName.replaceAll('/', '%26');
-        // restaurantName = restaurantName.replaceAll('!', '%21');
-        // console.log(restaurantName)
 
         evt.preventDefault();
         if (btn1.classList.contains('green')) {

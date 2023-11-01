@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<div class="container">
+
     <div class="row">
         <div id="return_profile_from_trips">    
             <form action="/profile" method="get">
@@ -46,28 +46,27 @@
             </form>
 
             <form action="/edit-trip-remove-stops", method="POST">
-                
-            <div class="directions-column">
-                {% for restaurant in trip.restaurants %}
-                    <div>
-                        <input type="checkbox" name="remove_stops" value="{{ restaurant.restaurant_id }}">
-                        <label for="restaurant{{ loop.index }}">
-                            <div>Stop {{ loop.index }}: {{ restaurant.restaurant_name }}; {{ restaurant.restaurant_address }} </div>
-                        </label>
-                    </div>
-                {% endfor %}
-            </div>
-                
-                
-            <!-- div to hold the directions information -->
-            <div id="directions-panel" class="directions-column directions-list">
-                Select a start and end point below to generate directions for your trip!
-            </div>
-                
-            <div class="directions-column">
-                <input type="submit" value="Remove Stop(s) from Trip">
-                </form>
-            </div>
+                <div class="directions-column">
+                    {% for restaurant in trip.restaurants %}
+                        <div>
+                            <input type="checkbox" name="remove_stops" value="{{ restaurant.restaurant_id }}">
+                            <label for="restaurant{{ loop.index }}">
+                                <div>Stop {{ loop.index }}: {{ restaurant.restaurant_name }}; {{ restaurant.restaurant_address }} </div>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+                    
+                    
+                <div id="directions-panel" class="directions-column directions-list">
+                    Select a start and end point below to generate directions for your trip!
+                </div>
+                    
+                <div class="directions-column">
+                    <input type="submit" value="Remove Stop(s) from Trip">
+                    
+                </div>
+            </form>
 
             <div class="directions-column">
 
@@ -93,6 +92,7 @@
                         {% endfor %}
                     </div>
                 </div> -->
+
                 <div id="endPointForm" class="dropdown">
                     <button onclick="getEndPoint(-1)" class="dropbtn">Select End Point</button>
                     <div id="endPointDropdown" class="dropdown-content">
@@ -103,6 +103,7 @@
                         {% endfor %}
                     </div>
                 </div>
+                
                 <div class="dropdown">
                     <button id="get-directions" class="dropbtn">Get Directions</button>
                 </div>
@@ -151,7 +152,6 @@
             <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
         </div>
     </div>
-</div>
 
 <script src="/static/js/edit_trip.js"></script>
 

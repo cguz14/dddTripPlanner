@@ -36,7 +36,15 @@ def show_restaurants():
 
     restaurants = crud.get_restaurants()
 
-    return render_template('restaurants.html', restaurants=restaurants, MAPS_KEY=MAPS_KEY)
+    restaurant_state_dict = {}
+
+    # for restaurant in restaurants:
+    #     if restaurant.restaurant_city_and_state[-2:] == 'AK':
+    #         pass
+    
+    # restaurant_state_dict{ 'AK': {'Alaska': restaurant} }
+
+    return render_template('restaurants.html', restaurants=restaurants, MAPS_KEY=MAPS_KEY, sorted=sorted)
 
 @app.route('/login', methods=["POST"])
 def user_login():

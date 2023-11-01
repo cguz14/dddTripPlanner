@@ -23,21 +23,59 @@
 
       <div class="form-check restaurant-list">
         <form action="/add-favorites", method="POST">
-        {% for restaurant in restaurants %}
-          <input type="checkbox" name="restaurant" value="{{ restaurant.restaurant_id }}" class="form-check-input">
-            <label for="restaurant{{ loop.index }}" class="form-check-label">
-              <div><b>Restaurant: {{ restaurant.restaurant_name }}</b>
-              <span id="favorites-thumbs">
-                <button class="btn" id="all-green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                <button class="btn" id="all-red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-              </span>
-              <span id="all-fav-id-{{ loop.index }}" class="invisible">{{ restaurant.restaurant_id }}</span>
+          <div class="accordion" id="restaurant-accordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading-one">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-one" aria-expanded="true" aria-controls="collapse-one">
+                  All Restaurants
+                </button>
+              </h2>
+          {% for restaurant in restaurants %}
+              <div id="collapse-one" class="accordion-collapse collapse show" aria-labelledby="heading-one">
+                <div class="accordion-body">
+                  <input type="checkbox" name="restaurant" id="restaurant{{ loop.index }}" value="{{ restaurant.restaurant_id }}" class="form-check-input">
+                  <label for="restaurant{{ loop.index }}" class="form-check-label">
+                    <div><b>Restaurant: {{ restaurant.restaurant_name }}</b>
+                      <span id="favorites-thumbs">
+                        <button class="btn" id="all-green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                        <button class="btn" id="all-red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                      </span>
+                      <span id="all-fav-id-{{ loop.index }}" class="invisible">{{ restaurant.restaurant_id }}</span>
+                    </div>
+                  </label>
+                    <div>Description: {{ restaurant.restaurant_description }}</div>
+                    <div>Address: {{ restaurant.restaurant_address }}</div>
+                    <!-- <div>Img: {{ restaurant.restaurant_icon }}</div> -->
+                </div>
               </div>
-            </label>
-              <div>Description: {{ restaurant.restaurant_description }}</div>
-              <div>Address: {{ restaurant.restaurant_address }}</div>
-              <!-- <div>Img: {{ restaurant.restaurant_icon }}</div> -->
-        {% endfor %}
+            
+          {% endfor %}
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Accordion Item #2
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
+                <div class="accordion-body">
+                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Accordion Item #3
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                <div class="accordion-body">
+                  <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                </div>
+              </div>
+            </div>
+          </div> <!--accordion-->
       </div>
         <input type="submit" value="Add to Favorites">
       </form>
