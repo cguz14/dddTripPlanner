@@ -3,49 +3,47 @@
 {% block title %}Favorites Page{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-7">
-            <div id="all_favorites">
-                <h1>All Favorites</h1>
-                <form action="/remove-favorites", method="POST">
-                {% for restaurant in favorites %}
-                    <div>
-                        <input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
-                            <label for="remove_favorite{{ loop.index }}">
-                                <p>Restaurant: {{ restaurant.restaurant_name }} 
-                                    <span id="favorites-thumbs">
-                                        <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                                        <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                                    </span>
-                                    <!-- hidden restaurant id to pull for js use. Will find better way when styling -->
-                                    <span id="fav-id-{{ loop.index }}" class="invisible">{{ restaurant.restaurant_id }}</span>
-                                </p>
-                            </label>
-                        </div>
-                {% endfor %}
-                        <input type="submit" value="Remove from Favorites">
-                </form>
-            </div>
-
-            <!-- Place test thumb here -->
-            <!-- <span id="favorites-thumbs">
-                <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-            </span> -->
-
-            <div id="return_profile_from_favorites_">    
-                <form action="/profile" method="get">
-                    <button type="submit" class="return_profile_from_favorites_button">
-                        Return to profile page
-                    </button>
-                </form>    
-            </div>
+<div class="row">
+    <div class="col-7">
+        <div id="all_favorites">
+            <h1>All Favorites</h1>
+            <form action="/remove-favorites", method="POST">
+            {% for restaurant in favorites %}
+                <div>
+                    <input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
+                        <label for="remove_favorite{{ loop.index }}">
+                            <p>Restaurant: {{ restaurant.restaurant_name }} 
+                                <span id="favorites-thumbs">
+                                    <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                                    <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                                </span>
+                                <!-- hidden restaurant id to pull for js use. Will find better way when styling -->
+                                <span id="fav-id-{{ loop.index }}" class="invisible">{{ restaurant.restaurant_id }}</span>
+                            </p>
+                        </label>
+                    </div>
+            {% endfor %}
+                    <input type="submit" value="Remove from Favorites">
+            </form>
         </div>
 
-        <div class="col">
-            <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+        <!-- Place test thumb here -->
+        <!-- <span id="favorites-thumbs">
+            <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+            <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+        </span> -->
+
+        <div id="return_profile_from_favorites_">    
+            <form action="/profile" method="get">
+                <button type="submit" class="return_profile_from_favorites_button">
+                    Return to profile page
+                </button>
+            </form>    
         </div>
+    </div>
+
+    <div class="col">
+        <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
     </div>
 </div>
 

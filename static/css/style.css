@@ -89,3 +89,8 @@
   }
 
 .show {display: block;}
+
+.restaurant-listing-img {
+    height: 174px;
+    width: 231px
+}

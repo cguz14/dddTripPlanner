@@ -3,34 +3,32 @@
 {% block title %}Badges Page{% endblock %}
 
 {% block content %}
-
-    <div class="row">
-        <div class="col-7">
-            <div id="all_badges">
-                <h1>All Badge's Dev Page</h1>
-                
-                {% for user, badge_list in badges.items() %}
-                    <p>
-                        <div>Username: {{ user.username }}</div>
-                        {% for badge in badge_list %}
-                            <div>Badge Name: {{ badge.badge_name }}</div>
-                            <div>Badge Description: {{ badge.badge_description }}</div>
-                        {% endfor %}
-                    </p>
-                {% endfor %}
-            </div>
-            <div id="return_home_from_badges">    
-                <form action="/" method="get">
-                    <button type="submit" class="return_home_from_badges_button">
-                        Return to home page
-                    </button>
-                </form>    
-            </div>
+<div class="row">
+    <div class="col-12">
+        <div id="all_badges">
+            <h1>All Badge's Dev Page</h1>
+            
+            {% for user in users %}
+                <p>
+                    <div>Username: {{ user.username }}</div>
+                    {% for badge in user.badges %}
+                        <div>Badge Name: {{ badge.badge_name }}</div>
+                        <div>Badge Description: {{ badge.badge_description }}</div>
+                    {% endfor %}
+                </p>
+            {% endfor %}
         </div>
-
-        <div class="col">
-            <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+        <div id="return_home_from_badges">    
+            <form action="/" method="get">
+                <button type="submit" class="return_home_from_badges_button">
+                    Return to home page
+                </button>
+            </form>    
         </div>
     </div>
 
+    <div class="col">
+        <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+    </div>
+</div>
 {% endblock %}

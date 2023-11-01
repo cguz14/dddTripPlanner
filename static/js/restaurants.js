@@ -16,7 +16,7 @@ for (let i=0; i < btn1s.length; i++) {
     btn1.addEventListener('click', function(evt) {
 
         let restaurantId = document.getElementById(`all-fav-id-${i+1}`).innerHTML;
-        
+
         evt.preventDefault();
 
         if (btn2.classList.contains('red')) {
@@ -82,6 +82,7 @@ function startingThumbs(results) {
             let btn2 = btn2s[i]
 
             const restaurantId = document.getElementById(`all-fav-id-${i+1}`).innerHTML;
+            console.log(restaurantId)
 
             if (rating['restaurant_id'] == restaurantId) {
                 if(rating['thumbs_up']) {

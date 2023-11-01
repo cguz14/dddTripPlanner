@@ -111,7 +111,7 @@ class Restaurant(db.Model):
                             back_populates = "restaurants")
 
     def __repr__(self):
-        return f'<Restaurant name={self.restaurant_name} desc={self.restaurant_description}>'
+        return f'<Restaurant name={self.restaurant_name}: Address={self.restaurant_address}>'
 
 
 class Favorite(db.Model): 

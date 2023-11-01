@@ -3,66 +3,64 @@
 {% block title %}WERE ROLLING OUT! soon...{% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-7">
-      <div id="welcome">
-        <h2>Welcome {% if "username" in session %}{{ session["username"] }}{% endif %}</h2>
-        <p>WE'RE ROLLING OUT!</p>
-      </div>
+<div class="row">
+  <div class="col-7">
+    <div id="welcome">
+      <h2>Welcome {% if "username" in session %}{{ session["username"] }}{% endif %}</h2>
+      <p>WE'RE ROLLING OUT!</p>
+    </div>
 
+    <h1>
+      <a href="/restaurants">Restaurant Listing</a>
+    </h1>
+
+    <h1>
+      <a href="/new-account">Create Account</a>
+    </h1>
+
+    <div id="login">
+      <h2>Account Login</h2>
+          <form action="/login" method="POST">
+              <p>
+                  Email <input type="text" name="email">
+              </p>
+          
+              <p>
+                  Password <input type="password" name="password">
+              </p>
+
+              <span>
+                  <input type="submit">
+              </span>
+          </form>
+    </div>
+
+    <div id="logout">
+      <form action="/logout">
+        <button type="submit">Logout</button>
+      </form>
+    </div>
+
+    <div id="profile_page">
       <h1>
-        <a href="/restaurants">Restaurant Listing</a>
+        <a href="/profile">Visit Profile Page</a>
       </h1>
-
-      <h1>
-        <a href="/new-account">Create Account</a>
-      </h1>
-
-      <div id="login">
-        <h2>Account Login</h2>
-            <form action="/login" method="POST">
-                <p>
-                    Email <input type="text" name="email">
-                </p>
-            
-                <p>
-                    Password <input type="password" name="password">
-                </p>
-
-                <span>
-                    <input type="submit">
-                </span>
-            </form>
-      </div>
-
-      <div id="logout">
-        <form action="/logout">
-          <button type="submit">Logout</button>
-        </form>
-      </div>
-
-      <div id="profile_page">
-        <h1>
-          <a href="/profile">Visit Profile Page</a>
-        </h1>
-      </div>
-    
     </div>
-    <div>
-      <h2>
-        <a href="/all-users">View all Users (Dev only)</a>
-      </h2>
-    </div>
-    <div>
-      <h2>
-        <a href="/all-badges">View all Badges (Dev only)</a>
-      </h2>
-    </div>
+  
+  </div>
+  <div>
+    <h2>
+      <a href="/all-users">View all Users (Dev only)</a>
+    </h2>
+  </div>
+  <div>
+    <h2>
+      <a href="/all-badges">View all Badges (Dev only)</a>
+    </h2>
+  </div>
 
-    <div class="col">
-      <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
-    </div>
+  <div class="col">
+    <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
   </div>
 </div>
 {% endblock %}

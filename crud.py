@@ -622,6 +622,14 @@ def make_maps_param(start_address, end, ordered_stops):
 
     return param_address
 
+def get_states_restaurants(state):
+
+    filtered_restaurants = Restaurant.query.filter(Restaurant.restaurant_state.endswith(state)).all()
+
+    print(filtered_restaurants)
+
+    return filtered_restaurants
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)

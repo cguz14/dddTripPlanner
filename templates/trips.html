@@ -3,56 +3,54 @@
 {% block title %}Trips Page{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <!-- <div class="col-9"> -->
-            <div id="all_trips">
-                <h1>All Trips</h1>
-                <form action="/remove-trips", method="POST">
-                    {% for trip in trips %}
-                    <div>
-                        <input type="checkbox" name="remove_trip" value="{{ trip.trip_id }}">
-                        <label for="remove_trip_id_{{ trip.trip_id }}">
-                            <h2>Trip Name: {{ trip.trip_name }}</h2>
-                        </label>
-                            <h3>Stop Restaurants</h3>
-                                {% for restaurant in trip.restaurants %}
-                                    <div>Stop Restaurant Name: {{ restaurant.restaurant_name }}</div>
-                                {% endfor %}
-                    </div>
-                    {% endfor %}
-                        <input type="submit" value="Delete Selected Trip">
-                </form>
-            </div>
-            
-            <div id="create_new_trip">    
-                <form action="/create-trip" method="get">
-                    <button type="submit" class="create_new_trip_button">
-                        Create new trip
-                    </button>
-                </form>    
-            </div>
-
-            <div id="edit_trips">    
-                <form action="/edit-trips" method="get">
-                    <button type="submit" class="edit_trips_button">
-                        Edit a trip
-                    </button>
-                </form>    
-            </div>
-
-            <div id="return_profile_from_trips">    
-                <form action="/profile" method="get">
-                    <button type="submit" class="return_profile_from_trips_button">
-                        Return to profile page
-                    </button>
-                </form>    
-            </div>
+<div class="row">
+    <div class="col-9">
+        <div id="all_trips">
+            <h1>All Trips</h1>
+            <form action="/remove-trips", method="POST">
+                {% for trip in trips %}
+                <div>
+                    <input type="checkbox" name="remove_trip" value="{{ trip.trip_id }}">
+                    <label for="remove_trip_id_{{ trip.trip_id }}">
+                        <h2>Trip Name: {{ trip.trip_name }}</h2>
+                    </label>
+                        <h3>Stop Restaurants</h3>
+                            {% for restaurant in trip.restaurants %}
+                                <div>Stop Restaurant Name: {{ restaurant.restaurant_name }}</div>
+                            {% endfor %}
+                </div>
+                {% endfor %}
+                    <input type="submit" value="Delete Selected Trip">
+            </form>
+        </div>
+        
+        <div id="create_new_trip">    
+            <form action="/create-trip" method="get">
+                <button type="submit" class="create_new_trip_button">
+                    Create new trip
+                </button>
+            </form>    
         </div>
 
-        <div class="col">
-            <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+        <div id="edit_trips">    
+            <form action="/edit-trips" method="get">
+                <button type="submit" class="edit_trips_button">
+                    Edit a trip
+                </button>
+            </form>    
         </div>
+
+        <div id="return_profile_from_trips">    
+            <form action="/profile" method="get">
+                <button type="submit" class="return_profile_from_trips_button">
+                    Return to profile page
+                </button>
+            </form>    
+        </div>
+    </div>
+
+    <div class="col">
+        <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
     </div>
 </div>
 {% endblock %}

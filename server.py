@@ -36,15 +36,43 @@ def show_restaurants():
 
     restaurants = crud.get_restaurants()
 
+    state_list = [
+        'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+        'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+        'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+        'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+        'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
+    ]
+    full_state_list = [
+        'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+        'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+        'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
+        'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+        'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
+        'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
+        'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 
+        'Wisconsin', 'Wyoming'
+    ]
     restaurant_state_dict = {}
 
-    # for restaurant in restaurants:
-    #     if restaurant.restaurant_city_and_state[-2:] == 'AK':
-    #         pass
-    
-    # restaurant_state_dict{ 'AK': {'Alaska': restaurant} }
+    for idx, state in enumerate(state_list):
+        # restaurant_state currently returns full 'City, ST'
+        restaurant_state_dict[state] = {}
+        filtered_restaurants = crud.get_states_restaurants(state)
+        restaurant_state_dict[state][full_state_list[idx]] = filtered_restaurants
 
-    return render_template('restaurants.html', restaurants=restaurants, MAPS_KEY=MAPS_KEY, sorted=sorted)
+
+    # Need to duplicate this block on the html jinja side to store in accordions
+    # sorted_restaurants = sorted(restaurant_state_dict)
+    # print(sorted_restaurants)
+    for state in sorted(restaurant_state_dict):
+        print(f'State: {state}')
+        long_state = list(restaurant_state_dict[state].keys())[0]
+        print(f'Long State: {long_state}')
+        print(f'Restaurants: {restaurant_state_dict[state][long_state]}')
+    # pprint(restaurant_state_dict)
+
+    return render_template('restaurants.html', restaurants=restaurants, MAPS_KEY=MAPS_KEY, sorted=sorted, list=list, restaurant_state_dict=restaurant_state_dict)
 
 @app.route('/login', methods=["POST"])
 def user_login():
@@ -495,8 +523,8 @@ def rating_info():
 def show_all_badges():
     """For dev purposes only. Show all badges that have been awarded"""
 
-    badges = crud.get_all_badges()
-    return render_template('all_badges.html', badges=badges)
+    users = crud.get_users()
+    return render_template('all_badges.html', users=users)
 
 # This route likely to be removed. Makes more sense for user to be able to enter
 #   their own starting address as a starting point
