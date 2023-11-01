@@ -122,16 +122,48 @@ function getOrderedDirections(evt) {
     let i = 1;
     let params = "";
     while (i < orderedStops.length-1) {
-        params += orderedStops[i].innerText + "QQQQQ";
+        params += urlEncodeParam(orderedStops[i].innerText) + "QQQQQ";
         i ++;
     }
-    params += orderedStops[i].innerText
+    params += urlEncodeParam(orderedStops[i].innerText) // Add last stop without the QQQQQ
 
     fetch(`/route-to-maps.json?orderedStops=${params}`)
         .then((response) => response.text())
         .then(directionsConfirmation)
         .catch(() => { alert("Ordered Directions grab error.")});
 
+}
+
+function urlEncodeParam(param) {
+
+    let encodedParam = ""
+
+    for (let char=0; char < param.length; char ++) {
+
+        if (param[char] == "#") {
+            encodedParam += "%23"            
+        }
+        else if (param[char] == "/") {
+            encodedParam += "%2F"
+        }
+        else if (param[char] == ' ') {
+            encodedParam += "%20"
+        }
+        else if (param[char] == ",") {
+            encodedParam += "%2C"
+        }
+        else if (param[char] == ".") {
+            encodedParam += "%2E"
+        }
+        else if (param[char] == '"') {
+            encodedParam += "%22"
+        }
+        else {
+            encodedParam += param[char]
+        }
+    }
+
+    return encodedParam;
 }
 
 document.querySelector('#maps-url').addEventListener('click', getOrderedDirections);

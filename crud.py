@@ -460,12 +460,7 @@ def make_maps_param(start_address, end, ordered_stops):
 
     stops = []
 
-    print('ordered stops *******************************')
-    print(ordered_stops)
-
     ordered_list = ordered_stops.split('QQQQQ')
-
-    print(ordered_list)
 
     # both a start and end entered
     if start_address and end:
@@ -485,9 +480,7 @@ def make_maps_param(start_address, end, ordered_stops):
 
         for ordered_stop in ordered_list:
 
-            print(f'orderedStop {ordered_stop}')
             restaurant = Restaurant.query.filter_by(restaurant_address = ordered_stop).one()
-            print(restaurant)
 
             if restaurant != end:
                 stops.append({
@@ -625,8 +618,6 @@ def make_maps_param(start_address, end, ordered_stops):
 def get_states_restaurants(state):
 
     filtered_restaurants = Restaurant.query.filter(Restaurant.restaurant_state.endswith(state)).all()
-
-    print(filtered_restaurants)
 
     return filtered_restaurants
 

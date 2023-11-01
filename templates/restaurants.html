@@ -21,7 +21,7 @@
     </div>
 
     <div class="form-check restaurant-list">
-      <form action="/add-favorites", method="POST">
+      <form action="/add-favorites", method="POST" id="add-favorites-form">
         <div class="accordion" id="restaurant-accordion">
           <div class="accordion-item">
           {% set count = [] %}
@@ -54,9 +54,9 @@
           {% endfor %}
           </div>
         </div> <!--accordion-->
+      </form>
     </div>
-      <input type="submit" value="Add to Favorites">
-    </form>
+    <input form="add-favorites-form" type="submit" value="Add to Favorites">
 
     <div id="return-home-from-all">    
       <form action="/" method="get">

@@ -272,7 +272,9 @@ def edit_trip_page():
         restaurant_state_dict = crud.get_restaurant_state_dict()
         user = crud.get_user_by_email(session["email"])
 
-        return render_template('edit_trip.html', trip=trip, restaurant_state_dict=restaurant_state_dict, user=user, MAPS_KEY=MAPS_KEY, sorted=sorted, list=list)
+        restaurants = crud.get_restaurants()
+
+        return render_template('edit_trip.html', trip=trip, restaurants=restaurants, restaurant_state_dict=restaurant_state_dict, user=user, MAPS_KEY=MAPS_KEY, sorted=sorted, list=list)
 
     else:
         flash("Trying Real Sneaky Beaky Like, ey? You need to be logged in to do that!")
@@ -612,23 +614,14 @@ def route_to_maps():
     if 'email' in session:
 
         orderedStops = request.args.get('orderedStops')
-        trip = crud.get_trip_by_id(session["trip_id"])
 
         if 'user_address' in session and 'end_restaurant_id' in session:
             
             start_address = session['user_address']
             end = crud.get_one_restaurant_by_id(session['end_restaurant_id'])
 
-            print(start_address)
-            print(orderedStops)
-            print(end)
-            print('********')
-
             param_address = crud.make_maps_param(start_address, end, orderedStops)
-                    
-            print(param_address)
 
-            # return redirect(f'https://www.google.com/maps/dir/?api=1&{param_address}')
             return param_address
         
         else:
