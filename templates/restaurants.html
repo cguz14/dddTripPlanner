@@ -27,7 +27,7 @@
           {% set count = [] %}
           {% for state in sorted(restaurant_state_dict) %}
             <h2 class="accordion-header" id="heading-{{ state }}">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ state }}" aria-expanded="true" aria-controls="collapse-{{ state }}">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ state }}" aria-expanded="true" aria-controls="collapse-{{ state }}">
                 {{ list(restaurant_state_dict[state].keys())[0] }}
               </button>
             </h2>

@@ -7,168 +7,197 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div id="return_profile_from_trips">    
-            <form action="/profile" method="get">
-                <button type="submit" class="return_profile_from_trips_button">
-                    Return to profile page
-                </button>
-            </form>    
+<div class="row">
+    <div id="single_trip_edit">
+        <h1>Edit Trip Page</h1>
+        <div>Trip name: <span id="trip-name-span">{{ trip.trip_name }}</span></div>
+        <div>Trip desc: <span id="trip-description-span">{{ trip.trip_description }}</span></div>
+
+        <form id="change-trip-name-form">
+            <div class="form-group">
+                New name (optional): 
+                <input class="form-control" type="text" name="new-trip-name"
+                    id="new-trip-name-field" placeholder="name">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary mt-2" type="submit">Change Name</button>
+            </div>
+        </form>
+
+        <form id="change-trip-description-form">
+            <div class="form-group">
+                New description (optional): 
+                <input class="form-control" type="text" name="new-trip-description"
+                    id="new-trip-description-field" placeholder="description">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary mt-2" type="submit">Change Description</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="directions-column directions-list form-check">
+        <b>All stops on the trip</b>
+        <form action="/edit-trip-remove-stops", method="POST" id="remove-stops-form">
+            <ul class="list-group">
+                {% for restaurant in trip.restaurants %}
+                <li class="list-group-item">
+                    <input type="checkbox" class="form-check-input me-1" name="remove_stops" value="{{ restaurant.restaurant_id }}">
+                    <div><b>{{ restaurant.restaurant_name }}</b></div>
+                    <div>{{ restaurant.restaurant_address }}</div>
+                    <img src='{{ restaurant.restaurant_icon }}' class="restaurant-stops-img">
+                    <br>
+                </li>
+                {% endfor %}
+            </ul>
+        </form>
+    </div>
+
+    <div id="directions-panel" class="directions-column directions-list">
+        Select a start and end point below to generate directions for your trip!
+    </div>        
+</div>
+
+<div class="row">
+    <div class="directions-column">
+
+        <button type="submit" form="remove-stops-form" class="btn btn-primary">
+            Remove Stop(s) from Trip
+        </button>
+
+        <div>
+            <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modal-remove" aria-expanded="false" aria-controls="modal-remove">
+                Delete This Trip
+            </button>
         </div>
-
-        <div id="single_trip_edit">
-            <h1>Edit Trip Page</h1>
-            <div>Trip name: <span id="trip-name-span">{{ trip.trip_name }}</span></div>
-            <div>Trip desc: <span id="trip-description-span">{{ trip.trip_description }}</span></div>
-
-            <form id="change-trip-name-form">
-                <div class="form-group">
-                    New name (optional): 
-                    <input class="form-control" type="text" name="new-trip-name"
-                        id="new-trip-name-field" placeholder="name">
+        <div class="modal fade" id="modal-remove" tabindex="-1" aria-labelledby="modal-remove-label" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modal-remove-label">Are You Sure?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="form-group">
-                    <button class="btn btn-primary mt-2" type="submit">Change Name</button>
+                <div class="modal-body">
+                  <div class="card" id="login">
+                    <div class="card-body">
+                      <h5 class="card-title">Select 'Delete Trip' Below to Confirm</h5>
+                        <div class="card-text">
+                          <b>{{ trip.trip_name }}</b>
+                          <br>{{ trip.trip_description }}                          
+                        </div>
+                    </div>            
+                  </div>
                 </div>
-            </form>
-
-            <form id="change-trip-description-form">
-                <div class="form-group">
-                    New description (optional): 
-                    <input class="form-control" type="text" name="new-trip-description"
-                        id="new-trip-description-field" placeholder="description">
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary mt-2" type="submit">Change Description</button>
-                </div>
-            </form>
-
-            <form action="/edit-trip-remove-stops", method="POST">
-                <div class="directions-column">
-                    {% for restaurant in trip.restaurants %}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <form action="/remove-trips", method="POST" id="edit-page-delete-trip">
                         <div>
-                            <input type="checkbox" name="remove_stops" value="{{ restaurant.restaurant_id }}">
-                            <label for="restaurant{{ loop.index }}">
-                                <div>Stop {{ loop.index }}: {{ restaurant.restaurant_name }}; {{ restaurant.restaurant_address }} </div>
-                            </label>
-                        </div>
-                    {% endfor %}
-                </div>
-                    
-                    
-                <div id="directions-panel" class="directions-column directions-list">
-                    Select a start and end point below to generate directions for your trip!
-                </div>
-                    
-                <div class="directions-column">
-                    <input type="submit" value="Remove Stop(s) from Trip">
-                    
-                </div>
-            </form>
-
-            <div class="directions-column">
-
-                <form id="enter-address-form">
-                    <div class="form-group">
-                        Your starting address: 
-                        <input class="form-control" type="text" name="enter-address"
-                            id="enter-address-field" placeholder="Address">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary mt-2" type="submit">Confirm Address</button>
-                    </div>
-                </form>
-
-                <!-- LIKELY TO ELIMINATE FORM DUE TO HAVING USER INPUT START ADDRESS
-                    <div id="startPointForm" class="dropdown">
-                    <button onclick="getStartPoint(-1)" class="dropbtn">Select Start Point</button>
-                    <div id="startPointDropdown" class="dropdown-content">
-                        {% for restaurant in trip.restaurants %}
-                            <button onclick="getStartPoint({{ loop.index }})" id="clicked-restaurant-{{ loop.index }}" value="{{ restaurant.restaurant_id }}">
-                                {{ restaurant.restaurant_name }}
+                            <button type="submit" name="remove-trip" class="btn btn-danger" value="{{ trip.trip_id }}" form="edit-page-delete-trip">
+                                Delete Trip
                             </button>
-                        {% endfor %}
-                    </div>
-                </div> -->
-
-                <div id="endPointForm" class="dropdown">
-                    <button onclick="getEndPoint(-1)" class="dropbtn">Select End Point</button>
-                    <div id="endPointDropdown" class="dropdown-content">
-                        {% for restaurant in trip.restaurants %}
-                        <button onclick="getEndPoint({{ loop.index }})" id="clicked-restaurant-{{ loop.index }}" value="{{ restaurant.restaurant_id }}">
-                            {{ restaurant.restaurant_name }}
-                        </button>
-                        {% endfor %}
-                    </div>
-                </div>
-                
-                <div class="dropdown">
-                    <button id="get-directions" class="dropbtn">Get Directions</button>
-                </div>
-                
-                <!-- <form action="/route-to-maps" class="dropdown"> -->
-                    <button id="maps-url" class="dropbtn">Get Full Directions from Google Maps</button>
-                <!-- </form> -->
-
-                <div id="startpoint-choice"></div>
-                <div id="endpoint-choice"></div>
-                
-            </div>
-
-            
-            <!-- Div that encapsulates the map info and element -->
-            <div class="col">
-
-                <h3>Map of Stops on the "<span id="trip-map-span">{{ trip.trip_name }}</span>" Trip!</h3>
-
-                <!-- The div element for the map -->
-                <div id="edit-trip-page-map"></div>
-
-                <!-- prettier-ignore -->
-                <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-                    ({key: `{{ MAPS_KEY }}`, v: "weekly"});</script>
-                
-            </div>
-            <div class="form-check restaurant-list">
-                <form action="/edit-trip-add-stops", method="POST" id="trip-add-stops-form">        
-                    <div class="accordion" id="trip-restaurant-accordion">
-                        <div class="accordion-item">
-                        {% set count = [] %}
-                        {% for state in sorted(restaurant_state_dict) %}
-                            <h2 class="accordion-header" id="trip-heading-{{ state }}">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#trip-collapse-{{ state }}" aria-expanded="true" aria-controls="trip-collapse-{{ state }}">
-                                {{ list(restaurant_state_dict[state].keys())[0] }}
-                            </button>
-                            </h2>
-                            {% for restaurant in restaurant_state_dict[state][list(restaurant_state_dict[state].keys())[0]] %}
-                                <div id="trip-collapse-{{ state }}" class="accordion-collapse collapse" aria-labelledby="trip-heading-{{ state }}">
-                                <div class="accordion-body">
-                                    <input type="checkbox" name="add_stops" value="{{ restaurant.restaurant_id }}" class="form-check-input">
-                                    <label for="trip-restaurant-{{ count|length + 1 }}" class="form-check-label">
-                                    <div><b>Restaurant: {{ restaurant.restaurant_name }}</b>
-                                        <span id="trip-add-stop-id-{{ count|length + 1 }}" class="invisible">{{ restaurant.restaurant_id }}</span>
-                                        {% set add = count.append(1) %}
-                                    </div>
-                                    </label>
-                                    <div>Description: {{ restaurant.restaurant_description }}</div>
-                                    <div>Address: {{ restaurant.restaurant_address }}</div>
-                                    <div><img src="{{ restaurant.restaurant_icon }}" class="restaurant-listing-img"></div>
-                                </div>
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
                         </div>
-                    </div> <!--accordion end-->
-                </form>
+                    </form>
+                </div>
+              </div>
             </div>
-            <input type="submit" value="Add Stop(s) to Trip" form="trip-add-stops-form">
-        </div>
-
-        <div class="col">
-            <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
         </div>
     </div>
 
-<script src="/static/js/edit_trip.js"></script>
+    <div class="directions-column">
 
+        <form id="enter-address-form">
+            <div class="form-group">
+                Your starting address: 
+                <input class="form-control" type="text" name="enter-address"
+                    id="enter-address-field" placeholder="Address">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary mt-2" type="submit">Confirm Address</button>
+            </div>
+        </form>
+
+        <div id="endPointForm" class="dropdown">
+            <button onclick="getEndPoint(-1)" class="btn btn-info">Select End Point</button>
+            <div id="endPointDropdown" class="dropdown-content">
+                {% for restaurant in trip.restaurants %}
+                <button onclick="getEndPoint({{ loop.index }})" id="clicked-restaurant-{{ loop.index }}" value="{{ restaurant.restaurant_id }}">
+                    {{ restaurant.restaurant_name }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="dropdown">
+            <button id="get-directions" class="btn btn-dark">Get Directions</button>
+        </div>
+        
+        <!-- <form action="/route-to-maps" class="dropdown"> -->
+            <button id="maps-url" class="btn btn-success">Get Full Directions from Google Maps</button>
+        <!-- </form> -->
+
+        <div id="startpoint-choice"></div>
+        <div id="endpoint-choice"></div>
+        
+    </div>
+</div>
+        
+<div class="row">
+    <!-- Div that encapsulates the map info and element -->
+    <div class="col">
+
+        <h3>Map of Stops on the "<span id="trip-map-span">{{ trip.trip_name }}</span>" Trip!</h3>
+
+        <!-- The div element for the map -->
+        <div id="edit-trip-page-map"></div>
+
+        <!-- prettier-ignore -->
+        <!-- <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+            ({key: `{{ MAPS_KEY }}`, v: "weekly"});</script> -->
+        
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-check restaurant-list">
+        <form action="/edit-trip-add-stops", method="POST" id="trip-add-stops-form">        
+            <div class="accordion" id="trip-restaurant-accordion">
+                <div class="accordion-item">
+                {% set count = [] %}
+                {% for state in sorted(restaurant_state_dict) %}
+                    <h2 class="accordion-header" id="trip-heading-{{ state }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trip-collapse-{{ state }}" aria-expanded="true" aria-controls="trip-collapse-{{ state }}">
+                        {{ list(restaurant_state_dict[state].keys())[0] }}
+                    </button>
+                    </h2>
+                    {% for restaurant in restaurant_state_dict[state][list(restaurant_state_dict[state].keys())[0]] %}
+                        <div id="trip-collapse-{{ state }}" class="accordion-collapse collapse" aria-labelledby="trip-heading-{{ state }}">
+                        <div class="accordion-body">
+                            <label class="form-check-label">
+                            <input type="checkbox" name="add_stops" value="{{ restaurant.restaurant_id }}" class="form-check-input">
+                            <div><b>Restaurant: {{ restaurant.restaurant_name }}</b>
+                                <span id="trip-add-stop-id-{{ count|length + 1 }}" class="invisible">{{ restaurant.restaurant_id }}</span>
+                                {% set add = count.append(1) %}
+                            </div>
+                            </label>
+                            <div>Description: {{ restaurant.restaurant_description }}</div>
+                            <div>Address: {{ restaurant.restaurant_address }}</div>
+                            <div><img src="{{ restaurant.restaurant_icon }}" class="restaurant-listing-img"></div>
+                        </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                </div>
+            </div> <!--accordion end-->
+        </form>
+    </div>
+    <input type="submit" value="Add Stop(s) to Trip" form="trip-add-stops-form">
+</div>
+
+<div class="col">
+    <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+</div>
+
+<script src="/static/js/edit_trip.js"></script>
 {% endblock %}

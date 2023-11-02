@@ -17,19 +17,65 @@
 <body>
   <div class="container">
     <div class="d-flex header">
-      
-
       {% for msg in get_flashed_messages() %}
         <div class="alert alert-info">{{ msg }}</div>
       {% endfor %}
     </div>
-    <!-- May leave in and simply move with styling or remove after development -->
-    <div id="base-home-button" class="d-flex header">    
-      <form action="/" method="get">
-          <button type="submit" class="return_home_button">
-              Return to home page
-          </button>
-      </form>    
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="navbar-brand">DDD Trip Planner</div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-content" aria-controls="navbar-conent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      <div class="collapse navbar-collapse" id="nav-content">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/restaurants">Restaurants</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/edit-trips">Edit Trips</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/favorites">Favorites</a>
+          </li>
+        </ul>
+      </div>
+
+      <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal-login" aria-expanded="false" aria-controls="modal-login">
+        Login
+      </button>
+    </nav>
+
+    <div class="modal fade" id="modal-login" tabindex="-1" aria-labelledby="modal-login-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal-login-label">Login to the DDD Trip Planner!</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="card" id="login">
+              <div class="card-body">
+                <h5 class="card-title">Login Info</h5>
+                  <div class="card-text">
+                    <form action="/login" method="POST" class="form-control form-control-sm" id="login-form">
+                        Email<span class="invisible">____</span><input type="text" name="email">
+                        <br>
+                        Password<input type="password" name="password">  
+                    </form>
+                  </div>
+              </div>            
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" onclick="location.href='/logout'">Logout</button>
+            <button type="submit" class="btn btn-primary" form="login-form">Submit Login</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     {% block content %}{% endblock %}

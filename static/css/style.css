@@ -17,6 +17,7 @@
 
 .directions-list {
     height: 500px;
+    width: 50%;
     overflow: scroll;
 }
 
@@ -93,4 +94,9 @@
 .restaurant-listing-img {
     height: 174px;
     width: 231px
+}
+
+.restaurant-stops-img {
+    height: 58px;
+    width: 77px
 }

@@ -212,7 +212,7 @@ def add_new_trip():
             award_badge = crud.award_badge(session['email'], 11)
             flash(f'"{award_badge.badge_name}" Badge Awarded! {award_badge.badge_description}')
         
-        return redirect('/trips')
+        return redirect('/edit-trips')
     else:
         flash("You need to be logged in to do that!")
         return redirect('/')
@@ -221,10 +221,10 @@ def add_new_trip():
 def remove_trip():
 
     if "email" in session:
-        remove_trips = request.form.getlist('remove_trip')
+        remove_trips = request.form.get('remove-trip')
         crud.remove_trips(session["email"], remove_trips)      
 
-        return redirect('/trips')
+        return redirect('/edit-trips')
     else:
         flash("You need to be logged in to do that!")
         return redirect('/')
@@ -239,7 +239,7 @@ def edit_trips_page():
             return render_template('edit_trips.html', trips=trips)
         else:
             flash('You have no trips to edit! Use "Create new trip" button to start your journey!')
-            return redirect('/trips')
+            return redirect('/edit-trips')
     else:
         flash("You need to be logged in to do that!")
         return redirect('/')

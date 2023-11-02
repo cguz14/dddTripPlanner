@@ -4,38 +4,44 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-12">
-        <div id="all_trips">
-            <h1>Edit Trips for {{ session["username"] }}</h1>
-            <form action="/edit-trip", method="POST">
-                    <!-- I have a triple nested for loop here, any ideas for more efficiency? -->
-                    {% for trip in trips %}
-                    <div>
-                        <input type="radio" name="edit_trip" value="{{ trip.trip_id }}">
-                            <label for="edit_trip_id_{{ trip.trip_id }}">
-                                <h2>Trip Name: {{ trip.trip_name }}</h2>
-                            </label>
-                                <h3>Stop Restaurants</h3>
-                                    {% for restaurant in trip.restaurants %}
-                                        <div>Stop Restaurant Name: {{ restaurant.restaurant_name }}</div>
-                                    {% endfor %}
-                    </div>
-                    {% endfor %}
-                <input type="submit" value="Edit Selected Trip">
+    <div class="col">
+        <h1>{{ session["username"] }}, select trip to edit or create new trip</h1>
+        <div id="all_trips" class="form-check">
+            <form action="/edit-trip", method="POST" id="edit-selected-trip-form">
+                <ul class="list-group">
+                {% for trip in trips %}
+                    <li class="list-group-item">
+                        <input type="radio" name="edit_trip" value="{{ trip.trip_id }}" class="form-check-input" id="edit_trip_id_{{ trip.trip_id }}">
+                        <label for="edit_trip_id_{{ trip.trip_id }}" class="form-check-label">
+                            <h2>Trip Name: {{ trip.trip_name }}</h2>
+                        </label>
+                        <h6>{{ trip.trip_description }}</h6>
+                        {% if trip.restaurants %}
+                            <h4>Restaurants on Trip</h4>
+                            {% for restaurant in trip.restaurants %}
+                                <div><b>{{ restaurant.restaurant_name }}</b>: {{ restaurant.restaurant_address }}</div>
+                            {% endfor %}
+                        {% else %}
+                            <h4>Edit this trip to add restaurants</h4>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
             </form>
         </div>
+        <button type="submit" class="btn btn-primary" form="edit-selected-trip-form">Edit Selected Trip</button>
 
-        <div id="return_profile_from_edit_trips">    
-            <form action="/profile" method="get">
-                <button type="submit" class="return_profile_from_edit_trips_button">
-                    Return to profile page
+        <div id="create_new_trip">    
+            <form action="/create-trip" method="get">
+                <button type="submit" class="btn btn-primary">
+                    Create new trip
                 </button>
             </form>    
         </div>
     </div>
+</div>
 
-    <div class="col">
-        <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
-    </div>
+<div class="row">
+    <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
 </div>
 {% endblock %}
