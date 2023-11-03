@@ -1,94 +1,103 @@
 <!doctype html>
 <html>
-<head>
-  <title>{% block title %}{% endblock %}</title>
+  <head>
+    
+    <title>{% block title %}{% endblock %}</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-  integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-  <script src="https://use.fontawesome.com/fe459689b4.js"></script>
+    <link rel="icon" type="image/x-icon" href="/static/img/icons8-d-100.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/fe459689b4.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css" />
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    {% block head %}{% endblock %}
 
-  <link rel="stylesheet" type="text/css" href="static/css/style.css" />
+  </head>
 
-  {% block head %}{% endblock %}
+  <body class="background-base">
+    <div class="container background-blue border-container">
+      <div class="d-flex header">
+        {% for msg in get_flashed_messages() %}
+            <div class="alert alert-info">{{ msg }}</div>
+        {% endfor %}
+      </div>
 
-</head>
-<body class="background-base">
-  <div class="container background-blue">
-    <div class="d-flex header">
-      {% for msg in get_flashed_messages() %}
-          <div class="alert alert-info">{{ msg }}</div>
-      {% endfor %}
-    </div>
-    <div class="row">
-      <div class="col">
-        <nav class="navbar navbar-expand-lg navbar-dark background-purple rounded-pill">
-          <div class="navbar-brand">DDD Trip Planner</div>
+      <div class="row">
+        <div class="col">
+          <nav class="navbar navbar-expand-lg navbar-dark background-purple custom-nav">
+            <div class="navbar-brand">
+              DDD Trip Planner
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-content" aria-controls="navbar-conent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-          <div class="collapse navbar-collapse" id="nav-content">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/restaurants">Restaurants</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/edit-trips">Edit Trips</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/favorites">Favorites</a>
-              </li>
-            </ul>
-          </div>
-
-          {% if "user_icon" in session %}
-            <button type="button" class="btn rounded-circle" onclick="location.href='/profile'">
-              <img src="{{ session['user_icon'] }}" class="nav-user-icon">
-            </button>
-          {% else %}
-            <button class="btn btn-primary rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#modal-login" aria-expanded="false" aria-controls="modal-login">
-              Login
-            </button>
-          {% endif %}
-
-        </nav>
-      </div>
-    </div>
-
-    <div class="modal fade" id="modal-login" tabindex="-1" aria-labelledby="modal-login-label" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modal-login-label">Login to the DDD Trip Planner!</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="card" id="login">
-              <div class="card-body">
-                <h5 class="card-title">Login Info</h5>
-                  <div class="card-text">
-                    <form action="/login" method="POST" class="form-control form-control-sm" id="login-form">
-                        Email<span class="invisible">____</span><input type="text" name="email">
-                        <br>
-                        Password<input type="password" name="password">  
-                    </form>
-                  </div>
-              </div>            
+            <div class="collapse navbar-collapse" id="nav-content">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/restaurants">Restaurants</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/edit-trips">Edit Trips</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/favorites">Favorites</a>
+                </li>
+              </ul>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" form="login-form">Submit Login</button>
+
+            {% if "user_icon" in session %}
+              <button type="button" class="btn rounded-circle" onclick="location.href='/profile'">
+                <img src="{{ session['user_icon'] }}" class="nav-user-icon border-profile-icon">
+              </button>
+            {% else %}
+              <button class="btn btn-primary rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#modal-login" aria-expanded="false" aria-controls="modal-login">
+                Login
+              </button>
+            {% endif %}
+
+          </nav>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-login" tabindex="-1" aria-labelledby="modal-login-label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-login-label">Login to the DDD Trip Planner!</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="card" id="login">
+                <div class="card-body">
+                  <h5 class="card-title">Login Info</h5>
+                    <div class="card-text">
+                      <form action="/login" method="POST" class="form-control form-control-sm" id="login-form">
+                          Email<span class="invisible">____</span><input type="text" name="email">
+                          <br>
+                          Password<input type="password" name="password">  
+                      </form>
+                    </div>
+                </div>            
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" form="login-form">Submit Login</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    {% block content %}{% endblock %}
-  </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+      {% block content %}{% endblock %}
+    </div>
+    
+    <footer>
+      <p>Icons by: <a href="https://icons8.com/">icons8.com</a></p>
+    </footer>
+
+  </body>
 </html>

@@ -123,8 +123,10 @@
     background-color: #BD70A2ff;
 }
 
-.nav-cust {
-    border-radius: 10%;
+.custom-nav {
+    border-color: #E7AB2Aff;
+    border: solid;
+    border-radius: 15px;
 }
 
 .restaurant-accordion-body {
@@ -140,6 +142,20 @@
     background-image: url('https://media-cdn.tripadvisor.com/media/photo-s/04/84/fd/70/diners-drive-ins-and.jpg');
     width: 100%;
 }
+
+.border-container {
+    border-color: #793D64ff;
+    border-style: hidden solid solid solid;
+    border-width: thick;
+    border-radius: 5px;
+}
+
+.border-profile-icon {
+    border-color: #793D64ff;
+    border-width: thick;
+    border-style: solid;
+}
+
 
 /* --harvest-gold     gold: #E7AB2Aff;
 --argentinian-blue    blue: #72B5EFff;
