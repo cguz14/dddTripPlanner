@@ -4,17 +4,14 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-7">
+    <div class="col-6">
         <div id="profile">
             <h1>Welcome to Flavortown!</h1>
             <h2>Profile Info for: <span id="username-header-span">{{ session["username"] }}</span>!</h2>
     
             <p>
-                <div>User id: {{ session["user_id"] }}</div>
                 <div>Username: <span id="username-span">{{ session["username"] }}</span></div>
                 <div>Email: {{ session["email"] }}</div>
-                <div><b>Badges Earned</b>{% for badge in user.badges %}<li>{{ badge.badge_name }}<ul>{{ badge.badge_description }}</ul>{% endfor %}</li></div>
-                <div><img src="{{ session['user_icon'] }}" class="profile-user-icon"></div>
             </p>
         </div>
 
@@ -28,29 +25,48 @@
                 <button class="btn btn-primary mt-2" type="submit">Change username</button>
             </div>
         </form>
+    </div>
 
-        <div id="view_favorites">    
-            <form action="/favorites" method="get">
-                <button type="submit" class="view_favorites_button">
-                    View Favorites
-                </button>
-            </form>    
-        </div>
+    <div class="col-6 text-center align-self-center">
+        <img src="{{ session['user_icon'] }}" class="profile-user-icon">
+    </div>
+</div>
+<div>
+    <div>
+        <b>Badges Earned</b>
+        
+        {% for badge in user.badges %}
+            <li>{{ badge.badge_name }}<ul>{{ badge.badge_description }}</ul></li>
+        {% endfor %}
+        
+    </div>
 
-        <div id="view_trips">    
-            <form action="/trips" method="get">
-                <button type="submit" class="view_trips_button">
-                    View Trips
-                </button>
-            </form>    
-        </div>
-
-        <div id="return_home">    
-            <form action="/" method="get">
-                <button type="submit" class="return_home_button">
-                    Return to home page
-                </button>
-            </form>    
+    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modal-logout" aria-expanded="false" aria-controls="modal-logout">
+        Logout
+    </button>
+    <div class="modal fade" id="modal-logout" tabindex="-1" aria-labelledby="modal-logout-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-logout-label">Are You Sure?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card" id="logout-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Select 'Logout' Below to Confirm</h5>
+                        </div>            
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <div>
+                        <button type="submit" onclick="location.href='/logout'" class="btn btn-danger">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

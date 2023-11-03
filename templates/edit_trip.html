@@ -2,8 +2,8 @@
 
 {% block title %}Edit Trip Page{% endblock %}
 {% block head %}
-<script type="module" src="static/js/maps_api.js"></script>
-<script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+    <script type="module" src="static/js/edit_trip_map.js"></script>
+    <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -74,33 +74,33 @@
         </div>
         <div class="modal fade" id="modal-remove" tabindex="-1" aria-labelledby="modal-remove-label" aria-hidden="true">
             <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="modal-remove-label">Are You Sure?</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="card" id="login">
-                    <div class="card-body">
-                      <h5 class="card-title">Select 'Delete Trip' Below to Confirm</h5>
-                        <div class="card-text">
-                          <b>{{ trip.trip_name }}</b>
-                          <br>{{ trip.trip_description }}                          
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-remove-label">Are You Sure?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card" id="login">
+                            <div class="card-body">
+                                <h5 class="card-title">Select 'Delete Trip' Below to Confirm</h5>
+                                <div class="card-text">
+                                    <b>{{ trip.trip_name }}</b>
+                                    <br>{{ trip.trip_description }}                          
+                                </div>
+                            </div>            
                         </div>
-                    </div>            
-                  </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                        <form action="/remove-trips", method="POST" id="edit-page-delete-trip">
+                            <div>
+                                <button type="submit" name="remove-trip" class="btn btn-danger" value="{{ trip.trip_id }}" form="edit-page-delete-trip">
+                                    Delete Trip
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                    <form action="/remove-trips", method="POST" id="edit-page-delete-trip">
-                        <div>
-                            <button type="submit" name="remove-trip" class="btn btn-danger" value="{{ trip.trip_id }}" form="edit-page-delete-trip">
-                                Delete Trip
-                            </button>
-                        </div>
-                    </form>
-                </div>
-              </div>
             </div>
         </div>
     </div>
@@ -121,11 +121,13 @@
         <div id="endPointForm" class="dropdown">
             <button onclick="getEndPoint(-1)" class="btn btn-info">Select End Point</button>
             <div id="endPointDropdown" class="dropdown-content">
-                {% for restaurant in trip.restaurants %}
-                <button onclick="getEndPoint({{ loop.index }})" id="clicked-restaurant-{{ loop.index }}" value="{{ restaurant.restaurant_id }}">
-                    {{ restaurant.restaurant_name }}
-                </button>
-                {% endfor %}
+                <div class="d-grid gap-1 mx-auto">
+                    {% for restaurant in trip.restaurants %}
+                    <button onclick="getEndPoint({{ loop.index }})" id="clicked-restaurant-{{ loop.index }}" value="{{ restaurant.restaurant_id }}" class="btn btn-info">
+                        {{ restaurant.restaurant_name }}
+                    </button>
+                    {% endfor %}
+                </div>
             </div>
         </div>
         
@@ -153,8 +155,8 @@
         <div id="edit-trip-page-map"></div>
 
         <!-- prettier-ignore -->
-        <!-- <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-            ({key: `{{ MAPS_KEY }}`, v: "weekly"});</script> -->
+        <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+            ({key: `{{ MAPS_KEY }}`, v: "weekly"});</script>
         
     </div>
 </div>
@@ -166,10 +168,10 @@
                 <div class="accordion-item">
                 {% set count = [] %}
                 {% for state in sorted(restaurant_state_dict) %}
-                    <h2 class="accordion-header" id="trip-heading-{{ state }}">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#trip-collapse-{{ state }}" aria-expanded="true" aria-controls="trip-collapse-{{ state }}">
-                        {{ list(restaurant_state_dict[state].keys())[0] }}
-                    </button>
+                    <h2 class="accordion-header bg-primary" id="trip-heading-{{ state }}">
+                        <button class="accordion-button collapsed bg-info" type="button" data-bs-toggle="collapse" data-bs-target="#trip-collapse-{{ state }}" aria-expanded="true" aria-controls="trip-collapse-{{ state }}">
+                            {{ list(restaurant_state_dict[state].keys())[0] }}
+                        </button>
                     </h2>
                     {% for restaurant in restaurant_state_dict[state][list(restaurant_state_dict[state].keys())[0]] %}
                         <div id="trip-collapse-{{ state }}" class="accordion-collapse collapse" aria-labelledby="trip-heading-{{ state }}">

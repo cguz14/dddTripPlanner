@@ -45,6 +45,12 @@
     border-radius: 50%;
 }
 
+.nav-user-icon{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
 .restaurant-markers{
     height: 100px;
     width: 100px;
@@ -52,11 +58,10 @@
 }
 
 .all-restaurant-markers{
-    height: 70px;
-    width: 70px;
+    height: 100px;
+    width: 100px;
     border-radius: 35%;
 }
-
 
 .dropdown {
     position: relative;
@@ -93,10 +98,57 @@
 
 .restaurant-listing-img {
     height: 174px;
-    width: 231px
+    width: 231px;
 }
 
 .restaurant-stops-img {
     height: 58px;
-    width: 77px
+    width: 77px;
 }
+
+.end-button-content {
+    width: 500px;
+}
+
+.background-base {
+    background-image: url('https://food.fnr.sndimg.com/content/dam/images/food/editorial/shows/d/diners-drive-ins-and-dives/FN-ShowLogo-DDD_1920x1080.jpg.rend.hgtvcom.616.347.suffix/1377612941156.jpeg');
+    background-repeat: repeat;
+}
+
+.background-blue {
+    background-color: #72B5EFff;
+}
+
+.background-purple {
+    background-color: #BD70A2ff;
+}
+
+.nav-cust {
+    border-radius: 10%;
+}
+
+.restaurant-accordion-body {
+    background-color: #CFB9A2ff;
+}
+
+.restaurant-accordion-head {
+    background-color: #793D64ff;
+    
+}
+
+.ddd-banner {
+    background-image: url('https://media-cdn.tripadvisor.com/media/photo-s/04/84/fd/70/diners-drive-ins-and.jpg');
+    width: 100%;
+}
+
+/* --harvest-gold     gold: #E7AB2Aff;
+--argentinian-blue    blue: #72B5EFff;
+--amaranth    red: #E13E54ff;
+--khaki  brown: #C2A789ff;
+--sky-magenta  purple: #BD70A2ff; */
+
+/* --harvest-gold: #E8AD25ff;
+--dun   tan: #CFB9A2ff;
+--fire-brick    red: #B31823ff;
+--argentinian-blue: #68B7FCff;
+--byzantium   purple: #793D64ff; */
