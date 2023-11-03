@@ -46,9 +46,9 @@
 }
 
 .nav-user-icon{
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 
 .restaurant-markers{
@@ -154,6 +154,13 @@
     border-color: #793D64ff;
     border-width: thick;
     border-style: solid;
+}
+
+.icon-button {
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    border: none;
 }
 
 

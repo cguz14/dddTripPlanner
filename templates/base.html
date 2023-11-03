@@ -51,8 +51,8 @@
             </div>
 
             {% if "user_icon" in session %}
-              <button type="button" class="btn rounded-circle" onclick="location.href='/profile'">
-                <img src="{{ session['user_icon'] }}" class="nav-user-icon border-profile-icon">
+              <button type="button" class="btn rounded-circle icon-button" onclick="location.href='/profile'">
+                <img src="{{ session['user_icon'] }}" class="nav-user-icon border-profile-icon rounded-circle">
               </button>
             {% else %}
               <button class="btn btn-primary rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#modal-login" aria-expanded="false" aria-controls="modal-login">
@@ -93,11 +93,10 @@
       </div>
 
       {% block content %}{% endblock %}
+      <footer>
+        <div>Icons by: <a href="https://icons8.com/">icons8.com</a></div>
+      </footer>
     </div>
-    
-    <footer>
-      <p>Icons by: <a href="https://icons8.com/">icons8.com</a></p>
-    </footer>
 
   </body>
 </html>

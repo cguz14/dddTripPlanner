@@ -162,37 +162,39 @@
 </div>
 
 <div class="row">
-    <div class="form-check restaurant-list">
-        <form action="/edit-trip-add-stops", method="POST" id="trip-add-stops-form">        
-            <div class="accordion" id="trip-restaurant-accordion">
-                <div class="accordion-item">
-                {% set count = [] %}
-                {% for state in sorted(restaurant_state_dict) %}
-                    <h2 class="accordion-header bg-primary" id="trip-heading-{{ state }}">
-                        <button class="accordion-button collapsed bg-info" type="button" data-bs-toggle="collapse" data-bs-target="#trip-collapse-{{ state }}" aria-expanded="true" aria-controls="trip-collapse-{{ state }}">
-                            {{ list(restaurant_state_dict[state].keys())[0] }}
-                        </button>
-                    </h2>
-                    {% for restaurant in restaurant_state_dict[state][list(restaurant_state_dict[state].keys())[0]] %}
-                        <div id="trip-collapse-{{ state }}" class="accordion-collapse collapse" aria-labelledby="trip-heading-{{ state }}">
-                        <div class="accordion-body">
-                            <label class="form-check-label">
-                            <input type="checkbox" name="add_stops" value="{{ restaurant.restaurant_id }}" class="form-check-input">
-                            <div><b>Restaurant: {{ restaurant.restaurant_name }}</b>
-                                <span id="trip-add-stop-id-{{ count|length + 1 }}" class="invisible">{{ restaurant.restaurant_id }}</span>
-                                {% set add = count.append(1) %}
+    <div class="col-12">
+        <div class="form-check restaurant-list">
+            <form action="/edit-trip-add-stops", method="POST" id="trip-add-stops-form">        
+                <div class="accordion" id="trip-restaurant-accordion">
+                    <div class="accordion-item">
+                    {% set count = [] %}
+                    {% for state in sorted(restaurant_state_dict) %}
+                        <h2 class="accordion-header bg-primary" id="trip-heading-{{ state }}">
+                            <button class="accordion-button collapsed bg-info" type="button" data-bs-toggle="collapse" data-bs-target="#trip-collapse-{{ state }}" aria-expanded="true" aria-controls="trip-collapse-{{ state }}">
+                                {{ list(restaurant_state_dict[state].keys())[0] }}
+                            </button>
+                        </h2>
+                        {% for restaurant in restaurant_state_dict[state][list(restaurant_state_dict[state].keys())[0]] %}
+                            <div id="trip-collapse-{{ state }}" class="accordion-collapse collapse" aria-labelledby="trip-heading-{{ state }}">
+                            <div class="accordion-body">
+                                <label class="form-check-label">
+                                <input type="checkbox" name="add_stops" value="{{ restaurant.restaurant_id }}" class="form-check-input">
+                                <div><b>Restaurant: {{ restaurant.restaurant_name }}</b>
+                                    <span id="trip-add-stop-id-{{ count|length + 1 }}" class="invisible">{{ restaurant.restaurant_id }}</span>
+                                    {% set add = count.append(1) %}
+                                </div>
+                                </label>
+                                <div>Description: {{ restaurant.restaurant_description }}</div>
+                                <div>Address: {{ restaurant.restaurant_address }}</div>
+                                <div><img src="{{ restaurant.restaurant_icon }}" class="restaurant-listing-img"></div>
                             </div>
-                            </label>
-                            <div>Description: {{ restaurant.restaurant_description }}</div>
-                            <div>Address: {{ restaurant.restaurant_address }}</div>
-                            <div><img src="{{ restaurant.restaurant_icon }}" class="restaurant-listing-img"></div>
-                        </div>
-                        </div>
+                            </div>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-                </div>
-            </div> <!--accordion end-->
-        </form>
+                    </div>
+                </div> <!--accordion end-->
+            </form>
+        </div>
     </div>
     <button type="submit" class="btn btn-primary" form="trip-add-stops-form">Add Stop(s) to Trip</button>
 </div>

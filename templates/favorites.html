@@ -4,10 +4,10 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-7">
+    <div class="col-12">
         <div id="all_favorites">
             <h1>All Favorites</h1>
-            <form action="/remove-favorites", method="POST">
+            <form action="/remove-favorites", method="POST" id="remove-favorite-form">
             {% for restaurant in favorites %}
                 <div>
                     <input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
@@ -23,27 +23,10 @@
                         </label>
                     </div>
             {% endfor %}
-                    <input type="submit" value="Remove from Favorites">
+                    <button type="submit" class="btn btn-primary" form="remove-favorite-form">Remove from Favorites</button>
             </form>
+            <br>
         </div>
-
-        <!-- Place test thumb here -->
-        <!-- <span id="favorites-thumbs">
-            <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-            <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-        </span> -->
-
-        <div id="return_profile_from_favorites_">    
-            <form action="/profile" method="get">
-                <button type="submit" class="return_profile_from_favorites_button">
-                    Return to profile page
-                </button>
-            </form>    
-        </div>
-    </div>
-
-    <div class="col">
-        <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
     </div>
 </div>
 
