@@ -12,13 +12,17 @@
 .restaurant-list {
     height: 700px;
     width: 100%;
-    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .directions-list {
     height: 500px;
-    width: 50%;
-    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: solid;
+    border-color: #BD70A2ff;
+    border-radius: 10px;
 }
 
 .directions-column {
@@ -97,8 +101,9 @@
 .show {display: block;}
 
 .restaurant-listing-img {
-    height: 174px;
-    width: 231px;
+    width: 100%;
+    max-height: 174px;
+    max-width: 231px;
 }
 
 .restaurant-stops-img {
@@ -134,8 +139,9 @@
 }
 
 .restaurant-accordion-head {
-    background-color: #793D64ff;
-    
+    border-color: #E8AD25ff;
+    border-style: solid;
+    border-radius: 5px;
 }
 
 .ddd-banner {
@@ -163,6 +169,18 @@
     border: none;
 }
 
+.card-styling {
+    border-color: #E8AD25ff;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px;
+}
+
+.map-styling {
+    border-color: #E8AD25ff;
+    border-style: solid;
+    border-radius: 15px;
+}
 
 /* --harvest-gold     gold: #E7AB2Aff;
 --argentinian-blue    blue: #72B5EFff;

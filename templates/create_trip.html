@@ -4,10 +4,10 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-7">
+        <div class="col">
             <div id="trip_info">
                 <h2>New Trip info for {{ session["username"] }}</h2>
-                <form action="/create-trip" method="POST">
+                <form action="/create-trip" method="POST" id="create-trip-form">
                     <p>
                         Trip Name <input type="text" name="trip_name">
                     </p>
@@ -17,14 +17,10 @@
                     </p>
     
                     <div>
-                        <input type="submit">
+                        <button type="submit" class="btn btn-primary" form="create-trip-form">Create Trip!</button>
                     </div>
                 </form>
             </div>
-        </div>
-
-        <div class="col">
-            <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
         </div>
     </div>
 {% endblock %}

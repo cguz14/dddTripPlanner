@@ -9,21 +9,32 @@
             <h1>All Favorites</h1>
             <form action="/remove-favorites", method="POST" id="remove-favorite-form">
             {% for restaurant in favorites %}
-                <div>
-                    <input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
-                        <label for="remove_favorite{{ loop.index }}">
-                            <p>Restaurant: {{ restaurant.restaurant_name }} 
-                                <span id="favorites-thumbs">
-                                    <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                                    <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                                </span>
-                                <!-- hidden restaurant id to pull for js use. Will find better way when styling -->
-                                <span id="fav-id-{{ loop.index }}" class="invisible">{{ restaurant.restaurant_id }}</span>
-                            </p>
-                        </label>
+            <div class="card">
+                <div class="row no gutters">
+                    <div class="col-md-9 col-sm-12">
+                        <div class="card-body">
+                            <h5 class="card-title"><input type="checkbox" name="remove_favorite" value="{{ restaurant.restaurant_id }}">
+                                <label for="remove_favorite{{ loop.index }}">
+                                    <span>Restaurant: {{ restaurant.restaurant_name }} 
+                                        <span id="favorites-thumbs">
+                                            <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                                            <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                                        </span>
+                                        <span id="fav-id-{{ loop.index }}" class="invisible">{{ restaurant.restaurant_id }}</span>
+                                    </span>
+                                </label></h5>
+                            <div class="card-text">
+                                {{ restaurant.restaurant_description }}                   
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-md-3 col-sm-12 text-center align-self-center">
+                        <img src="{{ restaurant.restaurant_icon }}" class="restaurant-listing-img rounded align-middle">
+                    </div>            
+                </div>
+            </div>
             {% endfor %}
-                    <button type="submit" class="btn btn-primary" form="remove-favorite-form">Remove from Favorites</button>
+                    <button type="submit" class="btn btn-primary" form="remove-favorite-form" style="width: 100%; margin-top: 5px;">Remove from Favorites</button>
             </form>
             <br>
         </div>

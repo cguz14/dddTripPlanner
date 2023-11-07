@@ -650,6 +650,7 @@ def get_restaurant_state_dict():
 
     return restaurant_state_dict
 
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)

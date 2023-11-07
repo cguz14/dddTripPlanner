@@ -24,7 +24,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def homepage():
     """Show homepage"""
-
+    
     # The way you did this was dirty, ask if there are more kosher ways to perform this update without seed
     # crud.add_guy_default()
 
