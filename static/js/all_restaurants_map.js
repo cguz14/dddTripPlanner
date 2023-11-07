@@ -32,6 +32,7 @@ async function initMap() {
               <ul class="restaurant-info">
                 <li><b>Restaurant Name: </b>${restaurant.restaurant_name}</li>
                 <li><b>Restaurant Address: </b>${restaurant.restaurant_address}</li>
+                <li><b>Restaurant Description: </b>${restaurant.restaurant_description}</li>
               </ul>
             </div>
         `;

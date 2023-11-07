@@ -150,8 +150,8 @@ def add_favorites():
         
         return redirect('/favorites')
     else:
-        flash("You need to login first!")
-        return redirect("/")
+        flash("You need to login before you can save favorites!")
+        return redirect('/restaurants')
     
 @app.route('/remove-favorites', methods=["POST"])
 def remove_favorites():
@@ -469,7 +469,6 @@ def change_likes():
         # need to create favorite if user likes/dislikes and apply t/f depending
         # what if anything needs to be returned to the js/html side?
     else:
-        flash("Please log in or crete an account to save ratings.")
         return "user not logged in"
     
 @app.route('/api/ratings.json')

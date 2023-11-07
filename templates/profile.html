@@ -27,7 +27,12 @@
   </div>
 
   <div class="col-6 text-center align-self-center">
-    <img src="{{ session['user_icon'] }}" class="profile-user-icon">
+    <div class="row justify-content-center">
+      <img src="{{ session['user_icon'] }}" class="profile-user-icon">
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-link">Change Icon?</button>
+    </div>
   </div>
 </div>
 
@@ -35,16 +40,18 @@
   <div class="col-md-6 text-center align-self-center offset-md-3 col-sm-12">
     <h4>Badges Earned</h4>
     {% for badge in user.badges %}
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">
-              {{ badge.badge_name }}
-          </h5>
-          <div class="card-text">
-            {{ badge.badge_description }}
+      {% if badge.badge_name != "It'd Taste Good in a Shoe" %}
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+                {{ badge.badge_name }}
+            </h5>
+            <div class="card-text">
+              {{ badge.badge_description }}
+            </div>
           </div>
         </div>
-      </div>
+      {% endif %}
     {% endfor %}
   </div>
 </div>
