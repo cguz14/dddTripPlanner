@@ -72,7 +72,9 @@ Install dependencies🔗:
 ```
 $ pip3 install -r requirements.txt
 ```
-Request API Keys for both Google Maps Javascript and Geocoding APIs [Google](https://developers.google.com/maps/documentation/javascript/get-api-key). Save them to a file `secrets.sh` (don't commit this file!). Your file should look something like this:
+Request Keys for the [Google Maps Javascript](https://developers.google.com/maps/documentation/javascript/get-api-key) and [Geocoding](https://developers.google.com/maps/documentation/geocoding/get-api-key) APIs.  
+If you're placing IP Address/URL Restrictions on the keys, ensure that you have the Maps key restricted via HTTP and the Geocoding key restricted via IP Address.  
+Save them to a file `secrets.sh` (don't commit this file!). Your file should look something like this:
 ```
 export SECRETKEY='abc'
 export MAPS_KEY='Mapabc'
@@ -82,7 +84,6 @@ Source your secrets file:
 ```
 $ source secrets.sh
 ```
-If you're placing IP Address/URL Restrictions on the keys, ensure that you have the Maps key restricted via HTTP and the Geocoding key restricted via IP Address.
 
 Create database 'dddTripPlanner'.
 ```
