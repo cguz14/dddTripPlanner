@@ -88,9 +88,8 @@ Create database 'dddTripPlanner'.
 ```
 $ createdb dddTripPlanner
 ```
-Create your database tables and seed example data.
-<br>
-####Important Note: When all 86 pages are seeded to the database, that will be over 1200 calls to the Geocoding API, be cautious of seeding multiple times.####
+Create your database tables and seed example data.  
+#### Important Note: When all 86 pages are seeded to the database, that will be over 1200 calls to the Geocoding API, be cautious of seeding multiple times.
 ```
 $ python3 model.py
 $ python3 seed.py
