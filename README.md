@@ -27,6 +27,10 @@ Once logged in, you can favorite and rate restaurants
   
 ![Favorite and Rate](static/img/FavoritesnRatings.png)
 <br/><br/><br/>
+Update their profile.
+
+![Edit Profile](static/img/profilePage.png)
+<br/><br/><br/>
 Create and edit trips.
   
 ![Create and Edit Trips](static/img/EditTrips.png)
