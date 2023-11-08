@@ -37,7 +37,7 @@ Choose start, end, and get Optimized Directions
 <br/><br/><br/>
 Get directions sent to your phone from Google Maps URL containing optimized waypoints
 
-![Full Directions](static/img/getDirections.png)
+![Full Directions](static/img/fullMapDirections.png)
 
 
 ## <a name="installation"></a>Setup/Installation ⌨️
@@ -87,8 +87,10 @@ $ createdb dddTripPlanner
 Create your database tables and seed example data.
 ```
 $ python3 model.py
-$ python3 server.py
+$ python3 seed.py
 ```
+The seed will take a few minutes to complete as it scrapes the page data.
+
 Run the app from the command line.
 ```
 $ python3 server.py
