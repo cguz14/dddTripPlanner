@@ -83,6 +83,7 @@ Source your secrets file:
 $ source secrets.sh
 ```
 If you're placing IP Address/URL Restrictions on the keys, ensure that you have the Maps key restricted via HTTP and the Geocoding key restricted via IP Address.
+**Important Note: When all 86 pages are seeded to the database, that will be over 1200 calls to the Geocoding API, be cautious of seeding multiple times.**
 
 Create database 'dddTripPlanner'.
 ```
