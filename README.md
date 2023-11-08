@@ -79,7 +79,7 @@ Source your secrets file:
 $ source secrets.sh
 ```
 If you're placing IP Address/URL Restrictions on the keys, ensure that you have the Maps key restricted via HTTP and the Geocoding key restricted via IP Address.
-```
+
 Create database 'dddTripPlanner'.
 ```
 $ createdb dddTripPlanner
