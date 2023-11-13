@@ -18,18 +18,23 @@ def read_badges():
 
     return badges
 
-# Can be executed with read_badges() as a parameter to add .txt badges to db
-def update_badges():
+# Can be executed with read_badges() as a parameter to add updated .txt badges to db
+def update_badges(new_badges):
     """Take dictionary of badges from txt and store in db"""
 
     existing_badges = Badge.query.all()
 
-    print(existing_badges)
-    # badges_to_add = []
+    badges_to_add = []
 
-    # for badge_name, badge_info in badges.items():
-    #     (badge_icon, badge_description) = badge_info
-    #     badge = create_badge(badge_name, badge_icon, badge_description)
-        
-    #     badges_to_add.append(badge)
+    for badge_id, badge_info in new_badges.items():
+        (badge_name, badge_icon, badge_description) = badge_info
+        existing_badge = Badge.query.filter_by(badge_id=badge_id).one()
 
+        print(existing_badge)
+        print(badge_id, badge_info)        
+
+
+if __name__ == "__main__":
+    from server import app
+
+    connect_to_db(app)
