@@ -375,38 +375,6 @@ def get_rating_restaurant_ids(ratings):
 
     return restaurant_ids
 
-def read_badges():
-    """Reads in badge information from badges.txt file so badges can be updated over time"""
-    """Badge info is stored as a dictionary with the name as the key and a tuple of the
-        badge icon and description as its value."""
-
-    badges_txt = open('./static/txt/badges.txt')
-
-    badges = {}
-
-    for line in badges_txt:
-        line = line.rstrip()
-        badge_name, badge_icon, badge_description = line.split(':')
-        badge_info = (badge_icon, badge_description)
-        badges[badge_name] = badge_info
-
-    return badges
-
-# Can be executed with read_badges() as a parameter to add .txt badges to db
-def create_badges(badges):
-    """Take dictionary of badges from txt and store in db"""
-
-    badges_to_add = []
-
-    for badge_name, badge_info in badges.items():
-        (badge_icon, badge_description) = badge_info
-        badge = create_badge(badge_name, badge_icon, badge_description)
-        
-        badges_to_add.append(badge)
-
-    db.session.add_all(badges_to_add)
-    db.session.commit()
-
 def award_badge(email, badge_id):
     """Add badge to user account"""
     
