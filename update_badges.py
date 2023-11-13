@@ -19,22 +19,33 @@ def read_badges():
     return badges
 
 # Can be executed with read_badges() as a parameter to add updated .txt badges to db
-def update_badges(new_badges):
+def update_badges(updated_badges):
     """Take dictionary of badges from txt and store in db"""
 
-    existing_badges = Badge.query.all()
+    for badge_id, badge_info in updated_badges.items():
+        badge_name, badge_icon, badge_description = badge_info
+        existing_badge = Badge.query.filter_by(badge_id=badge_id).first()
 
-    badges_to_add = []
+        if existing_badge:
+            if (existing_badge.badge_name != badge_name
+            or existing_badge.badge_description != badge_description
+            or existing_badge.badge_icon != badge_icon):
+                existing_badge.badge_name = badge_name
+                existing_badge.badge_description = badge_description
+                existing_badge.badge_icon = badge_icon
 
-    for badge_id, badge_info in new_badges.items():
-        (badge_name, badge_icon, badge_description) = badge_info
-        existing_badge = Badge.query.filter_by(badge_id=badge_id).one()
-
-        print(existing_badge)
-        print(badge_id, badge_info)        
-
+                print(f'Badge_id: {badge_id} Updated')
+        else:
+            new_badge = create_badge(badge_name, badge_icon, badge_description)
+            db.session.add(new_badge)
+            print(f'Badge_id: {new_badge.badge_id} Created. Confirm that txt file badge id matches')
+            print(new_badge.badge_name, new_badge.badge_icon, new_badge.badge_description)
+            
+        db.session.commit()
 
 if __name__ == "__main__":
     from server import app
 
     connect_to_db(app)
+
+update_badges(read_badges())

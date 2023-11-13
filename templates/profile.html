@@ -40,18 +40,16 @@
   <div class="col-md-6 text-center align-self-center offset-md-3 col-sm-12">
     <h4>Badges Earned</h4>
     {% for badge in user.badges %}
-      {% if badge.badge_name != "It'd Taste Good in a Shoe" %}
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">
-                {{ badge.badge_name }}
-            </h5>
-            <div class="card-text">
-              {{ badge.badge_description }}
-            </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ badge.badge_name }}
+          </h5>
+          <div class="card-text">
+            {{ badge.badge_description }}
           </div>
         </div>
-      {% endif %}
+      </div>
     {% endfor %}
   </div>
 </div>

@@ -26,7 +26,7 @@ def get_user_by_email(email):
 
 
 def create_badge(badge_name, badge_icon, badge_description):
-    """Create and return a new rating"""
+    """Create and return a new badge"""
 
     badge = Badge(
         badge_name = badge_name,
@@ -514,72 +514,6 @@ def make_maps_param(start_address, end, ordered_stops):
 
             if idx > 0 and idx < len(stops)-2:
                 param_address += f"%7C"
-
-    # only an end address submitted, currently only moving forward if start/end submitted
-    # elif end:
-        
-    #     for restaurant in trip.restaurants:
-    #         if restaurant != end:
-    #             stops.append({
-    #                 "restaurant_id" : restaurant.restaurant_id,
-    #                 "restaurant_name" : restaurant.restaurant_name,
-    #                 "restaurant_icon" : restaurant.restaurant_icon,
-    #                 "restaurant_description" : restaurant.restaurant_description,
-    #                 "restaurant_address" : restaurant.restaurant_address,
-    #                 "restaurant_latitude" : restaurant.restaurant_latitude,
-    #                 "restaurant_longitude" : restaurant.restaurant_longitude,
-    #                 "restaurant_state" : restaurant.restaurant_state,
-    #                 "food_type" : restaurant.food_type,
-    #                 "episode_info" : restaurant.episode_info
-    #             })
-
-    #     stops.append({
-    #         "restaurant_id" : end.restaurant_id,
-    #         "restaurant_name" : end.restaurant_name,
-    #         "restaurant_icon" : end.restaurant_icon,
-    #         "restaurant_description" : end.restaurant_description,
-    #         "restaurant_address" : end.restaurant_address,
-    #         "restaurant_latitude" : end.restaurant_latitude,
-    #         "restaurant_longitude" : end.restaurant_longitude,
-    #         "restaurant_state" : end.restaurant_state,
-    #         "food_type" : end.food_type,
-    #         "episode_info" : end.episode_info
-    #     })
-
-    #     for idx, stop in enumerate(stops):
-    #         address = stop['restaurant_address'].lstrip()
-
-    #         if idx == 1:
-    #             param_address += "&waypoints="
-
-    #         if idx == len(stops)-1:
-    #             param_address += "&destination="
-
-    #         for char in address:
-    #             if char == "#":
-    #                 encoded_char = f"%23"            
-    #                 param_address += encoded_char
-    #             elif char == "/":
-    #                 encoded_char = f"%2F"            
-    #                 param_address += encoded_char
-    #             elif char.strip() == '':
-    #                 encoded_char = f"%20"
-    #                 param_address += encoded_char
-    #             elif char == ",":
-    #                 encoded_char = f"%2C"
-    #                 param_address += encoded_char
-    #             elif char == ".":
-    #                 encoded_char = f"%2E"
-    #                 param_address += encoded_char
-    #             elif char == '"':
-    #                 encoded_char = f"%22"
-    #                 param_address += encoded_char
-    #             else:
-    #                 param_address += char
-
-    #         if idx > 0 and idx < len(stops)-2:
-    #             param_address += f"%7C"
-    # else:
 
     return param_address
 

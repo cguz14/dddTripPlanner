@@ -19,14 +19,9 @@ MAPS_KEY = os.environ['MAPS_KEY']
 GEO_PLACES_KEY = os.environ['GEO_PLACES_KEY']
 app.jinja_env.undefined = StrictUndefined
 
-# Replace this with routes and view functions!
-
 @app.route('/')
 def homepage():
     """Show homepage"""
-    
-    # The way you did this was dirty, ask if there are more kosher ways to perform this update without seed
-    # crud.add_guy_default()
 
     return render_template('homepage.html')
 
@@ -35,16 +30,6 @@ def show_restaurants():
     """Shows all restaurants"""
 
     restaurant_state_dict = crud.get_restaurant_state_dict()
-
-    # # Need to essentially duplicate this on the html jinja side to store in accordions
-    # # sorted_restaurants = sorted(restaurant_state_dict)
-    # # print(sorted_restaurants)
-    # for state in sorted(restaurant_state_dict):
-    #     print(f'State: {state}')
-    #     long_state = list(restaurant_state_dict[state].keys())[0]
-    #     print(f'Long State: {long_state}')
-    #     print(f'Restaurants: {restaurant_state_dict[state][long_state]}')
-    # pprint(restaurant_state_dict)
 
     return render_template('restaurants.html', MAPS_KEY=MAPS_KEY, sorted=sorted, list=list, restaurant_state_dict=restaurant_state_dict)
 
