@@ -28,13 +28,25 @@ async function initMap() {
       for (const restaurant of restaurants) {
         // Define the content of the infoWindow
         const restaurantInfoContent = `
-            <div>
-              <ul class="restaurant-info">
-                <li><b>Restaurant Name: </b>${restaurant.restaurant_name}</li>
-                <li><b>Restaurant Address: </b>${restaurant.restaurant_address}</li>
-                <li><b>Restaurant Description: </b>${restaurant.restaurant_description}</li>
-              </ul>
+        <div class="card">
+          <div class="row no gutters">
+            <div class="col-9">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <span>Restaurant: ${restaurant.restaurant_name}</span>
+                </h5>
+                <div class="card-text">
+                  ${restaurant.restaurant_description}
+                  <br>
+                  ${restaurant.restaurant_address}                
+                </div>
+              </div>
             </div>
+            <div class="col-3">
+              <img src="${restaurant.restaurant_icon}" class="restaurant-listing-img float-end rounded">
+            </div>            
+          </div>
+        </div>
         `;
 
         const restaurantMarker = new AdvancedMarkerElement({

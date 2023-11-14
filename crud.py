@@ -465,7 +465,7 @@ def make_maps_param(start_address, end, ordered_stops):
         for idx, stop in enumerate(stops):
             address = stop['restaurant_address'].lstrip()
 
-            if idx == len(stops)-1:
+            if idx == 1:
                 param_address += "&destination="
 
             for char in address:
@@ -489,9 +489,6 @@ def make_maps_param(start_address, end, ordered_stops):
                     param_address += encoded_char
                 else:
                     param_address += char
-
-            if idx > 0 and idx < len(stops)-2:
-                param_address += f"%7C"
 
     else:
         # Used when there are multiple waypoints

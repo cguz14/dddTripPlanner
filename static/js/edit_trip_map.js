@@ -35,12 +35,25 @@ async function initMap() {
       for (const stop of stops) {
         // Define the content of the infoWindow
         const stopInfoContent = `
-          <div>
-            <ul class="stop-info">
-              <li><b>Restaurant Name: </b>${stop.restaurant_name}</li>
-              <li><b>Restaurant Address: </b>${stop.restaurant_address}</li>
-            </ul>
+        <div class="card">
+          <div class="row no gutters">
+            <div class="col-9">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <span>Restaurant: ${stop.restaurant_name}</span>
+                </h5>
+                <div class="card-text">
+                  ${stop.restaurant_description}
+                  <br>
+                  ${stop.restaurant_address}                
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <img src="${stop.restaurant_icon}" class="restaurant-listing-img float-end rounded">
+            </div>            
           </div>
+        </div>
         `;
 
         const stopMarker = new AdvancedMarkerElement({
