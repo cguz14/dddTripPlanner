@@ -4,42 +4,42 @@
 
 {% block content %}
 <div class="row">
-    <div class="col">
-        <h1>{{ session["username"] }}, select trip to edit or create new trip</h1>
-            <form action="/edit-trip", method="POST" id="edit-selected-trip-form">
-                {% for trip in trips %}
-                    <div class="card">
-                        <div class="card-body">
-                            <input type="radio" name="edit_trip" value="{{ trip.trip_id }}" id="edit_trip_id_{{ trip.trip_id }}">
-                            <label for="edit_trip_id_{{ trip.trip_id }}" class="form-check-label">
-                                <h3 class="card-title">
-                                    <span>Trip Name: {{ trip.trip_name }}</span>
-                                </h3>
-                            </label>
-                            <div class="card-text">
-                                <h6>{{ trip.trip_description }}</h6>
-                                {% if trip.restaurants %}
-                                    <h4>Restaurants on Trip</h4>
-                                    {% for restaurant in trip.restaurants %}
-                                        <div><b>{{ restaurant.restaurant_name }}</b>: {{ restaurant.restaurant_address }}</div>
-                                    {% endfor %}
-                                {% else %}
-                                    <h4>Edit this trip to add restaurants</h4>
-                                {% endif %}              
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </form>
-        <button type="submit" class="btn btn-primary" form="edit-selected-trip-form" style="margin-top: 5px">Edit Selected Trip</button>
+	<div class="col">
+		<h1>{{ session["username"] }}, select trip to edit or create new trip</h1>
+			<form action="/edit-trip", method="POST" id="edit-selected-trip-form">
+				{% for trip in trips %}
+					<div class="card">
+						<div class="card-body">
+							<input type="radio" name="edit_trip" value="{{ trip.trip_id }}" id="edit_trip_id_{{ trip.trip_id }}">
+							<label for="edit_trip_id_{{ trip.trip_id }}" class="form-check-label">
+								<h3 class="card-title">
+									<span>Trip Name: {{ trip.trip_name }}</span>
+								</h3>
+							</label>
+							<div class="card-text">
+								<h6>{{ trip.trip_description }}</h6>
+								{% if trip.restaurants %}
+									<h4>Restaurants on Trip</h4>
+									{% for restaurant in trip.restaurants %}
+										<div><b>{{ restaurant.restaurant_name }}</b>: {{ restaurant.restaurant_address }}</div>
+									{% endfor %}
+								{% else %}
+									<h4>Edit this trip to add restaurants</h4>
+								{% endif %}              
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</form>
+		<button type="submit" class="btn btn-primary" form="edit-selected-trip-form" style="margin-top: 5px">Edit Selected Trip</button>
 
-        <div id="create_new_trip">    
-            <form action="/create-trip" method="get">
-                <button type="submit" class="btn btn-primary" style="margin-top: 5px">
-                    Create new trip
-                </button>
-            </form>    
-        </div>
-    </div>
+		<div id="create_new_trip">    
+			<form action="/create-trip" method="get">
+				<button type="submit" class="btn btn-primary" style="margin-top: 5px">
+					Create new trip
+				</button>
+			</form>    
+		</div>
+	</div>
 </div>
 {% endblock %}

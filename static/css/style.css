@@ -1,186 +1,186 @@
 /* Set map height explicitly, defines size of div element containing map */
 #edit-trip-page-map {
-    height: 500px;
-    width: 100%;
+	height: 500px;
+	width: 100%;
 }
 
 #restaurants-page-map {
-    height: 500px;
-    width: 100%;
+	height: 500px;
+	width: 100%;
 }
 
 .restaurant-list {
-    height: 700px;
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+	height: 700px;
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .directions-list {
-    max-height: 500px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border: solid;
-    border-color: #BD70A2ff;
-    border-radius: 10px;
+	max-height: 500px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border: solid;
+	border-color: #BD70A2ff;
+	border-radius: 10px;
 }
 
 .directions-column {
-    float: left;
-    width: 50%;
-    padding: 10px;
+	float: left;
+	width: 50%;
+	padding: 10px;
 }
 
 .custom-button-defaults {
-    width: 100%
+	width: 100%
 }
 
 .green{
-    color: green;
+	color: green;
 }
   
 .red{
-    color: red;
+	color: red;
 }
 
 .profile-user-icon{
-    width: 100%;
-    max-height: 200px;
-    max-width: 200px;
-    border-radius: 50%;
+	width: 100%;
+	max-height: 200px;
+	max-width: 200px;
+	border-radius: 50%;
 }
 
 .nav-user-icon{
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
 }
 
 .restaurant-markers{
-    height: 100px;
-    width: 100px;
-    border-radius: 35%;
+	height: 100px;
+	width: 100px;
+	border-radius: 35%;
 }
 
 .all-restaurant-markers{
-    height: 100px;
-    width: 100px;
-    border-radius: 35%;
+	height: 100px;
+	width: 100px;
+	border-radius: 35%;
 }
 
 .dropdown {
-    position: relative;
-    display: inline-block;
+	position: relative;
+	display: inline-block;
 }
 
 .dropbtn {
-    background-color: #3498DB;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
+	background-color: #3498DB;
+	color: white;
+	padding: 16px;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
 }
 
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	overflow: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
 }
 
 .dropdown-content button {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
   }
 
 .show {display: block;}
 
 .restaurant-listing-img {
-    width: 100%;
-    max-height: 174px;
-    max-width: 231px;
+	width: 100%;
+	max-height: 174px;
+	max-width: 231px;
 }
 
 .restaurant-stops-img {
-    height: 58px;
-    width: 77px;
+	height: 58px;
+	width: 77px;
 }
 
 .end-button-content {
-    width: 500px;
+	width: 500px;
 }
 
 .background-base {
-    background-image: url('https://food.fnr.sndimg.com/content/dam/images/food/editorial/shows/d/diners-drive-ins-and-dives/FN-ShowLogo-DDD_1920x1080.jpg.rend.hgtvcom.616.347.suffix/1377612941156.jpeg');
-    background-repeat: repeat;
+	background-image: url('https://food.fnr.sndimg.com/content/dam/images/food/editorial/shows/d/diners-drive-ins-and-dives/FN-ShowLogo-DDD_1920x1080.jpg.rend.hgtvcom.616.347.suffix/1377612941156.jpeg');
+	background-repeat: repeat;
 }
 
 .background-blue {
-    background-color: #72B5EFff;
+	background-color: #72B5EFff;
 }
 
 .background-purple {
-    background-color: #BD70A2ff;
+	background-color: #BD70A2ff;
 }
 
 .custom-nav {
-    border-color: #E7AB2Aff;
-    border: solid;
-    border-radius: 15px;
+	border-color: #E7AB2Aff;
+	border: solid;
+	border-radius: 15px;
 }
 
 .restaurant-accordion-body {
-    background-color: #CFB9A2ff;
+	background-color: #CFB9A2ff;
 }
 
 .restaurant-accordion-head {
-    border-color: #E8AD25ff;
-    border-style: solid;
-    border-radius: 5px;
+	border-color: #E8AD25ff;
+	border-style: solid;
+	border-radius: 5px;
 }
 
 .ddd-banner {
-    background-image: url('https://media-cdn.tripadvisor.com/media/photo-s/04/84/fd/70/diners-drive-ins-and.jpg');
-    width: 100%;
+	background-image: url('https://media-cdn.tripadvisor.com/media/photo-s/04/84/fd/70/diners-drive-ins-and.jpg');
+	width: 100%;
 }
 
 .border-container {
-    border-color: #793D64ff;
-    border-style: hidden solid solid solid;
-    border-width: thick;
-    border-radius: 5px;
+	border-color: #793D64ff;
+	border-style: hidden solid solid solid;
+	border-width: thick;
+	border-radius: 5px;
 }
 
 .border-profile-icon {
-    border-color: #793D64ff;
-    border-width: thick;
-    border-style: solid;
+	border-color: #793D64ff;
+	border-width: thick;
+	border-style: solid;
 }
 
 .icon-button {
-    height: 50px;
-    width: 50px;
-    padding: 0;
-    border: none;
+	height: 50px;
+	width: 50px;
+	padding: 0;
+	border: none;
 }
 
 .card-styling {
-    border-color: #E8AD25ff;
-    border-style: solid;
-    border-width: thin;
-    border-radius: 5px;
+	border-color: #E8AD25ff;
+	border-style: solid;
+	border-width: thin;
+	border-radius: 5px;
 }
 
 .map-styling {
-    border-color: #E8AD25ff;
-    border-style: solid;
-    border-radius: 15px;
+	border-color: #E8AD25ff;
+	border-style: solid;
+	border-radius: 15px;
 }
 
 /* --harvest-gold     gold: #E7AB2Aff;

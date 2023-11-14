@@ -1,18 +1,18 @@
 'use strict';
 
 function replaceUsername(results) {
-    document.querySelector('#username-span').innerHTML = results;
-    document.querySelector('#username-header-span').innerHTML = results;
-    alert("Username Updated");
+	document.querySelector('#username-span').innerHTML = results;
+	document.querySelector('#username-header-span').innerHTML = results;
+	alert("Username Updated");
 }
 
 function newUsername(evt) {
-    evt.preventDefault();
-    const newUsername = document.querySelector('#new-username-field').value;
+	evt.preventDefault();
+	const newUsername = document.querySelector('#new-username-field').value;
 
-    fetch(`/change-username.json?newUsername=${newUsername}`)
-        .then((response) => response.text())
-        .then(replaceUsername);
+	fetch(`/change-username.json?newUsername=${newUsername}`)
+		.then((response) => response.text())
+		.then(replaceUsername);
 
 }
 

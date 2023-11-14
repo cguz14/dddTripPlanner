@@ -4,21 +4,21 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-12">
-    <div id="welcome">
-      {% if "username" in session %}
-        <h2>Welcome back, {{ session["username"] }}!</h2>
-        <h4>Let's get rolling! Check out the tabs above or head to your profile to make changes.</h4>
-      {% else %}
-        <h2>Welcome to the DDD Trip Planner.</h2>
-        <h4>Let's get rolling! Check out the restaurants tab or use the Login button on the top right to roll out.</h4>
-      {% endif %}
-        <h6>With over 1,200 DDD destinations to choose from, plan your trip to Flavortown, and check out some of America's greatest Diners, Drive-ins, and Dives!</h6>
-    </div>
-  </div>
+	<div class="col-12">
+		<div id="welcome">
+			{% if "username" in session %}
+				<h2>Welcome back, {{ session["username"] }}!</h2>
+				<h4>Let's get rolling! Check out the tabs above or head to your profile to make changes.</h4>
+			{% else %}
+				<h2>Welcome to the DDD Trip Planner.</h2>
+				<h4>Let's get rolling! Check out the restaurants tab or use the Login button on the top right to roll out.</h4>
+			{% endif %}
+				<h6>With over 1,200 DDD destinations to choose from, plan your trip to Flavortown, and check out some of America's greatest Diners, Drive-ins, and Dives!</h6>
+		</div>
+	</div>
 
-  <div class="col text-center align-self-center">
-    <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign" class="rounded" style="max-width: 980px; width: 100%">
-  </div>
+	<div class="col text-center align-self-center">
+		<img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign" class="rounded" style="max-width: 980px; width: 100%">
+	</div>
 </div>
 {% endblock %}

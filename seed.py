@@ -36,7 +36,7 @@ trips_in_db = []
 #                                 password=f"password{n}",                                
 #                                 user_icon="dddTripPlanner/imgs/guyFaceCredKRSheehan.png")
 #     users_in_db.append(new_user)
-    
+	
 #     n += 1
 
 # model.db.session.add_all(users_in_db)
@@ -69,62 +69,62 @@ trips_in_db = []
 n=0
 while n < 0: # set to 0 while not seeding to avoid reusing key. needs to be 86 when seeding
 
-    url = f"https://www.foodnetwork.com/restaurants/shows/diners-drive-ins-and-dives/a-z/p/{n+1}"
+	url = f"https://www.foodnetwork.com/restaurants/shows/diners-drive-ins-and-dives/a-z/p/{n+1}"
 
-    response = requests.get(url)
-    time.sleep(0.5)
-    html = response.content
-    soup = bs(html, 'html.parser')
+	response = requests.get(url)
+	time.sleep(0.5)
+	html = response.content
+	soup = bs(html, 'html.parser')
 
-    restaurants = []
+	restaurants = []
 
-    restaurants = soup.select("section.o-ListPointOfInterest div.m-MediaBlock")
+	restaurants = soup.select("section.o-ListPointOfInterest div.m-MediaBlock")
 
-    print(f"Page: {n+1}")
+	print(f"Page: {n+1}")
 
-    for restaurant in restaurants:
-        name = restaurant.find(class_="m-MediaBlock__a-HeadlineText").get_text()
-        address = restaurant.find(class_="m-Info__a-Address").get_text()
-        description = restaurant.find(class_="m-MediaBlock__a-Description").get_text()
-        address_geocoded = crud.convert_address_to_geocode(address) # this is also able to pull api information
-        restaurant_latitude = crud.get_latitude(address_geocoded)
-        restaurant_longitude = crud.get_longitude(address_geocoded)
-        formatted_address = crud.get_formatted_address(address_geocoded)
-        if not formatted_address: # Checks if address is in USA, if not, then keeps address as scraped. Issue caught with Cuban addresses.
-            formatted_address = address.strip()
-        restaurant_state = crud.get_city_and_state(address_geocoded)
-        place_id =  crud.get_place_id(address_geocoded)
-        # episode_info = info pull from wiki web scrape?
+	for restaurant in restaurants:
+		name = restaurant.find(class_="m-MediaBlock__a-HeadlineText").get_text()
+		address = restaurant.find(class_="m-Info__a-Address").get_text()
+		description = restaurant.find(class_="m-MediaBlock__a-Description").get_text()
+		address_geocoded = crud.convert_address_to_geocode(address) # this is also able to pull api information
+		restaurant_latitude = crud.get_latitude(address_geocoded)
+		restaurant_longitude = crud.get_longitude(address_geocoded)
+		formatted_address = crud.get_formatted_address(address_geocoded)
+		if not formatted_address: # Checks if address is in USA, if not, then keeps address as scraped. Issue caught with Cuban addresses.
+			formatted_address = address.strip()
+		restaurant_state = crud.get_city_and_state(address_geocoded)
+		place_id =  crud.get_place_id(address_geocoded)
+		# episode_info = info pull from wiki web scrape?
 
-        if restaurant.find(class_="m-MediaBlock__a-Image"):
-            img = restaurant.find(class_="m-MediaBlock__a-Image").get("src")
-        else:
-            img = "static/img/attachment-guys-diner-background.jpg"
+		if restaurant.find(class_="m-MediaBlock__a-Image"):
+			img = restaurant.find(class_="m-MediaBlock__a-Image").get("src")
+		else:
+			img = "static/img/attachment-guys-diner-background.jpg"
 
-        new_restaurant = crud.create_restaurant(
-            name.strip(),
-            img.strip(),
-            description.strip(),
-            formatted_address.strip(),
-            restaurant_latitude,
-            restaurant_longitude,
-            restaurant_state.strip(),
-            place_id.strip(), # need to ensure change is reflected in rest of program. No longer food_type. Place Id can be used to pull more information from Places API
-            f"test_episode_info{n}"
-        )
+		new_restaurant = crud.create_restaurant(
+			name.strip(),
+			img.strip(),
+			description.strip(),
+			formatted_address.strip(),
+			restaurant_latitude,
+			restaurant_longitude,
+			restaurant_state.strip(),
+			place_id.strip(), # need to ensure change is reflected in rest of program. No longer food_type. Place Id can be used to pull more information from Places API
+			f"test_episode_info{n}"
+		)
 
-        can_add=True
-        old_address = ""
-        if len(restaurants_in_db)>1:
-            for restaurant in restaurants_in_db:
-                old_address = restaurant.restaurant_address
-                if old_address == new_restaurant.restaurant_address:
-                    can_add=False
+		can_add=True
+		old_address = ""
+		if len(restaurants_in_db)>1:
+			for restaurant in restaurants_in_db:
+				old_address = restaurant.restaurant_address
+				if old_address == new_restaurant.restaurant_address:
+					can_add=False
 
-        if can_add:
-            restaurants_in_db.append(new_restaurant)
+		if can_add:
+			restaurants_in_db.append(new_restaurant)
 
-    n += 1
+	n += 1
 
 model.db.session.add_all(restaurants_in_db)
 model.db.session.commit()
@@ -143,7 +143,7 @@ update_badges.update_badges(update_badges.read_badges())
 #                                     restaurants_in_db[9-n].restaurant_id)
 
 #     ratings_in_db.append(new_rating)
-    
+	
 #     n += 1
 
 # model.db.session.add_all(ratings_in_db)

@@ -4,31 +4,31 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-7">
-        <div id="all_users">
-            <h1>All User's Dev Page</h1>
-            
-            {% for user in users %}
-                <p>
-                    <div>User id: {{ user.user_id }}</div>
-                    <div>Username: {{ user.username }}</div>
-                    <div>Email: {{ user.email }}</div>
-                    <div>Password: {{ user.password }}</div>
-                    <div>Icon: {{ user.user_icon }}</div>
-                </p>
-            {% endfor %}
-        </div>
-        <div id="return_home_from_all">    
-            <form action="/" method="get">
-                <button type="submit" class="return_home_from_all_button">
-                    Return to home page
-                </button>
-            </form>    
-        </div>
-    </div>
+	<div class="col-7">
+		<div id="all_users">
+			<h1>All User's Dev Page</h1>
+			
+			{% for user in users %}
+				<p>
+					<div>User id: {{ user.user_id }}</div>
+					<div>Username: {{ user.username }}</div>
+					<div>Email: {{ user.email }}</div>
+					<div>Password: {{ user.password }}</div>
+					<div>Icon: {{ user.user_icon }}</div>
+				</p>
+			{% endfor %}
+		</div>
+		<div id="return_home_from_all">    
+			<form action="/" method="get">
+				<button type="submit" class="return_home_from_all_button">
+					Return to home page
+				</button>
+			</form>    
+		</div>
+	</div>
 
-    <div class="col">
-        <img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
-    </div>
+	<div class="col">
+		<img src="static/img/attachment-guys-diner-background.jpg" alt="GuyDDDSign">
+	</div>
 </div>
 {% endblock %}
