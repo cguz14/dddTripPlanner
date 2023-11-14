@@ -508,7 +508,8 @@ def make_maps_param(start_address, end, ordered_stops):
             })
 
             for ordered_stop in ordered_list:
-
+                print(ordered_stop)
+                print('**************')
                 restaurant = Restaurant.query.filter_by(restaurant_address = ordered_stop).one()
 
                 if restaurant != end:

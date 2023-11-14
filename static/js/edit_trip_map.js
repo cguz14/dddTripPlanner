@@ -148,6 +148,7 @@ async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
   console.log(originWaypoint);
   console.log(directionsWaypoints);
   console.log(destinationWaypoint);
+  
 
   directionsService
     .route({
@@ -169,7 +170,6 @@ async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
       for (let i = 0; i < route.legs.length; i++) {
 
         const routeSegment = i + 1;
-
         directionsPanel.innerHTML += "<b>Route Segment: " + routeSegment + "</b><br>";
         directionsPanel.innerHTML += `<span id="stop${i}" class="url-maps-directions">` + route.legs[i].start_address + "</span> to ";
         directionsPanel.innerHTML += route.legs[i].end_address + "<br>";

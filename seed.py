@@ -9,6 +9,7 @@ from flask import Flask, request
 from bs4 import BeautifulSoup as bs
 
 import crud
+import update_badges
 import model
 import server
 import requests
@@ -27,39 +28,42 @@ restaurants_in_db = []
 ratings_in_db = []
 trips_in_db = []
 
-n=0
-while n < 10:
-    new_user = crud.create_user(username=f"billyDags{n}",
-                                email=f"billy{n}@dags.com",
-                                password=f"password{n}",                                
-                                user_icon="dddTripPlanner/imgs/guyFaceCredKRSheehan.png")
-    users_in_db.append(new_user)
+# **** Seeds test users if desired
+# n=0
+# while n < 10:
+#     new_user = crud.create_user(username=f"billyDags{n}",
+#                                 email=f"billy{n}@dags.com",
+#                                 password=f"password{n}",                                
+#                                 user_icon="dddTripPlanner/imgs/guyFaceCredKRSheehan.png")
+#     users_in_db.append(new_user)
     
-    n += 1
+#     n += 1
 
-model.db.session.add_all(users_in_db)
-model.db.session.commit()
+# model.db.session.add_all(users_in_db)
+# model.db.session.commit()
 
-n=0
-while n < 10:
-    new_badge = crud.create_badge(f"testBadge{n}",
-                                  "dddTripPlanner/imgs/10PlusIcon.png",
-                                  f"testdescription{n}")
-    badges_in_db.append(new_badge)
+# **** Seeds test badges, unnecessary once custom badges are introduced
+# n=0
+# while n < 10:
+#     new_badge = crud.create_badge(f"testBadge{n}",
+#                                   "dddTripPlanner/imgs/10PlusIcon.png",
+#                                   f"testdescription{n}")
+#     badges_in_db.append(new_badge)
 
-    n += 1
+#     n += 1
 
-model.db.session.add_all(badges_in_db)
-model.db.session.commit()
+# model.db.session.add_all(badges_in_db)
+# model.db.session.commit()
 
-n=0
-while n < 5:
+# **** Seeds test badges awarded to test users. Not needed if reading badges in
+# n=0
+# while n < 5:
 
-    users_in_db[n].badges.append(badges_in_db[n+3])
+#     users_in_db[n].badges.append(badges_in_db[n+3])
 
-    n += 1
+#     n += 1
 
-model.db.session.commit()
+# model.db.session.commit()
 
 
 n=0
@@ -109,12 +113,6 @@ while n < 0: # set to 0 while not seeding to avoid reusing key. needs to be 86 w
             f"test_episode_info{n}"
         )
 
-        print(name)
-        print(formatted_address)
-        print(restaurant_state)
-        print(place_id)
-        print("*********************")
-
         can_add=True
         old_address = ""
         if len(restaurants_in_db)>1:
@@ -126,67 +124,63 @@ while n < 0: # set to 0 while not seeding to avoid reusing key. needs to be 86 w
         if can_add:
             restaurants_in_db.append(new_restaurant)
 
-    model.db.session.add_all(restaurants_in_db)
-    model.db.session.commit()
-
     n += 1
 
-    
-
-# print(restaurants_in_db)
 model.db.session.add_all(restaurants_in_db)
 model.db.session.commit()
 
+# Seeds badges by reading info from badges.txt file. Run update_badges.py anytime more updates are made.
+# Ensure badge_ids align in the awarded locations throughout the server.py file
+update_badges.update_badges(update_badges.read_badges())
 
-n=0
-while n < 10:
+# ****Rating seed not needed unless wanting test ratings
+# n=0
+# while n < 10:
 
+#     new_rating = crud.create_rating((n%2 == 0),
+#                                     "imgs/thumbs-up-line-icon.svg",
+#                                     users_in_db[n].user_id,
+#                                     restaurants_in_db[9-n].restaurant_id)
 
-    new_rating = crud.create_rating((n%2 == 0),
-                                    "imgs/thumbs-up-line-icon.svg",
-                                    users_in_db[n].user_id,
-                                    restaurants_in_db[9-n].restaurant_id)
-
-    ratings_in_db.append(new_rating)
+#     ratings_in_db.append(new_rating)
     
-    n += 1
+#     n += 1
 
-model.db.session.add_all(ratings_in_db)
-model.db.session.commit()
+# model.db.session.add_all(ratings_in_db)
+# model.db.session.commit()
 
-n=0
-while n < 5:
+# ****This will seed user favorited restaurants as part of seed if test favorites are desired
+# n=0
+# while n < 5:
 
-    users_in_db[n].restaurants.append(restaurants_in_db[n*2])
+#     users_in_db[n].restaurants.append(restaurants_in_db[n*2])
 
-    n += 1
+#     n += 1
 
-model.db.session.commit()
+# model.db.session.commit()
 
+# ****Adds trips for seed if test trips are desired
+# n=0
+# while n < 5:
 
-n=0
-while n < 5:
+#     new_trip = crud.create_trip(f"testTrip{n}",
+#                                 f"testDescription{n}",
+#                                 users_in_db[9-(n*2)].user_id)
 
-    new_trip = crud.create_trip(f"testTrip{n}",
-                                f"testDescription{n}",
-                                users_in_db[9-(n*2)].user_id)
+#     trips_in_db.append(new_trip)
 
-    trips_in_db.append(new_trip)
+#     n += 1
 
-    n += 1
+# model.db.session.add_all(trips_in_db)
+# model.db.session.commit()
 
-model.db.session.add_all(trips_in_db)
-model.db.session.commit()
+# ****Adds stops to test trips for seed if desired
+# n=0
+# while n < 5:
 
+#     trips_in_db[(int(n/2))].restaurants.append(restaurants_in_db[(9-n)])
 
-n=0
-while n < 5:
-
-    trips_in_db[(int(n/2))].restaurants.append(restaurants_in_db[(9-n)])
-
-    n += 1
-
-
+#     n += 1
 
 
 model.db.session.commit()

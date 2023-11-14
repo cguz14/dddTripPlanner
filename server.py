@@ -560,6 +560,8 @@ def direction_stop_info():
                         "food_type" : restaurant.food_type,
                         "episode_info" : restaurant.episode_info
                     })
+                print(restaurant.restaurant_address)
+                print('^^^^^^Address^^^^^^^^^')
 
             stops.append({
                         "restaurant_id" : end.restaurant_id,
