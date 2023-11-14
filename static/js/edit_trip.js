@@ -119,14 +119,23 @@ function getOrderedDirections(evt) {
     evt.preventDefault();
     const orderedStops = document.querySelectorAll('.url-maps-directions');
 
-    let i = 1;
     let params = "";
-    while (i < orderedStops.length-1) {
-        params += urlEncodeParam(orderedStops[i].innerText) + "QQQQQ";
-        i ++;
-    }
-    params += urlEncodeParam(orderedStops[i].innerText) // Add last stop without the QQQQQ
 
+    if (orderedStops.length > 1) {
+        
+        let i = 1;
+        while (i < orderedStops.length-1) {
+            params += urlEncodeParam(orderedStops[i].innerText) + "QQQQQ";
+            i ++;
+        }
+        params += urlEncodeParam(orderedStops[i].innerText) // Add last stop without the QQQQQ
+
+    }
+    else {
+
+        params = "QQQQQ"
+
+    }
     fetch(`/route-to-maps.json?orderedStops=${params}`)
         .then((response) => response.text())
         .then(directionsConfirmation)

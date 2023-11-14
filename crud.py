@@ -430,9 +430,8 @@ def make_maps_param(start_address, end, ordered_stops):
 
     ordered_list = ordered_stops.split('QQQQQ')
 
-    # both a start and end entered
-    if start_address and end:
-
+    # Used when there are no in between stops and only one destination
+    if start_address and end and ordered_list == ['','']:
         stops.append({
             "restaurant_id" : "User Address Start Point",
             "restaurant_name" : "User Address Start Point",
@@ -445,24 +444,6 @@ def make_maps_param(start_address, end, ordered_stops):
             "food_type" : "User Address Start Point",
             "episode_info" : "User Address Start Point"
         })
-
-        for ordered_stop in ordered_list:
-
-            restaurant = Restaurant.query.filter_by(restaurant_address = ordered_stop).one()
-
-            if restaurant != end:
-                stops.append({
-                    "restaurant_id" : restaurant.restaurant_id,
-                    "restaurant_name" : restaurant.restaurant_name,
-                    "restaurant_icon" : restaurant.restaurant_icon,
-                    "restaurant_description" : restaurant.restaurant_description,
-                    "restaurant_address" : restaurant.restaurant_address,
-                    "restaurant_latitude" : restaurant.restaurant_latitude,
-                    "restaurant_longitude" : restaurant.restaurant_longitude,
-                    "restaurant_state" : restaurant.restaurant_state,
-                    "food_type" : restaurant.food_type,
-                    "episode_info" : restaurant.episode_info
-                })
 
         # place selected end point as last address in list
         stops.append({
@@ -483,9 +464,6 @@ def make_maps_param(start_address, end, ordered_stops):
 
         for idx, stop in enumerate(stops):
             address = stop['restaurant_address'].lstrip()
-
-            if idx == 1:
-                param_address += "&waypoints="
 
             if idx == len(stops)-1:
                 param_address += "&destination="
@@ -514,6 +492,92 @@ def make_maps_param(start_address, end, ordered_stops):
 
             if idx > 0 and idx < len(stops)-2:
                 param_address += f"%7C"
+
+    else:
+        # Used when there are multiple waypoints
+        if start_address and end:
+
+            stops.append({
+                "restaurant_id" : "User Address Start Point",
+                "restaurant_name" : "User Address Start Point",
+                "restaurant_icon" : "User Address Start Point",
+                "restaurant_description" : "User Address Start Point",
+                "restaurant_address" : start_address,
+                "restaurant_latitude" :"User Address Start Point",
+                "restaurant_longitude" : "User Address Start Point",
+                "restaurant_state" : "User Address Start Point",
+                "food_type" : "User Address Start Point",
+                "episode_info" : "User Address Start Point"
+            })
+
+            for ordered_stop in ordered_list:
+
+                restaurant = Restaurant.query.filter_by(restaurant_address = ordered_stop).one()
+
+                if restaurant != end:
+                    stops.append({
+                        "restaurant_id" : restaurant.restaurant_id,
+                        "restaurant_name" : restaurant.restaurant_name,
+                        "restaurant_icon" : restaurant.restaurant_icon,
+                        "restaurant_description" : restaurant.restaurant_description,
+                        "restaurant_address" : restaurant.restaurant_address,
+                        "restaurant_latitude" : restaurant.restaurant_latitude,
+                        "restaurant_longitude" : restaurant.restaurant_longitude,
+                        "restaurant_state" : restaurant.restaurant_state,
+                        "food_type" : restaurant.food_type,
+                        "episode_info" : restaurant.episode_info
+                    })
+
+            # place selected end point as last address in list
+            stops.append({
+                "restaurant_id" : end.restaurant_id,
+                "restaurant_name" : end.restaurant_name,
+                "restaurant_icon" : end.restaurant_icon,
+                "restaurant_description" : end.restaurant_description,
+                "restaurant_address" : end.restaurant_address,
+                "restaurant_latitude" : end.restaurant_latitude,
+                "restaurant_longitude" : end.restaurant_longitude,
+                "restaurant_state" : end.restaurant_state,
+                "food_type" : end.food_type,
+                "episode_info" : end.episode_info
+            })
+
+            # since start address was entered, origin param needed        
+            param_address = "origin="
+
+            for idx, stop in enumerate(stops):
+                address = stop['restaurant_address'].lstrip()
+
+                if idx == 1:
+                    param_address += "&waypoints="
+
+                if idx == len(stops)-1:
+                    param_address += "&destination="
+
+                for char in address:
+                    if char == "#":
+                        encoded_char = f"%23"            
+                        param_address += encoded_char
+                    elif char == "/":
+                        encoded_char = f"%2F"            
+                        param_address += encoded_char
+                    elif char.strip() == '':
+                        encoded_char = f"%20"
+                        param_address += encoded_char
+                    elif char == ",":
+                        encoded_char = f"%2C"
+                        param_address += encoded_char
+                    elif char == ".":
+                        encoded_char = f"%2E"
+                        param_address += encoded_char
+                    elif char == '"':
+                        encoded_char = f"%22"
+                        param_address += encoded_char
+                    else:
+                        param_address += char
+
+                if idx > 0 and idx < len(stops)-2:
+                    param_address += f"%7C"
 
     return param_address
 
