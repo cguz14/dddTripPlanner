@@ -507,23 +507,21 @@ def make_maps_param(start_address, end, ordered_stops):
                 "episode_info" : "User Address Start Point"
             })
 
+            # Get ordered_stop addresses added to Maps URL Parameter in 
+            # optimized order given by Directions API
             for ordered_stop in ordered_list:
-                print(ordered_stop)
-                print('**************')
-                restaurant = Restaurant.query.filter_by(restaurant_address = ordered_stop).one()
-
-                if restaurant != end:
+                if ordered_stop != end.restaurant_address:
                     stops.append({
-                        "restaurant_id" : restaurant.restaurant_id,
-                        "restaurant_name" : restaurant.restaurant_name,
-                        "restaurant_icon" : restaurant.restaurant_icon,
-                        "restaurant_description" : restaurant.restaurant_description,
-                        "restaurant_address" : restaurant.restaurant_address,
-                        "restaurant_latitude" : restaurant.restaurant_latitude,
-                        "restaurant_longitude" : restaurant.restaurant_longitude,
-                        "restaurant_state" : restaurant.restaurant_state,
-                        "food_type" : restaurant.food_type,
-                        "episode_info" : restaurant.episode_info
+                        "restaurant_id" : "ordered stop",
+                        "restaurant_name" : "ordered stop",
+                        "restaurant_icon" : "ordered stop",
+                        "restaurant_description" : "ordered stop",
+                        "restaurant_address" : ordered_stop,
+                        "restaurant_latitude" : "ordered stop",
+                        "restaurant_longitude" : "ordered stop",
+                        "restaurant_state" : "ordered stop",
+                        "food_type" : "ordered stop",
+                        "episode_info" : "ordered stop"
                     })
 
             # place selected end point as last address in list
