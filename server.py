@@ -1,6 +1,7 @@
 """Server for movie ratings app."""
 
 from flask import Flask, render_template, request, flash, session, redirect, jsonify
+from flask_bcrypt import Bcrypt
 import crud
 from model import connect_to_db, db, Restaurant, User, UsersBadge, Badge, Rating, Favorite, Trip, Stop
 from pprint import pformat, pprint
@@ -14,6 +15,7 @@ import requests
 import random
 
 app = Flask(__name__)
+flask_bcrypt = Bcrypt(app)
 app.secret_key = os.environ['SECRETKEY']
 MAPS_KEY = os.environ['MAPS_KEY']
 GEO_PLACES_KEY = os.environ['GEO_PLACES_KEY']
@@ -80,7 +82,8 @@ def new_user():
 		flash("Please enter account information")
 		return redirect("/new-account")
 	else:
-		user = crud.create_user(username, email, password, user_icon)
+		hashed_pw = flask_bcrypt.generate_password_hash(password)
+		user = crud.create_user(username, email, hashed_pw, user_icon)
 		db.session.add(user)
 		db.session.commit()
 		session["username"] = username
