@@ -24,7 +24,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def homepage():
 	"""Show homepage"""
-	
+
 	return render_template('homepage.html')
 
 @app.route('/restaurants')
@@ -83,8 +83,6 @@ def new_user():
 		return redirect("/new-account")
 	else:
 		hashed_pw = flask_bcrypt.generate_password_hash(password).decode('utf-8')
-		print(hashed_pw)
-		print(len(hashed_pw))
 		user = crud.create_user(username, email, hashed_pw, user_icon)
 		db.session.add(user)
 		db.session.commit()
