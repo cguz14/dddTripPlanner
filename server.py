@@ -24,7 +24,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def homepage():
 	"""Show homepage"""
-
+	
 	return render_template('homepage.html')
 
 @app.route('/restaurants')
