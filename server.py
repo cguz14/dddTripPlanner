@@ -44,7 +44,7 @@ def user_login():
 
 	user = crud.get_user_by_email(email)
 
-	if crud.is_user(email, password):
+	if crud.is_user(email, password, flask_bcrypt.check_password_hash):
 		session["email"] = email
 		session["username"] = user.username
 		session["user_id"] = user.user_id
@@ -82,7 +82,9 @@ def new_user():
 		flash("Please enter account information")
 		return redirect("/new-account")
 	else:
-		hashed_pw = flask_bcrypt.generate_password_hash(password)
+		hashed_pw = flask_bcrypt.generate_password_hash(password).decode('utf-8')
+		print(hashed_pw)
+		print(len(hashed_pw))
 		user = crud.create_user(username, email, hashed_pw, user_icon)
 		db.session.add(user)
 		db.session.commit()

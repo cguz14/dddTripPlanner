@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-# Replace this with your code!
 class User(db.Model): #User
 	"""A user."""
 

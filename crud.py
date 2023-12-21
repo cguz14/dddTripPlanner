@@ -106,7 +106,7 @@ def get_one_restaurant_by_id(restaurant_id):
 	return Restaurant.query.filter_by(restaurant_id=restaurant_id).one()
 
 
-def is_user(email, password):
+def is_user(email, password, check_password_hash):
 	"""Return True/False if user/password combo in userDB. Confirms username and
 	password are correct for login"""
 
@@ -115,7 +115,7 @@ def is_user(email, password):
 
 	for user in users:
 		if email == user.email:
-			if user.password == password:
+			if check_password_hash(user.password, password):
 				loggedIn = True
 
 	return loggedIn
