@@ -643,4 +643,5 @@ def new_user_address():
 
 if __name__ == "__main__":
 	connect_to_db(app)
-	app.run(host="0.0.0.0")
+	app.run() # debug=True useful on pc side while still 
+	#	testing and building. Need to ensure that server side maintains lack of debug mode.
