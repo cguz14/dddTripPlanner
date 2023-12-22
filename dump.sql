@@ -248,7 +248,7 @@ ALTER SEQUENCE public.trips_trip_id_seq OWNED BY public.trips.trip_id;
 CREATE TABLE public.users (
     user_id integer NOT NULL,
     username character varying(50) NOT NULL,
-    password character varying(50) NOT NULL,
+    password character varying(100) NOT NULL,
     email character varying(50) NOT NULL,
     user_icon character varying(100)
 );
@@ -374,23 +374,13 @@ ALTER TABLE ONLY public.usersbadges ALTER COLUMN users_badge_id SET DEFAULT next
 --
 
 COPY public.badges (badge_id, badge_name, badge_icon, badge_description) FROM stdin;
-1	testBadge0	dddTripPlanner/imgs/10PlusIcon.png	testdescription0
-2	testBadge1	dddTripPlanner/imgs/10PlusIcon.png	testdescription1
-3	testBadge2	dddTripPlanner/imgs/10PlusIcon.png	testdescription2
-4	testBadge3	dddTripPlanner/imgs/10PlusIcon.png	testdescription3
-5	testBadge4	dddTripPlanner/imgs/10PlusIcon.png	testdescription4
-6	testBadge5	dddTripPlanner/imgs/10PlusIcon.png	testdescription5
-7	testBadge6	dddTripPlanner/imgs/10PlusIcon.png	testdescription6
-8	testBadge7	dddTripPlanner/imgs/10PlusIcon.png	testdescription7
-9	testBadge8	dddTripPlanner/imgs/10PlusIcon.png	testdescription8
-10	testBadge9	dddTripPlanner/imgs/10PlusIcon.png	testdescription9
 11	You Gotta Check 'Em Out!	iconPLaceholder	Congratulations. You've started your first trip plan!
 12	Welcome to Flavortown!	iconPlaceholder	Now that you've created an account, let's get rolling!
 13	Ain't No Jokin'!	iconPlaceholder	Awesome, you just rated your first DDD spot!
-14	It'd Taste Good in a Shoe	iconPlaceholder	Fantastic, you just add your first DDD spot to your favorite's list!
 15	Changing it Up	iconPlaceholder	Making moves! You've made your first edit to a trip.
 16	Deputy of Flavortown	iconPlaceholder	Dynamite! You have 10+ restaurants ratings!
 17	Mayor of Flavortown	iconPlaceholder	Holy moly, stromboli! You have 50+ restaurants ratings!
+14	It'd Taste Good in a Flip Flop	iconPlaceholder	Fantastic, you just added your first DDD spot to your favorite's list!
 \.
 
 
@@ -1724,7 +1714,6 @@ COPY public.stops (stop_id, trip_id, restaurant_id) FROM stdin;
 3	2	8
 4	2	7
 5	3	6
-28	6	292
 31	10	85
 32	10	127
 33	10	130
@@ -1732,7 +1721,7 @@ COPY public.stops (stop_id, trip_id, restaurant_id) FROM stdin;
 37	11	293
 39	11	51
 40	6	278
-43	6	1090
+64	6	21
 \.
 
 
@@ -1757,18 +1746,19 @@ COPY public.trips (trip_id, trip_name, trip_description, user_id) FROM stdin;
 --
 
 COPY public.users (user_id, username, password, email, user_icon) FROM stdin;
-1	billyDags0	password0	billy0@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-2	billyDags1	password1	billy1@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-3	billyDags2	password2	billy2@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-4	billyDags3	password3	billy3@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-5	billyDags4	password4	billy4@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-6	billyDags5	password5	billy5@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-7	billyDags6	password6	billy6@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-8	billyDags7	password7	billy7@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-9	billyDags8	password8	billy8@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-10	billyDags9	password9	billy9@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
-14	newuser	newuser	newuser@user.com	static/img/attachment-guys-diner-background.jpg
-13	Gooseronie	goose	goose@topher.com	static/img/ProfilePic.jpg
+16	hashtest1	$2b$12$X2K7cMkY3scqUCY7gukLBOPMOoQTvCLlz/EEBkp6ob46sXv8CcUbS	hashtest1	static/img/attachment-guys-diner-background.jpg
+1	billyDags0	$2b$12$KbP9ERZ6F4rogYDJtYi5yeDQaW16l9pYUIB4HzR7OAvrk9arKkebO	billy0@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+2	billyDags1	$2b$12$ZNW5qpd8NT9rJQEm1a45L.vffmPAMOMOkOXNvvxe1d6W3o1g79QZK	billy1@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+3	billyDags2	$2b$12$nO9iIwbxhc9bw46cUvLgtuw5rW6onkB.T9Gn0cY312RHSDQmj9Fw.	billy2@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+4	billyDags3	$2b$12$.Pr.gOFxBz2shiPwJ8Tg8eyJFZ0Vyfj2ulPCTEy9Q75qE60nP5LS6	billy3@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+5	billyDags4	$2b$12$.kcLcfGRq0mpbv7xHK9qgOHnl8vyk6vbydxh9/YQUHgltrU1pm75q	billy4@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+6	billyDags5	$2b$12$F.I5cWUtxKdnbS9NM0sYFek6i.X0qboZ1OzqN0o2HKCbefOI33IhO	billy5@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+7	billyDags6	$2b$12$vcru69YIE5FUV/CePT60gONG32/OCWQfw2iuH.V6jB7O1pKR7WZ3e	billy6@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+8	billyDags7	$2b$12$fUETgJ3pQsUvS6E5JFI1mep4IZ7cXI3D.HP3JsB6vOCOHBPHLViwq	billy7@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+9	billyDags8	$2b$12$U1/k6yMJe4EacZmXws4DC.Twqi/R4v.frntsfAX3B5L6VzB5DQQd6	billy8@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+10	billyDags9	$2b$12$TMk2128j0/ZfJGopLavNXOaSVsu9XXtdscQIn8RYdtFxkloggpC4a	billy9@dags.com	dddTripPlanner/imgs/guyFaceCredKRSheehan.png
+13	Gooseronie	$2b$12$K0NIe/G0MEnfikK7PBdY5.dc0KkNv1IJyS2t2VjJHWsehvXB/6u2C	goose@topher.com	static/img/ProfilePic.jpg
+14	newuser	$2b$12$nWUVcH/QWvnHTyJuAlUbTeKEYCGYe82xwMclYprs6CBLRvraznCdi	newuser@user.com	static/img/attachment-guys-diner-background.jpg
 \.
 
 
@@ -1777,11 +1767,6 @@ COPY public.users (user_id, username, password, email, user_icon) FROM stdin;
 --
 
 COPY public.usersbadges (users_badge_id, user_id, unlocked_badge_id) FROM stdin;
-1	1	4
-2	2	5
-3	3	6
-4	4	7
-5	5	8
 6	13	12
 7	13	11
 8	13	15
@@ -1789,6 +1774,7 @@ COPY public.usersbadges (users_badge_id, user_id, unlocked_badge_id) FROM stdin;
 10	13	13
 11	13	16
 12	14	12
+13	16	12
 \.
 
 
@@ -1810,7 +1796,7 @@ SELECT pg_catalog.setval('public.favorites_favorite_id_seq', 41, true);
 -- Name: ratings_rating_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cguz07
 --
 
-SELECT pg_catalog.setval('public.ratings_rating_id_seq', 59, true);
+SELECT pg_catalog.setval('public.ratings_rating_id_seq', 60, true);
 
 
 --
@@ -1824,7 +1810,7 @@ SELECT pg_catalog.setval('public.restaurants_restaurant_id_seq', 1263, true);
 -- Name: stops_stop_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cguz07
 --
 
-SELECT pg_catalog.setval('public.stops_stop_id_seq', 45, true);
+SELECT pg_catalog.setval('public.stops_stop_id_seq', 64, true);
 
 
 --
@@ -1838,14 +1824,14 @@ SELECT pg_catalog.setval('public.trips_trip_id_seq', 11, true);
 -- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cguz07
 --
 
-SELECT pg_catalog.setval('public.users_user_id_seq', 14, true);
+SELECT pg_catalog.setval('public.users_user_id_seq', 16, true);
 
 
 --
 -- Name: usersbadges_users_badge_id_seq; Type: SEQUENCE SET; Schema: public; Owner: cguz07
 --
 
-SELECT pg_catalog.setval('public.usersbadges_users_badge_id_seq', 12, true);
+SELECT pg_catalog.setval('public.usersbadges_users_badge_id_seq', 13, true);
 
 
 --

@@ -172,9 +172,9 @@ def remove_favorites(email, remove_favorites):
 	user = get_user_by_email(email)
 
 	for restaurant in remove_favorites:
-		removeobj = Favorite.query.filter_by(user_id=user.user_id, restaurant_id=int(restaurant)).one()
+		remove_obj = Favorite.query.filter_by(user_id=user.user_id, restaurant_id=int(restaurant)).one()
 
-		db.session.delete(removeobj)
+		db.session.delete(remove_obj)
 
 	db.session.commit()
 
@@ -218,9 +218,9 @@ def remove_trips(email, remove_trips):
 	user = get_user_by_email(email)
 
 	for trip in remove_trips:
-		removeobj = Trip.query.filter_by(user_id=user.user_id, trip_id=int(trip)).one()
+		remove_obj = Trip.query.filter_by(user_id=user.user_id, trip_id=int(trip)).one()
 
-		db.session.delete(removeobj)
+		db.session.delete(remove_obj)
 
 	db.session.commit()
 
@@ -247,9 +247,9 @@ def get_stop_restaurants(stops):
 def remove_stops(restaurant_ids, trip_id):
 
 	for restaurant_id in restaurant_ids:
-		removeobj = Stop.query.filter_by(restaurant_id=restaurant_id, trip_id=trip_id).one()
+		remove_obj = Stop.query.filter_by(restaurant_id=restaurant_id, trip_id=trip_id).one()
 
-		db.session.delete(removeobj)
+		db.session.delete(remove_obj)
 
 	db.session.commit()
 
