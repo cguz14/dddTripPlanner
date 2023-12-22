@@ -222,12 +222,12 @@ def edit_trips_page():
 
 	if "email" in session:
 		trips = crud.get_trips(session["email"])
-
-		if trips:
-			return render_template('edit_trips.html', trips=trips)
-		else:
+	
+		if not trips:
 			flash('You have no trips to edit! Use "Create new trip" button to start your journey!')
-			return redirect('/edit-trips')
+
+		return render_template('edit_trips.html', trips=trips)
+
 	else:
 		flash("You need to be logged in to do that!")
 		return redirect('/')
