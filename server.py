@@ -6,6 +6,7 @@ import crud
 from model import connect_to_db, db, Restaurant, User, UsersBadge, Badge, Rating, Favorite, Trip, Stop
 from pprint import pformat, pprint
 from bs4 import BeautifulSoup as bs
+from email_validator import validate_email, EmailNotValidError
 
 from jinja2 import StrictUndefined
 
@@ -42,6 +43,18 @@ def user_login():
 	email = request.form.get("email")
 	password = request.form.get("password")
 
+	try:
+
+		# check that email is valid, no need for deliverability check since just login
+		email_info = validate_email(email, check_deliverability=False)
+		email = email_info.normalized
+
+	except EmailNotValidError as e:
+
+		# show readable error for why email did not succeed and redirect to homepage
+		flash(str(e))
+		return redirect("/")
+
 	user = crud.get_user_by_email(email)
 
 	if crud.is_user(email, password, flask_bcrypt.check_password_hash):
@@ -74,6 +87,18 @@ def new_user():
 	password = request.form.get("password")
 	email = request.form.get("email")
 	user_icon = "static/img/attachment-guys-diner-background.jpg"
+
+	try:
+
+		# check that email is valid and then normalize for db entry
+		email_info = validate_email(email, check_deliverability=True)
+		email = email_info.normalized
+
+	except EmailNotValidError as e:
+
+		# show readable error for why email did not succeed and redirect to account creation
+		flash(str(e))
+		return redirect("/new-account")
 
 	if crud.email_exists(email):
 		flash("Email already exists, please use another email")
