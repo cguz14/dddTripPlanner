@@ -212,16 +212,12 @@ def add_trip_to_db(trip):
 	db.session.commit()
 
 
-def remove_trips(email, remove_trips):
-	"""Remove checked restaurants from user's favorites"""
+def remove_trips(remove_trip_id):
+	"""Delete Selected trip from db"""
 
-	user = get_user_by_email(email)
+	remove_obj = Trip.query.filter_by(trip_id=remove_trip_id).one()
 
-	for trip in remove_trips:
-		remove_obj = Trip.query.filter_by(user_id=user.user_id, trip_id=int(trip)).one()
-
-		db.session.delete(remove_obj)
-
+	db.session.delete(remove_obj)
 	db.session.commit()
 
 

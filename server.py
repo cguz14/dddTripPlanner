@@ -234,8 +234,8 @@ def add_new_trip():
 def remove_trip():
 
 	if "email" in session:
-		remove_trips = request.form.get('remove-trip')
-		crud.remove_trips(session["email"], remove_trips)      
+		remove_trip_id = request.form.get('remove-trip')
+		crud.remove_trips(int(remove_trip_id))     
 
 		return redirect('/edit-trips')
 	else:
