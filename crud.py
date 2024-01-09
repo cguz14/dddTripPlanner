@@ -250,6 +250,7 @@ def remove_stops(restaurant_ids, trip_id):
 	db.session.commit()
 
 def url_encode(param):
+	# Use this function to ensure google APIs can use parameter when url-encoding is needed
 
 	param_address = ''
 
