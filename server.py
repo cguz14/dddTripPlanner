@@ -34,7 +34,7 @@ def show_restaurants():
 
 	restaurant_state_dict = crud.get_restaurant_state_dict()
 
-	return render_template('restaurants.html', MAPS_KEY=MAPS_KEY, sorted=sorted, list=list, restaurant_state_dict=restaurant_state_dict)
+	return render_template('restaurants.html', MAPS_KEY=MAPS_KEY, sorted=sorted, list=list, restaurant_state_dict=restaurant_state_dict, url_encode=crud.url_encode)
 
 @app.route('/login', methods=["POST"])
 def user_login():

@@ -59,7 +59,10 @@
 														</h5>
 														<div class="card-text">
 															{{ restaurant.restaurant_description }}
-															<br>{{ restaurant.restaurant_address }}                
+															<br>
+															{{ restaurant.restaurant_address }}
+															<br>
+															<a href="https://www.google.com/maps/search/?api=1&query={{ url_encode(restaurant.restaurant_address) }}+{{ url_encode(restaurant.restaurant_name) }}">Quick Directions?</a>             
 														</div>
 													</div>
 												</div>

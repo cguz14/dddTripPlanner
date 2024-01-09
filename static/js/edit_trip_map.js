@@ -75,8 +75,7 @@ async function initMap() {
 				markers.push(stopMarker)
 			}
 
-			// 	Trying look of not using marker cluster for edit trip map
-			// const markerCluster = new markerClusterer.MarkerClusterer({ markers, map });
+			const markerCluster = new markerClusterer.MarkerClusterer({ markers, map });
 
 		})
 		.catch(() => {
