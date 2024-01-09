@@ -43,7 +43,7 @@ async function initMap() {
 									<br>
 									${restaurant.restaurant_address}
 									<br>
-									<a href="https://www.google.com/maps/search/?api=1&query=${encodedAddress}+${encodedName}">Quick Directions?</a>                
+									<a href="https://www.google.com/maps/search/?api=1&query=${encodedAddress}+${encodedName}" target="_blank">Quick Directions?</a>                
 								</div>
 							</div>
 						</div>
@@ -145,7 +145,7 @@ function urlEncode(param) {
 	}
 
 	return param_encoded;
-	
+
 }
 
 initMap();
