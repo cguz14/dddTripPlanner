@@ -249,27 +249,42 @@ def remove_stops(restaurant_ids, trip_id):
 
 	db.session.commit()
 
+def url_encode(param):
 
-def convert_address_to_geocode(address):
+	param_address = ''
 
-	GEO_PLACES_KEY = os.environ['GEO_PLACES_KEY']
-
-	# address = address.split()
-
-	param_address = ""
-
-	for char in address:
+	for char in param:
 		if char == "#":
 			encoded_char = f"%23"            
 			param_address += encoded_char
 		elif char == "/":
 			encoded_char = f"%2F"            
 			param_address += encoded_char
-		elif char == " ":
+		elif char.strip() == '':
 			encoded_char = f"%20"
+			param_address += encoded_char
+		elif char == ",":
+			encoded_char = f"%2C"
+			param_address += encoded_char
+		elif char == ".":
+			encoded_char = f"%2E"
+			param_address += encoded_char
+		elif char == '"':
+			encoded_char = f"%22"
+			param_address += encoded_char
+		elif char == '&':
+			encoded_char = f"and"
 			param_address += encoded_char
 		else:
 			param_address += char
+
+	return param_address
+
+def convert_address_to_geocode(address):
+
+	GEO_PLACES_KEY = os.environ['GEO_PLACES_KEY']
+
+	param_address = url_encode(address)
 
 	url = f"https://maps.googleapis.com/maps/api/geocode/json?address={param_address}&key={GEO_PLACES_KEY}"
 
@@ -485,30 +500,32 @@ def make_maps_param(start_address, end, ordered_stops):
 			if idx == 1:
 				param_address += "&destination="
 
-			for char in address:
-				if char == "#":
-					encoded_char = f"%23"            
-					param_address += encoded_char
-				elif char == "/":
-					encoded_char = f"%2F"            
-					param_address += encoded_char
-				elif char.strip() == '':
-					encoded_char = f"%20"
-					param_address += encoded_char
-				elif char == ",":
-					encoded_char = f"%2C"
-					param_address += encoded_char
-				elif char == ".":
-					encoded_char = f"%2E"
-					param_address += encoded_char
-				elif char == '"':
-					encoded_char = f"%22"
-					param_address += encoded_char
-				elif char == '&':
-					encoded_char = f"and"
-					param_address += encoded_char
-				else:
-					param_address += char
+			param_address += url_encode(address)
+
+			# for char in address:
+			# 	if char == "#":
+			# 		encoded_char = f"%23"            
+			# 		param_address += encoded_char
+			# 	elif char == "/":
+			# 		encoded_char = f"%2F"            
+			# 		param_address += encoded_char
+			# 	elif char.strip() == '':
+			# 		encoded_char = f"%20"
+			# 		param_address += encoded_char
+			# 	elif char == ",":
+			# 		encoded_char = f"%2C"
+			# 		param_address += encoded_char
+			# 	elif char == ".":
+			# 		encoded_char = f"%2E"
+			# 		param_address += encoded_char
+			# 	elif char == '"':
+			# 		encoded_char = f"%22"
+			# 		param_address += encoded_char
+			# 	elif char == '&':
+			# 		encoded_char = f"and"
+			# 		param_address += encoded_char
+			# 	else:
+			# 		param_address += char
 
 	else:
 		# Used when there are multiple waypoints
@@ -570,27 +587,32 @@ def make_maps_param(start_address, end, ordered_stops):
 				if idx == len(stops)-1:
 					param_address += "&destination="
 
-				for char in address:
-					if char == "#":
-						encoded_char = f"%23"            
-						param_address += encoded_char
-					elif char == "/":
-						encoded_char = f"%2F"            
-						param_address += encoded_char
-					elif char.strip() == '':
-						encoded_char = f"%20"
-						param_address += encoded_char
-					elif char == ",":
-						encoded_char = f"%2C"
-						param_address += encoded_char
-					elif char == ".":
-						encoded_char = f"%2E"
-						param_address += encoded_char
-					elif char == '"':
-						encoded_char = f"%22"
-						param_address += encoded_char
-					else:
-						param_address += char
+				param_address += url_encode(address)
+
+				# for char in address:
+				# 	if char == "#":
+				# 		encoded_char = f"%23"            
+				# 		param_address += encoded_char
+				# 	elif char == "/":
+				# 		encoded_char = f"%2F"            
+				# 		param_address += encoded_char
+				# 	elif char.strip() == '':
+				# 		encoded_char = f"%20"
+				# 		param_address += encoded_char
+				# 	elif char == ",":
+				# 		encoded_char = f"%2C"
+				# 		param_address += encoded_char
+				# 	elif char == ".":
+				# 		encoded_char = f"%2E"
+				# 		param_address += encoded_char
+				# 	elif char == '"':
+				# 		encoded_char = f"%22"
+				# 		param_address += encoded_char
+				# 	elif char == '&':
+				# 		encoded_char = f"and"
+				# 		param_address += encoded_char
+				# 	else:
+				# 		param_address += char
 
 				if idx > 0 and idx < len(stops)-2:
 					param_address += f"%7C"
