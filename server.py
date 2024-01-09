@@ -45,9 +45,10 @@ def user_login():
 
 	try:
 
-		# check that email is valid, no need for deliverability check since just login
+		# check that email entered is an email address, does NOT check user validity yet,
+		#		no need for deliverability check since just login
 		email_info = validate_email(email, check_deliverability=False)
-		email = email_info.normalized
+		email = email_info.normalized.lower()
 
 	except EmailNotValidError as e:
 
@@ -92,7 +93,7 @@ def new_user():
 
 		# check that email is valid and then normalize for db entry
 		email_info = validate_email(email, check_deliverability=True)
-		email = email_info.normalized
+		email = email_info.normalized.lower()
 
 	except EmailNotValidError as e:
 
