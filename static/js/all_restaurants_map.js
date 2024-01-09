@@ -27,6 +27,9 @@ async function initMap() {
 		.then((restaurants) => {
 			for (const restaurant of restaurants) {
 				// Define the content of the infoWindow
+				const encodedAddress = urlEncode(restaurant.restaurant_address);
+				const encodedName = urlEncode(restaurant.restaurant_name);
+
 				const restaurantInfoContent = `
 				<div class="card">
 					<div class="row no gutters">
@@ -38,7 +41,9 @@ async function initMap() {
 								<div class="card-text">
 									${restaurant.restaurant_description}
 									<br>
-									${restaurant.restaurant_address}                
+									${restaurant.restaurant_address}
+									<br>
+									<a href="https://www.google.com/maps/search/?api=1&query=${encodedAddress}+${encodedName}">Quick Directions?</a>                
 								</div>
 							</div>
 						</div>
@@ -98,5 +103,49 @@ async function initMap() {
 // 	return content;
 
 // }
+
+function urlEncode(param) {
+
+	let encoded_char;
+	let param_encoded = '';
+
+	for (const char of param) {
+
+		if (char == "#"){
+			encoded_char = "%23";            
+			param_encoded += encoded_char;
+		}
+		else if (char == "/"){
+			encoded_char = "%2F";            
+			param_encoded += encoded_char;
+		}
+		else if (char == ' '){
+			encoded_char = "%20";
+			param_encoded += encoded_char;
+		}
+		else if (char == ","){
+			encoded_char = "%2C";
+			param_encoded += encoded_char;
+		}
+		else if (char == "."){
+			encoded_char = "%2E";
+			param_encoded += encoded_char;
+		}
+		else if (char == '"'){
+			encoded_char = "%22";
+			param_encoded += encoded_char;
+		}
+		else if (char == '&'){
+			encoded_char = "and";
+			param_encoded += encoded_char;
+		}
+		else {
+			param_encoded += char;
+		}
+	}
+
+	return param_encoded;
+	
+}
 
 initMap();

@@ -504,6 +504,9 @@ def make_maps_param(start_address, end, ordered_stops):
 				elif char == '"':
 					encoded_char = f"%22"
 					param_address += encoded_char
+				elif char == '&':
+					encoded_char = f"and"
+					param_address += encoded_char
 				else:
 					param_address += char
 

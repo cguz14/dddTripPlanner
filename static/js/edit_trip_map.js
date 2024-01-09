@@ -62,19 +62,21 @@ async function initMap() {
 						lat: stop.restaurant_latitude,
 						lng: stop.restaurant_longitude,
 					},
-					content: buildMarker(stop),
+
 					title: `Restaurant: ${stop.restaurant_name}`,
 				});
 
-				markers.push(stopMarker)
 				stopMarker.addListener('click', () => {
 					stopInfo.close();
 					stopInfo.setContent(stopInfoContent);
 					stopInfo.open(map, stopMarker);
 				});
+
+				markers.push(stopMarker)
 			}
 
-			const markerCluster = new markerClusterer.MarkerClusterer({ markers, map });
+			// 	Trying look of not using marker cluster for edit trip map
+			// const markerCluster = new markerClusterer.MarkerClusterer({ markers, map });
 
 		})
 		.catch(() => {
@@ -87,26 +89,27 @@ async function initMap() {
 	});
 }
 
-function buildMarker(stop) {
+// 	Function is used when using content: buildMarker(stop) in building of markerElement
+//	function buildMarker(stop) {
 
-	let restaurantImg = document.createElement("img")
-	restaurantImg.src = `https:${stop.restaurant_icon}`;
+// 	let restaurantImg = document.createElement("img")
+// 	restaurantImg.src = `https:${stop.restaurant_icon}`;
 
-	if (stop.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
-		restaurantImg.src = stop.restaurant_icon;
-	}
+// 	if (stop.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
+// 		restaurantImg.src = stop.restaurant_icon;
+// 	}
 
-	const content = document.createElement("div");
+// 	const content = document.createElement("div");
 
-	content.innerHTML = `
-		<div>
-			<img src=${restaurantImg.src} alt="Image for ${stop.restaurant_name}" class="restaurant-markers">
-		</div>
-	`;
+// 	content.innerHTML = `
+// 		<div>
+// 			<img src=${restaurantImg.src} alt="Image for ${stop.restaurant_name}" class="restaurant-markers">
+// 		</div>
+// 	`;
 
-	return content;
+// 	return content;
 
-}
+// }
 
 async function calculateAndDisplayTrip(directionsService, directionsRenderer) {
 
