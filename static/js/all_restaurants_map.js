@@ -55,17 +55,17 @@ async function initMap() {
 						lat: restaurant.restaurant_latitude,
 						lng: restaurant.restaurant_longitude,
 					},
-					content: buildMarker(restaurant),
+
 					title: `Restaurant: ${restaurant.restaurant_name}`,
 				});
-
-				markers.push(restaurantMarker)
 
 				restaurantMarker.addListener('click', () => {
 					restaurantInfo.close();
 					restaurantInfo.setContent(restaurantInfoContent);
 					restaurantInfo.open(map, restaurantMarker);
 				});
+
+				markers.push(restaurantMarker)
 
 			}
 
@@ -78,25 +78,25 @@ async function initMap() {
 
 }
 
-function buildMarker(restaurant) {
+// function buildMarker(restaurant) {
 
-	let restaurantImg = document.createElement("img")
-	restaurantImg.src = `https:${restaurant.restaurant_icon}`;
+// 	let restaurantImg = document.createElement("img")
+// 	restaurantImg.src = `https:${restaurant.restaurant_icon}`;
 
-	if (restaurant.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
-		restaurantImg.src = restaurant.restaurant_icon;
-	}
+// 	if (restaurant.restaurant_icon == `static/img/attachment-guys-diner-background.jpg`) {
+// 		restaurantImg.src = restaurant.restaurant_icon;
+// 	}
 
-	const content = document.createElement("div");
+// 	const content = document.createElement("div");
 
-	content.innerHTML = `
-		<div>
-			<img src=${restaurantImg.src} alt="Image for ${restaurant.restaurant_name}" class="all-restaurant-markers">
-		</div>
-	`;
+// 	content.innerHTML = `
+// 		<div>
+// 			<img src=${restaurantImg.src} alt="Image for ${restaurant.restaurant_name}" class="all-restaurant-markers">
+// 		</div>
+// 	`;
 
-	return content;
+// 	return content;
 
-}
+// }
 
 initMap();
