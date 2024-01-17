@@ -43,7 +43,7 @@ async function initMap() {
 									<br>
 									${restaurant.restaurant_address}
 									<br>
-									<a href="https://www.google.com/maps/search/?api=1&query=${encodedAddress}+${encodedName}" target="_blank">Quick Directions?</a>                
+									<a href="https://www.google.com/maps/search/?api=1&query=${encodedAddress}+${encodedName}" target="_blank"><b>Quick Directions?</b></a>                
 								</div>
 							</div>
 						</div>
