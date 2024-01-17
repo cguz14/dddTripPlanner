@@ -155,6 +155,8 @@
 	border-style: hidden solid solid solid;
 	border-width: thick;
 	border-radius: 5px;
+	max-width: 1440px;
+	margin: auto;
 }
 
 .border-profile-icon {
