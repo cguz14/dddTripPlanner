@@ -1,7 +1,9 @@
 # <img src="static/img/attachment-guys-diner-background.jpg">
 
 The DDD Trip Planner is a web app with over 1,200 “Diners, Drive-Ins, and Dives” (DDD) restaurants to get rollin' out to! This app offers a detailed map view all of the DDD restaurants 
-from Food Network's 86 page list and makes it easy to plan your next trip. Users can create and edit trips, add and remove stops for the trips, earn badges, and favorite and rate restaurants. 
+from Food Network's 86 page list and makes it easy to plan your next trip. Users can create and edit trips, add and remove stops for the trips, earn badges, and favorite and rate restaurants.
+
+The application is currently running with the use of AWS's Amazon Lightsail and Route 53 at dddtripplanner.com.
 
 ## Table of Contents
 
